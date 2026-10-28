@@ -90,7 +90,8 @@ export function CTestReview({ result, onAgain, autoExplain = true }: { result: C
             {r.correct} / {r.total} <span className="text-base text-stone-500">({Math.round((100 * r.correct) / r.total)}%)</span>
           </p>
           <p className="text-sm text-stone-500">
-            {r.level} · {Math.floor(r.seconds / 60)}m {r.seconds % 60}s{r.assisted ? ' · looked up (not counted in estimates)' : ''}
+            {r.level} · {Math.floor(r.seconds / 60)}m {r.seconds % 60}s{r.repeat ? ' · repeat (not counted in estimates)' : ''}
+            {r.assisted ? ' · looked up (not counted in estimates)' : ''}
           </p>
         </div>
         <div className="mt-4 leading-loose">

@@ -42,6 +42,7 @@ export type CTestResult = {
   total: number
   seconds: number
   assisted: boolean
+  repeat?: boolean
   text: string
   properNames: string[]
   gaps: GapRecord[]

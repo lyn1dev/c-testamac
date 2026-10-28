@@ -73,6 +73,12 @@ describe('estimates', () => {
     expect(e.B2.value).toBe(73)
   })
 
+  it('ignores repeated texts in estimates and level changes', () => {
+    const repeat = { ...r('B1', 20, 3), repeat: true }
+    expect(estimateScores([r('B1', 12, 1), repeat], {}, {}).B1).toEqual({ value: 60, basis: 'texts', n: 1 })
+    expect(recommendedLevel([r('B1', 18, 1), { ...r('B1', 20, 2), repeat: true }])).toBe('B1')
+  })
+
   it('has no estimate without data', () => {
     expect(estimateScores([], {}, {}).B2.basis).toBe('none')
   })

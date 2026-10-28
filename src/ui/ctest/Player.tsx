@@ -35,6 +35,7 @@ export function CTestPlayer({ t, mode, gaps, letterCount, timeLimit, onFinished 
     if (done.current) return
     done.current = true
     const assisted = lookupCount() !== lookups.current
+    const repeat = (await db.results.filter((r) => r.textId === t.id).count()) > 0
     const now = Date.now()
     const records = ct.gaps.map((g, i) => {
       const sentence = sentenceOf(ct.text, ct.sentences[g.sentence])
@@ -50,6 +51,7 @@ export function CTestPlayer({ t, mode, gaps, letterCount, timeLimit, onFinished 
       total: ct.gaps.length,
       seconds: Math.round((now - started.current) / 1000),
       assisted,
+      repeat,
       text: t.text,
       properNames: t.properNames,
       gaps: records,

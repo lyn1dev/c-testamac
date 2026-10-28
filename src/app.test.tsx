@@ -115,3 +115,19 @@ describe('tables', () => {
     for (const c of cards) expect(c.due - Date.now()).toBeLessThan(5 * DAY)
   })
 })
+
+describe('c-tests', () => {
+  it('labels a text done before as a repeat and leaves it out of estimates', async () => {
+    await saveSetting('placementDone', true)
+    for (let round = 0; round < 2; round++) {
+      cleanup()
+      app('/ctest')
+      fireEvent.click((await screen.findAllByRole('button', { name: 'Start' }))[0])
+      fireEvent.click(await screen.findByRole('button', { name: /Finish/ }))
+      await screen.findByText('Your result')
+    }
+    expect(screen.getByText(/repeat \(not counted in estimates\)/)).toBeTruthy()
+    const results = await db.results.toArray()
+    expect(results.map((r) => !!r.repeat)).toEqual([false, true])
+  })
+})
