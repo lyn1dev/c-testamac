@@ -306,3 +306,20 @@ describe('settings', () => {
     await waitFor(() => expect(seconds.value).toBe('600'))
   })
 })
+
+describe('keyboard', () => {
+  it('keeps focus in the drill after checking, so Enter moves on', async () => {
+    await saveSetting('placementDone', true)
+    app('/verbs')
+    fireEvent.click(await screen.findByRole('button', { name: 'Start' }))
+    const input = await screen.findByPlaceholderText('e.g. ist gegangen')
+    await waitFor(() => expect(document.activeElement).toBe(input))
+    const box = input.closest('[tabindex="-1"]')!
+    fireEvent.change(input, { target: { value: 'xx' } })
+    fireEvent.keyDown(input, { key: 'Enter' })
+    await screen.findByRole('button', { name: /Next/ })
+    await waitFor(() => expect(document.activeElement).toBe(box))
+    fireEvent.keyDown(document.activeElement!, { key: 'Enter' })
+    expect(await screen.findByText(/2 \/ 20/)).toBeTruthy()
+  })
+})

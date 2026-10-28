@@ -268,6 +268,10 @@ export function Drill({ items, source, mode = 'learn', timeLimit, onDone, doneLa
   }, [i, finished])
 
   useEffect(() => {
+    if (result) box.current?.focus()
+  }, [result])
+
+  useEffect(() => {
     if (!timeLimit || finished) return
     const id = setInterval(() => setLeft(timeLimit - Math.floor((Date.now() - startedAt.current) / 1000)), 1000)
     return () => clearInterval(id)
