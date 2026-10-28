@@ -94,9 +94,10 @@ function konjunktiv2(v: Verb): string[] {
   const k = v.k2
   const strong = !k.endsWith('te')
   const stem = k.slice(0, -1)
-  const forms = strong
-    ? [k, `${k}st/${stem}st`, k, `${k}n`, `${k}t/${stem}t`, `${k}n`]
-    : weakEndings(k)
+  const forms =
+    strong && !/[sßzdt]$/.test(stem)
+      ? [k, `${k}st/${stem}st`, k, `${k}n`, `${k}t/${stem}t`, `${k}n`]
+      : weakEndings(k)
   const synthetic = withSep(forms, v.sep)
   if (v.kind === 'modal' || ['sein', 'haben', 'werden'].includes(v.inf)) return synthetic
   return synthetic.map((f, i) => `${f}/${wuerde[i]}`)
@@ -105,8 +106,9 @@ function konjunktiv2(v: Verb): string[] {
 function konjunktiv1(v: Verb): string[] {
   if (v.inf === 'sein') return ['sei', 'seiest/seist', 'sei', 'seien', 'seiet', 'seien']
   const inf = base(v)
-  const stem = inf.replace(/e?n$/, '')
-  return withSep([`${stem}e`, `${stem}est`, `${stem}e`, inf, `${stem}et`, inf], v.sep)
+  const stem = inf.endsWith('eln') ? `${inf.slice(0, -3)}l` : inf.replace(/e?n$/, '')
+  const wir = /(en|[lr]n)$/.test(inf) ? inf : `${stem}en`
+  return withSep([`${stem}e`, `${stem}est`, `${stem}e`, wir, `${stem}et`, wir], v.sep)
 }
 
 export function conjugate(v: Verb, tense: Tense): string[] {
