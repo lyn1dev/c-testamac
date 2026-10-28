@@ -106,8 +106,13 @@ function konjunktiv2(v: Verb): string[] {
 function konjunktiv1(v: Verb): string[] {
   if (v.inf === 'sein') return ['sei', 'seiest/seist', 'sei', 'seien', 'seiet', 'seien']
   const inf = base(v)
-  const stem = inf.endsWith('eln') ? `${inf.slice(0, -3)}l` : inf.replace(/e?n$/, '')
-  const wir = /(en|[lr]n)$/.test(inf) ? inf : `${stem}en`
+  if (/[^aeiouäöü](el|er)n$/.test(inf)) {
+    const stem = inf.slice(0, -1)
+    const ich = inf.endsWith('eln') ? `${inf.slice(0, -3)}le` : `${stem}e`
+    return withSep([ich, `${stem}st`, ich, inf, `${stem}t`, inf], v.sep)
+  }
+  const stem = inf.replace(/e?n$/, '')
+  const wir = inf.endsWith('en') ? inf : `${stem}en`
   return withSep([`${stem}e`, `${stem}est`, `${stem}e`, wir, `${stem}et`, wir], v.sep)
 }
 
