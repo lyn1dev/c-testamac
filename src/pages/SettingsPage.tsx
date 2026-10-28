@@ -116,6 +116,7 @@ export function SettingsPage() {
             <Btn
               onClick={async () => {
                 const dump = Object.fromEntries(await Promise.all(db.tables.map(async (t) => [t.name, await t.toArray()])))
+                dump.settings = dump.settings.filter((s: { key: string }) => s.key !== 'apiKey')
                 const a = document.createElement('a')
                 a.href = URL.createObjectURL(new Blob([JSON.stringify(dump)], { type: 'application/json' }))
                 a.download = `ctest-coach-${new Date().toISOString().slice(0, 10)}.json`
