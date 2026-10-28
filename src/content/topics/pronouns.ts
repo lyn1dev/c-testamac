@@ -14,7 +14,7 @@ export const topic: Topic = {
   tables: ['personal-pronouns'],
   tricks: [
     'Only masculine is special in the accusative: **er → ihn**. All other third-person forms stay the same (sie → sie, es → es).',
-    'Dative forms with an -m/-r: ihm (m/n), ihr (f), ihnen (pl), mir, dir — the endings echo the articles dem / der / den.',
+    'Dative forms end in -m/-r/-n: ihm (m/n), ihr (f), ihnen (pl), mir, dir — the endings echo the articles dem / der / den.',
     'ihr/Ihr/ihnen/Ihnen: capitalised Sie, Ihnen = formal "you"; lowercase sie = "she/her" or "they/them", ihnen = "(to) them".',
     'Order: pronoun before noun (Ich gebe ihm das Buch), but accusative before dative when both are pronouns (Ich gebe es ihm).',
   ],

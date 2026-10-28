@@ -7,9 +7,9 @@ export const topic: Topic = {
   summary: 'The article follows the noun’s gender, number and case; possessives take the ein-endings and are chosen by the owner.',
   rule: [
     'Every noun has a gender: **der** (masculine), **die** (feminine), **das** (neuter) and **die** for all plurals. The indefinite article is **ein / eine / ein**; it has no plural (Ich habe Bücher), and its negation is **kein**. The ending depends on the case; see the signal letters r-e-s-n-m.',
-    '**ein-words** (ein, kein, mein, dein, sein, ihr, unser, euer, Ihr) take the same endings as ein. The masculine nominative and the neuter nominative/accusative have **no ending** (ein Mann, mein Kind, kein Auto). The plural of ein-words is formed with -e: meine, keine.',
+    '**ein-words** (ein, kein, mein, dein, sein, ihr, unser, euer, Ihr) take the same endings as ein. The masculine nominative and the neuter nominative/accusative have **no ending** (ein Mann, mein Kind, kein Auto). In the nominative/accusative plural, ein-words end in -e: meine, keine.',
     'A possessive has **two decisions**: the **stem** is chosen by the owner (ich → mein, du → dein, er/es → sein, sie → ihr, wir → unser, ihr → euer, sie/Sie → ihr/Ihr), the **ending** is chosen by the thing owned (gender, number, case): "Sie liebt **ihren** Bruder" (owner: sie; Bruder is masculine accusative).',
-    'euer loses the second e of its stem when an ending is added: **euer → eure, euren, eurem**; unser keeps its stem in standard writing (**unsere, unseren**). "Anna sucht **ihren** Schlüssel, Tom sucht **seinen** Schlüssel."',
+    'euer loses the second e of its stem when an ending is added: **euer → eure, euren, eurem**; unser usually keeps it (**unsere, unseren**; the shorter unsre is a rarer variant). "Anna sucht **ihren** Schlüssel, Tom sucht **seinen** Schlüssel."',
   ],
   tables: ['def-article', 'indef-article', 'possessives'],
   tricks: [
@@ -59,7 +59,7 @@ export const topic: Topic = {
       id: 'articles-possessives:3',
       topic: 'articles-possessives',
       kind: 'gap',
-      text: 'Wir besuchen heute uns{ere} Großeltern.',
+      text: 'Wir besuchen heute uns{ere|re} Großeltern.',
       en: 'We are visiting our grandparents today.',
       fb: { rule: 'Plural accusative of an ein-word ends in -e.', cue: "'Großeltern' → plural; 'besuchen' → accusative" },
     },

@@ -8,7 +8,7 @@ export const topic: Topic = {
   rule: [
     'Take the infinitive, remove **-en** (or -n) to get the stem, and add the ending that matches the subject: **-e** (ich), **-st** (du), **-t** (er/sie/es), **-en** (wir), **-t** (ihr), **-en** (sie/Sie). Wir, sie and Sie always look like the infinitive.',
     'If the stem ends in -t, -d, or a consonant cluster such as -chn/-ffn, insert an **-e-** before -st and -t so you can pronounce it: du arbeitest, er arbeitet, ihr arbeitet. If the stem ends in -s, -ß, -z, the du ending is just -t: du heißt, du tanzt.',
-    'Many common strong verbs change the stem vowel only in **du and er/sie/es**: a → ä (fahren: du fährst), e → i (sprechen: du sprichst), e → ie (lesen: er liest). Ich, wir, ihr and sie never change. Watch out: with e → ie the stem has no extra e (du liest, not du liesst).',
+    'Many common strong verbs change the stem vowel only in **du and er/sie/es**: a → ä (fahren: du fährst), e → i (sprechen: du sprichst), e → ie (lesen: er liest). Ich, wir, ihr and sie never change. Watch out: the stem of lesen ends in -s, so du adds only -t (du liest, not du liesst).',
     '**sein** and **haben** are irregular and must be memorised: ich bin, du bist, er ist, wir sind, ihr seid, sie sind; ich habe, du hast, er hat, wir haben, ihr habt, sie haben. German has only one present tense: it covers "I work", "I am working" and, with a time word, the near future ("Morgen fahre ich nach Wien").',
   ],
   tables: ['present-endings', 'sein-haben-werden'],

@@ -141,7 +141,7 @@ export const topic: Topic = {
       kind: 'transform',
       instruction: 'Combine the two sentences with nicht nur … sondern auch.',
       source: 'Er spielt Gitarre. Er spielt Klavier.',
-      answers: ['Er spielt nicht nur Gitarre, sondern auch Klavier'],
+      answers: ['Er spielt nicht nur Gitarre, sondern auch Klavier', 'Er spielt nicht nur Gitarre, sondern er spielt auch Klavier'],
       fb: { rule: 'nicht nur + first item, sondern auch + second item; the verb stays in position 2.', cue: '„Gitarre“ and „Klavier“', trick: 'nicht nur … sondern auch' },
     },
     {

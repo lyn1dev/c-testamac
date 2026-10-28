@@ -17,7 +17,7 @@ export const topic: Topic = {
     'Picture the verb bracket as a pair of brackets: the finite verb is the left one, the Partizip, infinitive or prefix is the right one, and everything else sits between.',
     'TeKaMoLo: **Te**mporal – **Ka**usal – **Mo**dal – **Lo**kal ("wann, warum, wie, wo").',
     'After weil, dass, wenn, ob and question words in indirect questions, the verb jumps to the end: "weil … ist".',
-    'If something other than the subject starts the sentence, the subject has to stand directly after the verb: "Heute habe **ich** Zeit."',
+    'If something other than the subject starts the sentence, the subject usually stands directly after the verb: "Heute habe **ich** Zeit."',
   ],
   traps: [
     'Wrong: Morgen ich fahre nach Wien. Right: Morgen fahre ich nach Wien. (the verb stays in position 2.)',
@@ -52,8 +52,8 @@ export const topic: Topic = {
       id: 'word-order:2',
       topic: 'word-order',
       kind: 'gap',
-      text: 'Ich bleibe heute zu Hause, weil ich krank {bin}.',
-      en: 'I am staying at home today because I am ill.',
+      text: 'Ich bleibe heute zu Hause, weil ich immer noch krank {bin}.',
+      en: 'I am staying at home today because I am still ill.',
       fb: { rule: 'After weil the conjugated verb goes to the end of the clause.', cue: "'weil' → verb last: bin", trick: 'weil kicks the verb to the end.' },
     },
     {

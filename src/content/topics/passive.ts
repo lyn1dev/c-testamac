@@ -128,7 +128,7 @@ export const topic: Topic = {
       topic: 'passive',
       kind: 'choice',
       prompt: 'Der Rasen muss gemäht ___.',
-      options: ['werden', 'wird', 'worden', 'sein'],
+      options: ['werden', 'wird', 'worden', 'geworden'],
       answer: 0,
       fb: { rule: 'After a modal verb, the passive ends with the infinitive werden.', cue: "'muss gemäht' → werden", trick: 'Modal + Partizip II + werden.' },
     },
