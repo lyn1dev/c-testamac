@@ -12,6 +12,6 @@ export const COMMON_PROPER_NAMES = [
   'Clara', 'Paula', 'Katrin', 'Sabine', 'Petra', 'Monika', 'Ayşe', 'Fatima', 'Elif',
   'Peter', 'Paul', 'Thomas', 'Michael', 'Andreas', 'Stefan', 'Markus', 'Jan', 'Lukas', 'Jonas', 'Leon', 'Felix',
   'Max', 'Tim', 'Tom', 'Ben', 'David', 'Daniel', 'Martin', 'Klaus', 'Hans', 'Karl', 'Mehmet', 'Ali', 'Ahmed',
-  'Müller', 'Schmidt', 'Schneider', 'Fischer', 'Weber', 'Meyer', 'Wagner', 'Becker', 'Schulz', 'Hoffmann',
-  'Goethe', 'Schiller', 'Kant', 'Einstein', 'Merkel', 'Mozart', 'Beethoven', 'Bach', 'Luther',
+  'Schmidt', 'Meyer', 'Becker', 'Schulz', 'Hoffmann',
+  'Goethe', 'Schiller', 'Kant', 'Einstein', 'Merkel', 'Mozart', 'Beethoven', 'Luther',
 ]

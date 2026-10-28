@@ -24,7 +24,7 @@ const ABBREVIATIONS = new Set([
   'ehem', 'allg', 'insb', 'Mrs', 'Mr', 'St', 'Abs', 'Art', 'ff',
 ])
 const SENTENCE_END = /[.!?…]+[“”"»«’')\]]*/gu
-const WORD = /[\p{L}\p{N}]+/gu
+const WORD = /[\p{L}\p{N}]+(?:-[\p{L}\p{N}]+)*/gu
 const SENTENCE_START = /[\p{Lu}\p{N}„"«»‚'(\[]/u
 export const HIDDEN_GAP = '____'
 
@@ -42,7 +42,8 @@ export function splitSentenceRanges(text: string): [number, number][] {
     if (!SENTENCE_START.test(after.trimStart()[0])) continue
     if (m[0].startsWith('.')) {
       const prev = /([\p{L}\p{N}]+)$/u.exec(text.slice(0, idx))?.[1] ?? ''
-      if (/^\p{N}+$/u.test(prev) || [...prev].length === 1 || ABBREVIATIONS.has(prev)) continue
+      const year = /^\p{N}{4}$/u.test(prev)
+      if (!year && (/^\p{N}+$/u.test(prev) || [...prev].length === 1 || ABBREVIATIONS.has(prev))) continue
     }
     ends.push(stop)
   }
@@ -68,7 +69,9 @@ export function splitSentences(text: string): string[] {
 }
 
 function gappable(word: string, names: Set<string>): boolean {
-  return [...word].length > 1 && !/\p{N}/u.test(word) && !names.has(word)
+  return (
+    [...word].length > 1 && !/\p{N}/u.test(word) && !word.includes('-') && !/^\p{Lu}+$/u.test(word) && !names.has(word)
+  )
 }
 
 export function makeCTest(text: string, opts: CTestOptions = {}): CTest {
