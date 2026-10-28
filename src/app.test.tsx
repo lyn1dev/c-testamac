@@ -12,6 +12,7 @@ import { BUILTIN_TEXTS } from './ctest/texts'
 import { db } from './db'
 import { DAY } from './practice/srs'
 import { saveSetting } from './settings'
+import { closeReference } from './ui/lookup'
 
 function openRouterMock() {
   return vi.fn(async (_url: string, init?: RequestInit) => {
@@ -57,6 +58,7 @@ beforeEach(async () => {
 
 afterEach(() => {
   cleanup()
+  closeReference()
   vi.unstubAllGlobals()
 })
 
@@ -271,6 +273,19 @@ describe('placement', () => {
     expect(await screen.findByText(/A1–A2 grammar: 1\/16/)).toBeTruthy()
     expect(screen.queryByText(/tested out/)).toBeNull()
     expect((await db.topics.toArray()).some((t) => t.testedOutAt)).toBe(false)
+  })
+
+  it('marks answers given after a lookup as assisted', async () => {
+    app()
+    fireEvent.click(await screen.findByRole('button', { name: 'Start' }))
+    const box = (await screen.findByText(/1 \/ \d+/)).closest('[tabindex="-1"]')!
+    fireEvent.keyDown(window, { key: 'k', ctrlKey: true })
+    const search = await screen.findByPlaceholderText(/Search topics, tables/)
+    fireEvent.change(search, { target: { value: 'Definite article' } })
+    fireEvent.click(within(search.closest('aside')!).getAllByRole('button', { name: /Definite article/ })[0])
+    fireEvent.keyDown(box, { key: within(box as HTMLElement).queryAllByRole('textbox').length ? 'Enter' : '1' })
+    await waitFor(async () => expect(await db.attempts.count()).toBe(1))
+    expect((await db.attempts.toArray())[0].assisted).toBe(true)
   })
 })
 
