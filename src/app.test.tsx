@@ -10,7 +10,7 @@ import { TABLE_BY_ID, TOPICS } from './content/index'
 import { makeCTest } from './ctest/gapper'
 import { BUILTIN_TEXTS } from './ctest/texts'
 import { db } from './db'
-import { DAY } from './practice/srs'
+import { DAY, newCard } from './practice/srs'
 import { saveSetting } from './settings'
 import { closeReference } from './ui/lookup'
 
@@ -331,6 +331,24 @@ describe('placement', () => {
 })
 
 describe('timers', () => {
+  it('updates the due badge as cards become due', async () => {
+    await saveSetting('placementDone', true)
+    vi.useFakeTimers({ toFake: ['Date', 'setInterval', 'clearInterval'] })
+    try {
+      const item = { kind: 'verb' as const, key: 'verb:gehen:perfekt:2', inf: 'gehen', tense: 'perfekt' as const, person: 2 }
+      await db.cards.put({ ...newCard(item, Date.now()), due: Date.now() + 30_000 })
+      app('/strategies')
+      const review = await screen.findByRole('link', { name: 'Review' })
+      await new Promise((r) => setTimeout(r, 200))
+      expect(review.textContent).toBe('Review')
+      vi.setSystemTime(Date.now() + 61_000)
+      act(() => vi.advanceTimersByTime(60_000))
+      await waitFor(() => expect(review.textContent).toBe('Review1'))
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
   it('does not count a timed C-test in estimates when the learner left the tab', async () => {
     await saveSetting('placementDone', true)
     app('/ctest')
