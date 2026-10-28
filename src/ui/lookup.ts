@@ -36,7 +36,7 @@ export function openReference(hit: Hit | null = null) {
 }
 
 export function noteLookup(hit: Hit) {
-  set({ hit, lookups: state.activity ? state.lookups + 1 : state.lookups })
+  set({ hit, lookups: state.lookups + 1 })
   void db.lookups.add({ at: Date.now(), target: `${hit.kind}:${hit.id}`, during: state.activity ?? undefined })
 }
 

@@ -38,32 +38,54 @@ export async function generateText(
       ? `Make the text dense in this grammar topic (use it in at least 6 places, naturally): ${focus}.`
       : 'Use a natural mix of grammar typical for the level.',
     'No headings, no lists, no numbers written as digits, no quotation marks, no abbreviations.',
-    opts.avoidTitles?.length ? `Choose a topic different from: ${opts.avoidTitles.slice(-12).join('; ')}.` : '',
+    opts.avoidTitles?.length ? `Choose a topic different from: ${opts.avoidTitles.slice(0, 12).join('; ')}.` : '',
     'Return {"title": string, "text": string, "properNames": string[]} where properNames lists every proper name (people, places, organisations) that occurs in the text, spelled exactly as in the text.',
   ].join('\n')
-  return chatJson(cfg, [{ role: 'system', content: SYSTEM }, { role: 'user', content: prompt }], textSchema, {
+  const draft = await chatJson(cfg, [{ role: 'system', content: SYSTEM }, { role: 'user', content: prompt }], textSchema, {
     temperature: 0.8,
-    check: (v) => {
-      const missing = v.properNames.filter((n) => !v.text.includes(n))
-      if (missing.length) return `properNames not found in text: ${missing.join(', ')}`
-      if (/\d/.test(v.text)) return 'text contains digits'
-      const ct = makeCTest(v.text, { gaps: opts.gaps, properNames: v.properNames })
-      if (ct.sentences.length < 5) return 'text needs at least 5 sentences'
-      if (ct.gaps.length < opts.gaps)
-        return `text too short: only ${ct.gaps.length} of ${opts.gaps} gaps fit between the first and last sentence; add longer middle sentences`
-      return null
-    },
+    check: (v) => textProblem(v, opts.gaps),
   })
+  return proofread(cfg, draft, opts.gaps)
 }
 
-export type WrongGap = { n: number; gap: Gap; given: string; sentence: string }
+function textProblem(v: GeneratedText, gaps: number): string | null {
+  const missing = v.properNames.filter((n) => !v.text.includes(n))
+  if (missing.length) return `properNames not found in text: ${missing.join(', ')}`
+  if (/\d/.test(v.text)) return 'text contains digits'
+  const ct = makeCTest(v.text, { gaps, properNames: v.properNames })
+  if (ct.sentences.length < 5) return 'text needs at least 5 sentences'
+  if (ct.gaps.length < gaps)
+    return `text too short: only ${ct.gaps.length} of ${gaps} gaps fit between the first and last sentence; add longer middle sentences`
+  return null
+}
+
+const proofSchema = z.object({
+  text: z.string().min(200).max(2000),
+  corrections: z.array(z.object({ wrong: z.string(), right: z.string() })).default([]),
+})
+
+async function proofread(cfg: AiConfig, draft: GeneratedText, gaps: number): Promise<GeneratedText> {
+  const prompt = [
+    'Proofread this German text, which will become a C-test whose deleted letters are graded against the text. Every word must be flawless standard German (Duden): grammar, endings, spelling, capitalisation, comma placement and idiomatic usage.',
+    'Fix only real errors and keep everything else identical: the same sentences, the same proper names, no digits.',
+    `Text: """${draft.text}"""`,
+    'Return {"text": the full corrected text, "corrections": [{"wrong": fragment, "right": fragment}] (empty if nothing was wrong)}',
+  ].join('\n')
+  const out = await chatJson(cfg, [{ role: 'system', content: SYSTEM }, { role: 'user', content: prompt }], proofSchema, {
+    temperature: 0,
+    check: (v) => textProblem({ ...draft, text: v.text }, gaps),
+  })
+  return { ...draft, text: out.text }
+}
+
+export type ReviewGap = { n: number; gap: Gap; given: string; sentence: string; correct: boolean }
 
 const explainSchema = z.object({
   items: z.array(
     z.object({
       n: z.number().int(),
-      accepted: z.boolean(),
-      explanation: z.string().min(3),
+      accepted: z.boolean().default(false),
+      explanation: z.string().default(''),
       rule: z.string().default(''),
       trick: z.string().default(''),
       topic: z.enum([...TOPIC_IDS, 'vocabulary']).catch('vocabulary'),
@@ -74,24 +96,22 @@ const explainSchema = z.object({
 
 export type GapExplanation = z.infer<typeof explainSchema>['items'][number]
 
-export async function explainMistakes(
+export async function explainGaps(
   cfg: AiConfig,
-  opts: { text: string; wrong: WrongGap[]; letterCount: boolean },
+  opts: { text: string; gaps: ReviewGap[]; letterCount: boolean },
 ): Promise<GapExplanation[]> {
-  const list = opts.wrong
-    .map(
-      (w) =>
-        `${w.n}. sentence: "${w.sentence}" | visible: "${w.gap.prefix}" | correct word: "${w.gap.word}" | learner wrote: "${w.gap.prefix}${w.given}"`,
-    )
-    .join('\n')
+  const line = (w: ReviewGap) =>
+    `${w.n}. sentence: "${w.sentence}" | visible: "${w.gap.prefix}" | correct word: "${w.gap.word}"` +
+    (w.correct ? '' : ` | learner wrote: "${w.gap.prefix}${w.given}"`)
+  const wrong = opts.gaps.filter((g) => !g.correct)
+  const right = opts.gaps.filter((g) => g.correct)
   const prompt = [
     'A learner did a German C-test (the second half of words was deleted; they typed the missing part). Full text:',
     opts.text,
     '',
-    'These gaps were graded wrong:',
-    list,
-    '',
-    'For EACH gap return an item with:',
+    wrong.length ? `These gaps were graded wrong:\n${wrong.map(line).join('\n')}\n` : '',
+    right.length ? `These gaps were answered correctly:\n${right.map(line).join('\n')}\n` : '',
+    'Return one item for EACH gap, wrong or correct. For a gap answered correctly return only n, topic and strategy. For a gap graded wrong return:',
     '- n: the gap number',
     `- accepted: true only if the learner's full word is ALSO grammatically and semantically correct in this exact context${opts.letterCount ? ' and has the same number of missing letters' : ''}. Spelling errors, ae/oe/ue/ss for ä/ö/ü/ß, and wrong capitalisation are never accepted.`,
     '- explanation: max 2 sentences: why the correct word is right and what was wrong with the learner\'s answer, pointing to the cue in the sentence',
@@ -101,26 +121,48 @@ export async function explainMistakes(
     `- strategy: the C-test strategy id that would have caught it, one of: ${STRATEGIES.map((s) => `${s.id} (${s.title})`).join(', ')}`,
     'Return {"items": [...]}',
   ].join('\n')
-  const want = new Set(opts.wrong.map((w) => w.n))
+  const byN = new Map(opts.gaps.map((w) => [w.n, w]))
   const out = await chatJson(cfg, [{ role: 'system', content: SYSTEM }, { role: 'user', content: prompt }], explainSchema, {
     temperature: 0.2,
     check: (v) => {
       const got = new Set(v.items.map((i) => i.n))
-      const missing = [...want].filter((n) => !got.has(n))
-      return missing.length ? `missing items for gaps ${missing.join(', ')}` : null
+      const missing = [...byN.keys()].filter((n) => !got.has(n))
+      if (missing.length) return `missing items for gaps ${missing.join(', ')}`
+      const bare = v.items.filter((i) => byN.get(i.n)?.correct === false && i.explanation.trim().length < 3)
+      return bare.length ? `missing explanation for wrong gaps ${bare.map((i) => i.n).join(', ')}` : null
     },
   })
-  const byN = new Map(opts.wrong.map((w) => [w.n, w]))
+  const seen = new Set<number>()
   return out.items
-    .filter((i) => want.has(i.n))
+    .filter((i) => byN.has(i.n) && !seen.has(i.n) && !!seen.add(i.n))
     .map((i) => {
       const w = byN.get(i.n)!
+      if (w.correct) return { ...i, accepted: false, explanation: '', rule: '', trick: '' }
       const plausible =
         w.given.trim() !== '' &&
         !gradeGap(w.gap, w.given).spellingHint &&
         (!opts.letterCount || [...w.given.trim()].length === [...w.gap.answer].length)
       return { ...i, accepted: i.accepted && plausible }
     })
+}
+
+const followUpSchema = z.object({ answer: z.string().min(1) })
+
+export async function askFollowUp(
+  cfg: AiConfig,
+  opts: { sentence: string; word: string; given: string; explanation: string; question: string },
+): Promise<string> {
+  const prompt = [
+    'A learner made this mistake in a German C-test.',
+    `Sentence: "${opts.sentence}" | correct word: "${opts.word}" | learner wrote: "${opts.given}"`,
+    `Explanation they were given: ${opts.explanation}`,
+    `Their follow-up question: ${opts.question}`,
+    'Answer it in at most 4 short English sentences, with a German example if it helps. Return {"answer": string}',
+  ].join('\n')
+  const out = await chatJson(cfg, [{ role: 'system', content: SYSTEM }, { role: 'user', content: prompt }], followUpSchema, {
+    temperature: 0.3,
+  })
+  return out.answer
 }
 
 const feedbackSchema = z.object({ rule: z.string().min(3), cue: z.string().min(1), trick: z.string().optional() })

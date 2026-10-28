@@ -137,7 +137,7 @@ export const topic: Topic = {
       kind: 'transform',
       instruction: 'Replace the verb with a noun-verb combination using "treffen".',
       source: 'Die Firma entscheidet sich bald.',
-      answers: ['Die Firma trifft bald eine Entscheidung.'],
+      answers: ['Die Firma trifft bald eine Entscheidung.', 'Bald trifft die Firma eine Entscheidung.'],
       fb: { rule: 'entscheiden corresponds to eine Entscheidung treffen; treffen is conjugated.', cue: '"entscheidet sich" → "trifft … eine Entscheidung"', trick: 'tr-i-fft (er/sie trifft)' },
     },
     {

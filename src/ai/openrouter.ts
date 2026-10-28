@@ -34,6 +34,7 @@ export function extractJson(content: string): unknown {
 
 async function complete(cfg: AiConfig, messages: Message[], temperature: number): Promise<string> {
   const res = await fetch(`${BASE}/chat/completions`, {
+    signal: AbortSignal.timeout(90_000),
     method: 'POST',
     headers: {
       Authorization: `Bearer ${cfg.apiKey}`,
@@ -42,6 +43,9 @@ async function complete(cfg: AiConfig, messages: Message[], temperature: number)
       'X-Title': 'C-Test Coach',
     },
     body: JSON.stringify({ model: cfg.model, messages, temperature, response_format: { type: 'json_object' } }),
+  }).catch((e: unknown) => {
+    if (e instanceof DOMException && e.name === 'TimeoutError') throw new AiError('OpenRouter did not answer within 90 s — try again or pick a faster model.')
+    throw e
   })
   if (!res.ok) {
     const text = await res.text().catch(() => '')

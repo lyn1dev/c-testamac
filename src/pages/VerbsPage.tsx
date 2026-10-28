@@ -23,12 +23,14 @@ export function VerbsPage() {
   const [items, setItems] = useState<Item[] | null>(null)
   const [round, setRound] = useState(0)
   const [lookup, setLookup] = useState('')
+  const [drilling, setDrilling] = useState(false)
   useActivity(items ? 'verbs' : null)
 
   const start = () => {
     const kind = group === 'weak' || group === 'modal' ? group : undefined
     setItems(verbItems({ group: kind ? undefined : group || undefined, kind, tenses, count: timed ? 60 : 20 }))
     setRound((r) => r + 1)
+    setDrilling(true)
   }
   const found = VERB_BY_INF.get(lookup.trim()) ?? VERBS.find((v) => v.inf.startsWith(lookup.trim()) && lookup.trim().length > 2)
 
@@ -74,7 +76,16 @@ export function VerbsPage() {
           </div>
           <p className="mt-2 text-xs text-stone-500">Type the full form, e.g. "ist gegangen", "kam an", "würde machen". Alternatives are accepted.</p>
         </Card>
-        {items && <Drill key={round} items={items} source="practice" mode={timed ? 'rapid' : 'learn'} timeLimit={timed ? 90 : undefined} />}
+        {items && (
+          <Drill
+            key={round}
+            items={items}
+            source="practice"
+            mode={timed ? 'rapid' : 'learn'}
+            timeLimit={timed ? 90 : undefined}
+            onDone={() => setDrilling(false)}
+          />
+        )}
         <Card>
           <h2 className="mb-2 font-semibold">Patterns, not lists</h2>
           <ul className="list-disc space-y-1 pl-5 text-sm">
@@ -85,30 +96,36 @@ export function VerbsPage() {
             ))}
           </ul>
         </Card>
-        <Card>
-          <h2 className="mb-2 font-semibold">Strong verbs by vowel pattern</h2>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {groups.map((g) => (
-              <div key={g}>
-                <p className="font-mono text-sm font-semibold">{g}</p>
-                <p className="text-sm text-stone-700">
-                  {VERBS.filter((v) => v.group === g)
-                    .map((v) => `${v.inf} – ${v.praet}${v.sep ? ` ${v.sep}` : ''} – ${v.p2}`)
-                    .join(' · ')}
-                </p>
+        {drilling ? (
+          <p className="text-sm text-stone-500">The verb lists and conjugation lookup are hidden while you drill.</p>
+        ) : (
+          <>
+            <Card>
+              <h2 className="mb-2 font-semibold">Strong verbs by vowel pattern</h2>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {groups.map((g) => (
+                  <div key={g}>
+                    <p className="font-mono text-sm font-semibold">{g}</p>
+                    <p className="text-sm text-stone-700">
+                      {VERBS.filter((v) => v.group === g)
+                        .map((v) => `${v.inf} – ${v.praet}${v.sep ? ` ${v.sep}` : ''} – ${v.p2}`)
+                        .join(' · ')}
+                    </p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </Card>
-        <Card>
-          <input
-            value={lookup}
-            onChange={(e) => setLookup(e.target.value)}
-            placeholder="Show a verb's full conjugation (infinitive)…"
-            className="mb-3 w-full rounded border border-stone-300 px-3 py-2"
-          />
-          {found && <VerbView verb={found} />}
-        </Card>
+            </Card>
+            <Card>
+              <input
+                value={lookup}
+                onChange={(e) => setLookup(e.target.value)}
+                placeholder="Show a verb's full conjugation (infinitive)…"
+                className="mb-3 w-full rounded border border-stone-300 px-3 py-2"
+              />
+              {found && <VerbView verb={found} />}
+            </Card>
+          </>
+        )}
       </div>
     </Page>
   )

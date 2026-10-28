@@ -216,6 +216,8 @@ export function Drill({ items, source, mode = 'learn', timeLimit, onDone, doneLa
   const [finished, setFinished] = useState(items.length === 0)
   const [left, setLeft] = useState(timeLimit ?? 0)
   const startLookups = useRef(lookupCount())
+  const startedAt = useRef(Date.now())
+  const autoNext = useRef<ReturnType<typeof setTimeout>>(undefined)
   const firstRef = useRef<HTMLInputElement>(null)
   const box = useRef<HTMLDivElement>(null)
   const item = items[i]
@@ -230,6 +232,7 @@ export function Drill({ items, source, mode = 'learn', timeLimit, onDone, doneLa
 
   const advance = useCallback(
     (all: DrillOutcome[]) => {
+      clearTimeout(autoNext.current)
       if (i + 1 >= items.length) return finish(all)
       setI(i + 1)
       setAnswer(initialAnswer(items[i + 1]))
@@ -250,7 +253,7 @@ export function Drill({ items, source, mode = 'learn', timeLimit, onDone, doneLa
       setOutcomes(all)
       if (mode === 'test') return advance(all)
       setResult(r)
-      if (mode === 'rapid' && r.correct) setTimeout(() => advance(all), 450)
+      if (mode === 'rapid' && r.correct) autoNext.current = setTimeout(() => advance(all), 450)
     },
     [answer, item, result, outcomes, source, mode, advance],
   )
@@ -267,8 +270,14 @@ export function Drill({ items, source, mode = 'learn', timeLimit, onDone, doneLa
   }, [i, finished])
 
   useEffect(() => {
+    if (result) box.current?.focus()
+  }, [result])
+
+  useEffect(() => () => clearTimeout(autoNext.current), [])
+
+  useEffect(() => {
     if (!timeLimit || finished) return
-    const id = setInterval(() => setLeft((l) => l - 1), 1000)
+    const id = setInterval(() => setLeft(timeLimit - Math.floor((Date.now() - startedAt.current) / 1000)), 1000)
     return () => clearInterval(id)
   }, [timeLimit, finished])
   useEffect(() => {
@@ -284,7 +293,7 @@ export function Drill({ items, source, mode = 'learn', timeLimit, onDone, doneLa
     } else if (e.key === 'Escape') {
       e.preventDefault()
       skip()
-    } else if (e.altKey && e.key.toLowerCase() === 'k') {
+    } else if (e.altKey && e.key.toLowerCase() === 'k' && mode !== 'test') {
       e.preventDefault()
       known()
     } else if (!result && item.kind === 'exercise' && item.exercise.kind === 'choice' && /^[1-9]$/.test(e.key)) {

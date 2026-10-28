@@ -2,7 +2,7 @@ import { conjugate, PERSONS, TENSE_LABELS, type Tense } from '../content/conjuga
 import { checkTransform, exerciseSolution, gapAnswers, matchesAny } from '../content/exercise'
 import { TABLE_BY_ID, VERB_BY_INF } from '../content/index'
 import type { Exercise, Feedback } from '../content/types'
-import { gradeGap, type Gap } from '../ctest/gapper'
+import { gradeGap, splitSentences, type Gap } from '../ctest/gapper'
 
 export type Item =
   | { kind: 'exercise'; key: string; topic: string; exercise: Exercise }
@@ -47,6 +47,14 @@ export function gapItem(sentence: string, gap: Gap, topic?: string, source?: str
     gap: { ...gap, start: 0, end: 0 },
     source,
   }
+}
+
+export function fixItem(corrected: string, right: string, topic: string): Item | null {
+  const fix = right.trim()
+  const sentence = fix ? splitSentences(corrected).find((s) => s.includes(fix)) : undefined
+  if (!sentence) return null
+  const start = sentence.indexOf(fix)
+  return gapItem(sentence, { id: 0, word: fix, prefix: '', answer: fix, sentence: 0, start, end: start + fix.length }, topic, 'writing')
 }
 
 export function cellAnswers(tableId: string, r: number, c: number): string[] {

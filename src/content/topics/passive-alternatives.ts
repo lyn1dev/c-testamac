@@ -185,7 +185,7 @@ export const topic: Topic = {
       kind: 'transform',
       instruction: 'Rewrite the sentence with „man“ (active).',
       source: 'Das Geschäft wird um 20 Uhr geschlossen.',
-      answers: ['Man schließt das Geschäft um 20 Uhr', 'Man schließt um 20 Uhr das Geschäft'],
+      answers: ['Man schließt das Geschäft um 20 Uhr', 'Man schließt um 20 Uhr das Geschäft', 'Um 20 Uhr schließt man das Geschäft'],
       fb: {
         rule: 'Passive without agent → man + active verb; the old subject becomes the accusative object.',
         cue: '„wird … geschlossen“',
@@ -211,7 +211,7 @@ export const topic: Topic = {
       kind: 'transform',
       instruction: 'Rewrite the sentence with „sein + zu + Infinitive“.',
       source: 'Die Formulare müssen bis Montag abgegeben werden.',
-      answers: ['Die Formulare sind bis Montag abzugeben'],
+      answers: ['Die Formulare sind bis Montag abzugeben', 'Bis Montag sind die Formulare abzugeben'],
       fb: {
         rule: 'müssen + Passiv = sein + zu + Infinitive; separable verbs put zu between prefix and stem.',
         cue: '„müssen … abgegeben werden“',

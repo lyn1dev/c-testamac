@@ -88,17 +88,26 @@ function perfectLike(v: Verb, sein: string[], haben: string[]): string[] {
   return s.map((f, i) => `${f}/${h[i]}`)
 }
 
-function konjunktiv2(v: Verb): string[] {
-  const wuerde = compound(WUERDE, v.inf)
-  if (!v.k2) return wuerde
-  const k = v.k2
+function eachVariant(v: Verb, key: 'praet' | 'p2' | 'k2', f: (v: Verb) => string[]): string[] {
+  const lists = (v[key] ?? '').split('/').map((x) => f({ ...v, [key]: x }))
+  return lists[0].map((_, i) => [...new Set(lists.flatMap((l) => l[i].split('/')))].join('/'))
+}
+
+function k2Forms(v: Verb): string[] {
+  const k = v.k2 ?? ''
   const strong = !k.endsWith('te')
   const stem = k.slice(0, -1)
   const forms =
     strong && !/[sßzdt]$/.test(stem)
       ? [k, `${k}st/${stem}st`, k, `${k}n`, `${k}t/${stem}t`, `${k}n`]
       : weakEndings(k)
-  const synthetic = withSep(forms, v.sep)
+  return withSep(forms, v.sep)
+}
+
+function konjunktiv2(v: Verb): string[] {
+  const wuerde = compound(WUERDE, v.inf)
+  if (!v.k2) return wuerde
+  const synthetic = eachVariant(v, 'k2', k2Forms)
   if (v.kind === 'modal' || ['sein', 'haben', 'werden'].includes(v.inf)) return synthetic
   return synthetic.map((f, i) => `${f}/${wuerde[i]}`)
 }
@@ -106,8 +115,13 @@ function konjunktiv2(v: Verb): string[] {
 function konjunktiv1(v: Verb): string[] {
   if (v.inf === 'sein') return ['sei', 'seiest/seist', 'sei', 'seien', 'seiet', 'seien']
   const inf = base(v)
-  const stem = inf.endsWith('eln') ? `${inf.slice(0, -3)}l` : inf.replace(/e?n$/, '')
-  const wir = /(en|[lr]n)$/.test(inf) ? inf : `${stem}en`
+  if (/[^aeiouäöü](el|er)n$/.test(inf)) {
+    const stem = inf.slice(0, -1)
+    const ich = inf.endsWith('eln') ? `${inf.slice(0, -3)}le` : `${stem}e`
+    return withSep([ich, `${stem}st`, ich, inf, `${stem}t`, inf], v.sep)
+  }
+  const stem = inf.replace(/e?n$/, '')
+  const wir = inf.endsWith('en') ? inf : `${stem}en`
   return withSep([`${stem}e`, `${stem}est`, `${stem}e`, wir, `${stem}et`, wir], v.sep)
 }
 
@@ -116,11 +130,11 @@ export function conjugate(v: Verb, tense: Tense): string[] {
     case 'present':
       return present(v)
     case 'praeteritum':
-      return praeteritum(v)
+      return eachVariant(v, 'praet', praeteritum)
     case 'perfekt':
-      return perfectLike(v, SEIN, HABEN)
+      return eachVariant(v, 'p2', (x) => perfectLike(x, SEIN, HABEN))
     case 'plusquamperfekt':
-      return perfectLike(v, WAR, HATTE)
+      return eachVariant(v, 'p2', (x) => perfectLike(x, WAR, HATTE))
     case 'futur1':
       return compound(WERDEN, v.inf)
     case 'konjunktiv2':
@@ -131,7 +145,7 @@ export function conjugate(v: Verb, tense: Tense): string[] {
 }
 
 export function allForms(v: Verb): string[] {
-  const forms = new Set<string>([v.inf, v.p2, v.praet])
+  const forms = new Set<string>([v.inf, ...v.p2.split('/'), ...v.praet.split('/')])
   for (const t of ['present', 'praeteritum', 'konjunktiv2', 'konjunktiv1'] as const) {
     for (const f of conjugate(v, t)) for (const alt of f.split('/')) forms.add(alt.split(' ')[0])
   }

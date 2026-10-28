@@ -223,3 +223,24 @@ describe('verb data', () => {
     expect(conjugate(verb('nehmen'), 'present')[1]).toBe('nimmst')
   })
 })
+
+describe('verb-preposition and gender tables', () => {
+  it('covers B2 verbs with their preposition and case', () => {
+    expect(table('verb-prepositions').rows.length).toBeGreaterThanOrEqual(80)
+    expect(cell('verb-prepositions', 'beitragen', 'Präposition')).toEqual(['zu'])
+    expect(cell('verb-prepositions', 'sich auswirken', 'Präposition')).toEqual(['auf'])
+    expect(cell('verb-prepositions', 'sich auswirken', 'Kasus')).toEqual(['Akkusativ'])
+    expect(cell('verb-prepositions', 'bestehen (= sich zusammensetzen)', 'Präposition')).toEqual(['aus'])
+    expect(cell('verb-prepositions', 'bestehen (= fordern)', 'Kasus')).toEqual(['Dativ'])
+    expect(cell('verb-prepositions', 'zweifeln', 'Kasus')).toEqual(['Dativ'])
+  })
+
+  it('accepts the short label in the connector word-order table', () => {
+    expect(cell('connectors-word-order', 'deshalb', 'Wortstellung')).toEqual(['Position 1 (Inversion)', 'Position 1'])
+  })
+
+  it('does not teach -er as a masculine suffix in general', () => {
+    expect(table('noun-suffix-gender').rows).not.toContain('-er')
+    expect(table('noun-suffix-gender').tricks.join(' ')).toContain('das Fenster')
+  })
+})

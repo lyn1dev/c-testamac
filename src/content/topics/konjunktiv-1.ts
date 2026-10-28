@@ -8,7 +8,7 @@ export const topic: Topic = {
   rule: [
     'Konjunktiv I is built from the **infinitive stem + Konjunktiv endings**: -e, -est, -e, -en, -et, -en. So: er komme, sie gehe, es gebe, man habe. The only irregular verb is **sein**: ich sei, du seiest, er sei, wir seien, ihr seiet, sie seien. You almost only need the **er/sie/es** form (and sometimes the plural).',
     'It shows that you report someone else’s words without saying whether they are true: Der Minister sagte, er **sei** zufrieden. The tense is only about the original statement: **present** = er komme / er sei müde; **past** = er sei gekommen / er habe geschlafen (Konjunktiv I of haben/sein + Partizip II); **future** = er werde kommen.',
-    '**Replacement rule:** if the Konjunktiv I form is identical to the indicative, it does not mark indirect speech, so you use **Konjunktiv II** instead. This happens in the ich-form and in the plural: sie haben → sie **hätten**, wir kommen → wir **kämen** (or würden kommen), ich habe → ich **hätte**. The er-form is almost always different from the indicative (er habe ≠ er hat), so it stays Konjunktiv I.',
+    '**Replacement rule:** if the Konjunktiv I form is identical to the indicative, it does not mark indirect speech, so you use **Konjunktiv II** instead. This happens mostly in the ich-form and in the wir/sie-forms: sie haben → sie **hätten**, wir kommen → wir **kämen** (or würden kommen), ich habe → ich **hätte**. The er-form is almost always different from the indicative (er habe ≠ er hat), so it stays Konjunktiv I.',
     'Indirect questions use **ob** or the question word, with the verb at the end: Sie fragte, ob er Zeit **habe**. Indirect speech can have **dass** (verb at the end) or no conjunction (normal verb-second order): Er sagte, dass er müde sei / Er sagte, er sei müde. Pronouns and time words shift: „Ich komme morgen“ → Sie sagte, sie komme am nächsten Tag.',
   ],
   tables: ['konjunktiv-1', 'konjunktiv-2', 'sein-haben-werden'],
@@ -23,7 +23,7 @@ export const topic: Topic = {
     'Wrong: Er sagte, er kommt morgen (sounds like a statement of fact in formal writing). Right: Er sagte, er **komme** morgen.',
     'Wrong: Sie sagten, sie haben keine Zeit. Right: Sie sagten, sie **hätten** keine Zeit (haben is identical to the indicative, so Konjunktiv II replaces it).',
     'Wrong: Er sagte, er hat gestern gearbeitet (in formal reported speech). Right: Er sagte, er **habe** gestern gearbeitet.',
-    'Wrong: Er sagte, dass er müde ist. Right: Er sagte, er sei müde / dass er müde **sei**.',
+    'Wrong: Er sagte, dass er müde ist (in formal reported speech). Right: Er sagte, er sei müde / dass er müde **sei**.',
   ],
   examples: [
     { de: 'Der Minister sagte, er sei mit dem Ergebnis zufrieden.', en: 'The minister said he was satisfied with the result.', note: 'sei: Konjunktiv I of sein.' },
@@ -33,7 +33,7 @@ export const topic: Topic = {
     { de: 'Sie fragte ihn, ob er Zeit habe.', en: 'She asked him whether he had time.', note: 'Indirect question with ob.' },
     { de: 'Die Zeitung berichtet, der Präsident sei zurückgetreten.', en: 'The newspaper reports that the president has resigned.', note: 'Without dass: verb-second order.' },
   ],
-  inCTests: 'In news-style C-test texts, a clause after “sagte, erklärte, berichtete, behauptete” often needs Konjunktiv I: look for a missing -e (komm_, ha_, s_). If the subject is plural or ich, expect Konjunktiv II (hätten, kämen, könnten) instead; only sein keeps Konjunktiv I (seien).',
+  inCTests: 'In news-style C-test texts, a clause after “sagte, erklärte, berichtete, behauptete” often needs Konjunktiv I: look for a missing -e (komm_, ha_, s_). If the subject is plural or ich, expect Konjunktiv II (hätten, kämen, könnten) instead; sein keeps Konjunktiv I (ich sei, sie seien).',
   writing: [
     'Write three sentences in which a friend tells you about their weekend; report them in indirect speech with Konjunktiv I (e.g. Er sagte, er sei … gefahren).',
     'Report in German what your teacher said at the beginning of the last lesson, using one Konjunktiv I form and one replacement by Konjunktiv II.',
@@ -79,10 +79,10 @@ export const topic: Topic = {
       id: 'konjunktiv-1:4',
       topic: 'konjunktiv-1',
       kind: 'gap',
-      text: 'Der Sprecher erklärte, die Firma w{erde} im nächsten Jahr neue Stellen schaffen.',
+      text: 'Der Sprecher erklärte, die Firma w{erde|ürde} im nächsten Jahr neue Stellen schaffen.',
       en: 'The spokesman explained that the company would create new jobs next year.',
       fb: {
-        rule: 'Future in indirect speech: Konjunktiv I of werden (er/sie/es werde) + Infinitive.',
+        rule: 'Future in indirect speech: Konjunktiv I of werden (er/sie/es werde) + Infinitive; Konjunktiv II würde is also possible.',
         cue: '„im nächsten Jahr“ + Infinitive „schaffen“',
         trick: 'werd- + e = werde.',
       },

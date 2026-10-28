@@ -147,7 +147,7 @@ export const topic: Topic = {
       kind: 'transform',
       instruction: 'Rewrite the Perfekt sentence in the Präteritum, as in a written story.',
       source: 'Wir sind nach dem Unterricht nach Hause gegangen.',
-      answers: ['Wir gingen nach dem Unterricht nach Hause.'],
+      answers: ['Wir gingen nach dem Unterricht nach Hause.', 'Nach dem Unterricht gingen wir nach Hause.'],
       fb: { rule: 'The Perfekt (sein + Partizip II) becomes one finite verb in the Präteritum.', cue: "'sind … gegangen' → gingen", trick: 'gehen – ging – gegangen.' },
     },
     {
@@ -156,7 +156,7 @@ export const topic: Topic = {
       kind: 'transform',
       instruction: 'Rewrite the Perfekt sentence in the Präteritum.',
       source: 'Er hat gestern lange geschlafen.',
-      answers: ['Er schlief gestern lange.'],
+      answers: ['Er schlief gestern lange.', 'Gestern schlief er lange.'],
       fb: { rule: 'schlafen is strong: schlief; no ending after er.', cue: "'hat … geschlafen' → schlief", trick: 'schlafen – schlief – geschlafen.' },
     },
   ],

@@ -31,7 +31,7 @@ export const topic: Topic = {
     { de: 'Das ist ein interessantes Buch.', en: 'That is an interesting book.', note: 'ein shows no signal in the neuter nominative, so -es.' },
     { de: 'Er trägt heute einen blauen Pullover.', en: 'He is wearing a blue sweater today.' },
     { de: 'Die neue Lehrerin kommt aus Spanien.', en: 'The new teacher comes from Spain.', note: 'nominative feminine after die: -e.' },
-    { de: 'Mit dem alten Fahrrad fahre ich zur Uni.', en: 'I ride my old bike to university.' },
+    { de: 'Mit dem alten Fahrrad fahre ich zur Uni.', en: 'I ride the old bike to university.' },
     { de: 'Im Sommer trinke ich gern kalten Tee.', en: 'In summer I like to drink cold tea.', note: 'no article, accusative masculine: -en.' },
   ],
   inCTests: 'Adjective endings are gapped constantly: "mit ein__ neu__ Auto" → einem neuen. Work from right to left: find the noun\'s gender and the case trigger, fill the article, then decide whether the adjective takes -e or -en (signal shown) or a signal ending (-er, -es).',
@@ -85,7 +85,7 @@ export const topic: Topic = {
       topic: 'adjective-endings',
       kind: 'gap',
       text: 'Mit d{em} alt{en} Fahrrad fahre ich zur Uni.',
-      en: 'I ride my old bike to university.',
+      en: 'I ride the old bike to university.',
       fb: { rule: 'mit takes the dative; das Fahrrad is neuter: dem, and after dem the adjective takes -en.', cue: "'mit' + 'Fahrrad' (n.) → dem alten", trick: 'Dative: -en after the article.' },
     },
     {

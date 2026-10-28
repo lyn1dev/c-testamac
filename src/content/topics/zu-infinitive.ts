@@ -138,7 +138,12 @@ export const topic: Topic = {
       kind: 'transform',
       instruction: 'Rewrite with um … zu.',
       source: 'Ich lerne Deutsch, weil ich in Wien studieren möchte.',
-      answers: ['Ich lerne Deutsch, um in Wien zu studieren.', 'Ich lerne Deutsch, um in Wien studieren zu können.'],
+      answers: [
+        'Ich lerne Deutsch, um in Wien zu studieren.',
+        'Ich lerne Deutsch, um in Wien studieren zu können.',
+        'Um in Wien zu studieren, lerne ich Deutsch.',
+        'Um in Wien studieren zu können, lerne ich Deutsch.',
+      ],
       fb: { rule: 'A purpose clause with the same subject becomes um … zu + infinitive.', cue: "'weil ich … studieren möchte' → um … zu studieren", trick: 'Same subject → um … zu.' },
     },
     {
@@ -147,7 +152,7 @@ export const topic: Topic = {
       kind: 'transform',
       instruction: 'Rewrite with ohne … zu.',
       source: 'Sie ist gegangen und hat sich nicht verabschiedet.',
-      answers: ['Sie ist gegangen, ohne sich zu verabschieden.'],
+      answers: ['Sie ist gegangen, ohne sich zu verabschieden.', 'Ohne sich zu verabschieden, ist sie gegangen.'],
       fb: { rule: 'ohne … zu replaces "and did not …".', cue: "'und hat sich nicht verabschiedet' → ohne sich zu verabschieden", trick: 'ohne = without.' },
     },
     {
