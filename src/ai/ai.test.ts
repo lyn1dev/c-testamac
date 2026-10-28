@@ -39,9 +39,25 @@ describe('generateText', () => {
   const good = BUILTIN_TEXTS[0]
 
   it('accepts a text that yields enough gaps', async () => {
-    replies(JSON.stringify({ title: good.title, text: good.text, properNames: [] }))
+    replies(
+      JSON.stringify({ title: good.title, text: good.text, properNames: [] }),
+      JSON.stringify({ text: good.text, corrections: [] }),
+    )
     const t = await generateText(cfg, { level: 'B1', gaps: 20 })
     expect(makeCTest(t.text, { gaps: 20 }).gaps).toHaveLength(20)
+  })
+
+  it('proofreads the text before gapping and re-checks the corrected version', async () => {
+    const draft = good.text.replace('eine günstige Wohnung', 'einen günstige Wohnung')
+    const fn = replies(
+      JSON.stringify({ title: good.title, text: draft, properNames: [] }),
+      JSON.stringify({ text: 'Zu kurz. Viel zu kurz.', corrections: [] }),
+      JSON.stringify({ text: good.text, corrections: [{ wrong: 'einen günstige', right: 'eine günstige' }] }),
+    )
+    const t = await generateText(cfg, { level: 'B1', gaps: 20 })
+    expect(fn).toHaveBeenCalledTimes(3)
+    expect(String(fn.mock.calls[1][1].body)).toContain('einen günstige Wohnung')
+    expect(t.text).toBe(good.text)
   })
 
   it('retries when the text is too short or names are invented, then gives up', async () => {

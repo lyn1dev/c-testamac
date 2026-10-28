@@ -41,19 +41,41 @@ export async function generateText(
     opts.avoidTitles?.length ? `Choose a topic different from: ${opts.avoidTitles.slice(-12).join('; ')}.` : '',
     'Return {"title": string, "text": string, "properNames": string[]} where properNames lists every proper name (people, places, organisations) that occurs in the text, spelled exactly as in the text.',
   ].join('\n')
-  return chatJson(cfg, [{ role: 'system', content: SYSTEM }, { role: 'user', content: prompt }], textSchema, {
+  const draft = await chatJson(cfg, [{ role: 'system', content: SYSTEM }, { role: 'user', content: prompt }], textSchema, {
     temperature: 0.8,
-    check: (v) => {
-      const missing = v.properNames.filter((n) => !v.text.includes(n))
-      if (missing.length) return `properNames not found in text: ${missing.join(', ')}`
-      if (/\d/.test(v.text)) return 'text contains digits'
-      const ct = makeCTest(v.text, { gaps: opts.gaps, properNames: v.properNames })
-      if (ct.sentences.length < 5) return 'text needs at least 5 sentences'
-      if (ct.gaps.length < opts.gaps)
-        return `text too short: only ${ct.gaps.length} of ${opts.gaps} gaps fit between the first and last sentence; add longer middle sentences`
-      return null
-    },
+    check: (v) => textProblem(v, opts.gaps),
   })
+  return proofread(cfg, draft, opts.gaps)
+}
+
+function textProblem(v: GeneratedText, gaps: number): string | null {
+  const missing = v.properNames.filter((n) => !v.text.includes(n))
+  if (missing.length) return `properNames not found in text: ${missing.join(', ')}`
+  if (/\d/.test(v.text)) return 'text contains digits'
+  const ct = makeCTest(v.text, { gaps, properNames: v.properNames })
+  if (ct.sentences.length < 5) return 'text needs at least 5 sentences'
+  if (ct.gaps.length < gaps)
+    return `text too short: only ${ct.gaps.length} of ${gaps} gaps fit between the first and last sentence; add longer middle sentences`
+  return null
+}
+
+const proofSchema = z.object({
+  text: z.string().min(200).max(2000),
+  corrections: z.array(z.object({ wrong: z.string(), right: z.string() })).default([]),
+})
+
+async function proofread(cfg: AiConfig, draft: GeneratedText, gaps: number): Promise<GeneratedText> {
+  const prompt = [
+    'Proofread this German text, which will become a C-test whose deleted letters are graded against the text. Every word must be flawless standard German (Duden): grammar, endings, spelling, capitalisation, comma placement and idiomatic usage.',
+    'Fix only real errors and keep everything else identical: the same sentences, the same proper names, no digits.',
+    `Text: """${draft.text}"""`,
+    'Return {"text": the full corrected text, "corrections": [{"wrong": fragment, "right": fragment}] (empty if nothing was wrong)}',
+  ].join('\n')
+  const out = await chatJson(cfg, [{ role: 'system', content: SYSTEM }, { role: 'user', content: prompt }], proofSchema, {
+    temperature: 0,
+    check: (v) => textProblem({ ...draft, text: v.text }, gaps),
+  })
+  return { ...draft, text: out.text }
 }
 
 export type ReviewGap = { n: number; gap: Gap; given: string; sentence: string; correct: boolean }
