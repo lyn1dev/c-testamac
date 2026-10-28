@@ -75,7 +75,7 @@ function gappable(word: string, names: Set<string>): boolean {
 }
 
 export function makeCTest(text: string, opts: CTestOptions = {}): CTest {
-  const t = text.normalize('NFC')
+  const t = text.normalize('NFC').replace(/[\u00AD\u200B-\u200D\u2060\uFEFF]/g, '')
   const max = opts.gaps ?? 20
   const names = new Set(
     [...COMMON_PROPER_NAMES, ...(opts.properNames ?? [])].flatMap((n) => n.normalize('NFC').split(/\s+/)),

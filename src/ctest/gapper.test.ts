@@ -78,6 +78,11 @@ describe('makeCTest', () => {
     expect(renderCTest(ct)).toContain('eine E-Mail a_ meine')
   })
 
+  it('ignores soft hyphens and zero-width characters from pasted text', () => {
+    const ct = makeCTest('Erster Satz. Die Ent\u00ADwicklung geht wei\u200Bter. Ende.', { gaps: 10 })
+    expect(ct.gaps.map((g) => g.word)).toEqual(['Entwicklung', 'weiter'])
+  })
+
   it('gaps ordinary nouns that are also surnames', () => {
     const ct = makeCTest('Erster Satz. Der alte Fischer sitzt am Bach. Ende.', { gaps: 10 })
     expect(ct.gaps.map((g) => g.word)).toEqual(['alte', 'sitzt', 'Bach'])
