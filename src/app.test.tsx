@@ -4,7 +4,8 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-li
 import { MemoryRouter } from 'react-router-dom'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { App } from './App'
-import { TABLE_BY_ID } from './content/index'
+import { gapAnswers } from './content/exercise'
+import { TABLE_BY_ID, TOPICS } from './content/index'
 import { makeCTest } from './ctest/gapper'
 import { BUILTIN_TEXTS } from './ctest/texts'
 import { db } from './db'
@@ -240,5 +241,29 @@ describe('umlauts', () => {
     gap.focus()
     fireEvent.keyDown(gap, { key: 'u', code: 'KeyU', altKey: true })
     expect(gap.value).toBe('ü')
+  })
+})
+
+describe('placement', () => {
+  it('counts skipped questions as not known, so skipping cannot test a level out', async () => {
+    app()
+    fireEvent.click(await screen.findByRole('button', { name: 'Start' }))
+    const box = (await screen.findByText(/1 \/ \d+/)).closest('[tabindex="-1"]')!
+    const shown = TOPICS.filter((t) => t.level === 'A2')
+      .flatMap((t) => t.exercises)
+      .find((e) => (e.kind === 'choice' ? box.textContent!.includes(e.prompt) : e.kind === 'gap' && !!e.en && box.textContent!.includes(e.en)))!
+    if (shown.kind === 'choice') fireEvent.keyDown(box, { key: String(shown.answer + 1) })
+    else {
+      within(box as HTMLElement)
+        .getAllByRole('textbox')
+        .forEach((el, i) => fireEvent.change(el, { target: { value: gapAnswers(shown.kind === 'gap' ? shown.text : '')[i][0] } }))
+      fireEvent.keyDown(box, { key: 'Enter' })
+    }
+    await screen.findByText(/2 \/ \d+/)
+    for (let i = 0; i < 15; i++) fireEvent.keyDown(box, { key: 'Escape' })
+    fireEvent.click(await screen.findByRole('button', { name: /Finish/ }))
+    expect(await screen.findByText(/A1–A2 grammar: 1\/16/)).toBeTruthy()
+    expect(screen.queryByText(/tested out/)).toBeNull()
+    expect((await db.topics.toArray()).some((t) => t.testedOutAt)).toBe(false)
   })
 })
