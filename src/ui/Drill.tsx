@@ -242,6 +242,7 @@ export function Drill({ items, source, mode = 'learn', timeLimit, onDone, doneLa
   const submit = useCallback(
     (a: Answer = answer) => {
       if (!item || result) return
+      if (item.kind === 'exercise' && item.exercise.kind === 'choice' && a === -1) return
       const r = checkItem(item, a)
       const assisted = lookupCount() !== startLookups.current
       void record(item, r.correct, { assisted, source })
