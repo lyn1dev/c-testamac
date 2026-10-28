@@ -6,6 +6,7 @@ import { db, record } from './db'
 import { exerciseItem } from './practice/items'
 import { dueItems } from './practice/pools'
 import { DAY, MINUTE, newCard } from './practice/srs'
+import { currentLevel } from './ui/ctest/source'
 
 const items = TOPICS.flatMap((t) => t.exercises).map(exerciseItem)
 
@@ -89,5 +90,17 @@ describe('review queue', () => {
     await db.cards.put({ ...newCard(stale, Date.now()), due: Date.now() - MINUTE })
     const [served] = await dueItems(1)
     expect(served.kind === 'exercise' && served.exercise.fb.rule).toBe(it.exercise.fb.rule)
+  })
+})
+
+describe('adaptive level', () => {
+  it('ignores looked-up texts before picking the recent ones', async () => {
+    const result = (at: number, level: 'B1' | 'B2', correct: number, assisted: boolean) =>
+      ({ at, textId: `t${at}`, title: 't', level, mode: 'practice' as const, correct, total: 20, seconds: 60, assisted, text: '', properNames: [], gaps: [] })
+    await db.results.bulkAdd([
+      ...[1, 2, 3].map((at) => result(at, 'B2', 14, false)),
+      ...Array.from({ length: 10 }, (_, i) => result(10 + i, 'B1', 0, true)),
+    ])
+    expect(await currentLevel()).toBe('B2')
   })
 })
