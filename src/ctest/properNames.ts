@@ -1,0 +1,17 @@
+export const COMMON_PROPER_NAMES = [
+  'Deutschland', 'Österreich', 'Schweiz', 'Europa', 'Amerika', 'Afrika', 'Asien', 'Australien', 'China', 'Japan',
+  'Indien', 'Russland', 'Frankreich', 'Italien', 'Spanien', 'Portugal', 'Polen', 'Griechenland', 'Türkei', 'England',
+  'Großbritannien', 'Niederlande', 'Holland', 'Belgien', 'Dänemark', 'Schweden', 'Norwegen', 'Finnland', 'Ungarn',
+  'Tschechien', 'Kanada', 'Mexiko', 'Brasilien', 'Ägypten', 'Syrien', 'Ukraine', 'USA', 'EU', 'UNO',
+  'Berlin', 'Hamburg', 'München', 'Köln', 'Frankfurt', 'Stuttgart', 'Düsseldorf', 'Leipzig', 'Dresden', 'Hannover',
+  'Bremen', 'Nürnberg', 'Bonn', 'Heidelberg', 'Freiburg', 'Wien', 'Zürich', 'Bern', 'Genf', 'Basel', 'Salzburg',
+  'Graz', 'Paris', 'London', 'Rom', 'Madrid', 'Prag', 'Warschau', 'Brüssel', 'Amsterdam', 'Istanbul', 'Moskau',
+  'Peking', 'Tokio', 'Rhein', 'Donau', 'Elbe', 'Alpen', 'Bodensee', 'Nordsee', 'Ostsee', 'Bayern',
+  'Sachsen', 'Hessen', 'Thüringen', 'Brandenburg', 'Tirol',
+  'Anna', 'Maria', 'Lena', 'Laura', 'Julia', 'Sarah', 'Lisa', 'Sophie', 'Emma', 'Mia', 'Hannah', 'Lea', 'Eva',
+  'Clara', 'Paula', 'Katrin', 'Sabine', 'Petra', 'Monika', 'Ayşe', 'Fatima', 'Elif',
+  'Peter', 'Paul', 'Thomas', 'Michael', 'Andreas', 'Stefan', 'Markus', 'Jan', 'Lukas', 'Jonas', 'Leon', 'Felix',
+  'Max', 'Tim', 'Tom', 'Ben', 'David', 'Daniel', 'Martin', 'Klaus', 'Hans', 'Karl', 'Mehmet', 'Ali', 'Ahmed',
+  'Müller', 'Schmidt', 'Schneider', 'Fischer', 'Weber', 'Meyer', 'Wagner', 'Becker', 'Schulz', 'Hoffmann',
+  'Goethe', 'Schiller', 'Kant', 'Einstein', 'Merkel', 'Mozart', 'Beethoven', 'Bach', 'Luther',
+]
