@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { explainGaps } from '../../ai/tasks'
+import { askFollowUp, explainGaps } from '../../ai/tasks'
 import { TOPIC_BY_ID } from '../../content/index'
 import { STRATEGIES } from '../../content/strategies'
 import { gradeGap, makeCTest, segments } from '../../ctest/gapper'
@@ -72,6 +72,59 @@ async function applyExplanations(r: CTestResult, letterCount: boolean, apiKey: s
   return updated
 }
 
+function FollowUp({ g, onAnswer }: { g: GapRecord; onAnswer: (q: string, a: string) => Promise<void> }) {
+  const settings = useSettings()
+  const [q, setQ] = useState('')
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState('')
+  if (!aiReady(settings)) return null
+
+  const ask = async () => {
+    if (!q.trim() || busy) return
+    setBusy(true)
+    setError('')
+    try {
+      const a = await askFollowUp(settings, {
+        sentence: g.sentence,
+        word: g.word,
+        given: `${g.prefix}${g.given}`,
+        explanation: [g.explanation, g.rule].filter(Boolean).join(' '),
+        question: q.trim(),
+      })
+      await onAnswer(q.trim(), a)
+      setQ('')
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e))
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <div className="mt-2 space-y-1">
+      {g.followUps?.map((f, k) => (
+        <div key={k} className="rounded bg-stone-50 p-2">
+          <p className="font-medium">{f.q}</p>
+          <p>{f.a}</p>
+        </div>
+      ))}
+      <div className="flex gap-2">
+        <input
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && void ask()}
+          placeholder="Ask a follow-up…"
+          className="flex-1 rounded border border-stone-300 px-2 py-1"
+        />
+        <Btn onClick={() => void ask()} disabled={busy || !q.trim()}>
+          {busy ? 'Asking…' : 'Ask'}
+        </Btn>
+      </div>
+      {error && <p className="text-rose-700">{error}</p>}
+    </div>
+  )
+}
+
 export function CTestReview({ result, onAgain, autoExplain = true }: { result: CTestResult; onAgain?: () => void; autoExplain?: boolean }) {
   const settings = useSettings()
   const [r, setR] = useState(result)
@@ -82,6 +135,12 @@ export function CTestReview({ result, onAgain, autoExplain = true }: { result: C
   const wrongCount = r.gaps.filter((g) => !g.correct && !g.accepted && !g.reported).length
 
   const report = async (i: number) => setR(await reportGap(r, i))
+  const addFollowUp = async (i: number, q: string, a: string) => {
+    const gaps = r.gaps.map((g, j) => (j === i ? { ...g, followUps: [...(g.followUps ?? []), { q, a }] } : g))
+    const updated = { ...r, gaps }
+    await db.results.put(updated)
+    setR(updated)
+  }
 
   const explain = async () => {
     if (!aiReady(settings)) return
@@ -207,6 +266,7 @@ export function CTestReview({ result, onAgain, autoExplain = true }: { result: C
                       </button>
                     )}
                   </div>
+                  {g.explanation && <FollowUp g={g} onAnswer={(q, a) => addFollowUp(i, q, a)} />}
                 </li>
               )
             })}

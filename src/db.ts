@@ -25,6 +25,7 @@ export type GapRecord = {
   sentence: string
   accepted?: boolean
   reported?: boolean
+  followUps?: { q: string; a: string }[]
   explanation?: string
   rule?: string
   trick?: string

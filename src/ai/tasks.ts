@@ -146,6 +146,25 @@ export async function explainGaps(
     })
 }
 
+const followUpSchema = z.object({ answer: z.string().min(1) })
+
+export async function askFollowUp(
+  cfg: AiConfig,
+  opts: { sentence: string; word: string; given: string; explanation: string; question: string },
+): Promise<string> {
+  const prompt = [
+    'A learner made this mistake in a German C-test.',
+    `Sentence: "${opts.sentence}" | correct word: "${opts.word}" | learner wrote: "${opts.given}"`,
+    `Explanation they were given: ${opts.explanation}`,
+    `Their follow-up question: ${opts.question}`,
+    'Answer it in at most 4 short English sentences, with a German example if it helps. Return {"answer": string}',
+  ].join('\n')
+  const out = await chatJson(cfg, [{ role: 'system', content: SYSTEM }, { role: 'user', content: prompt }], followUpSchema, {
+    temperature: 0.3,
+  })
+  return out.answer
+}
+
 const feedbackSchema = z.object({ rule: z.string().min(3), cue: z.string().min(1), trick: z.string().optional() })
 const aiExerciseSchema = z.discriminatedUnion('kind', [
   z.object({ kind: z.literal('gap'), text: z.string().min(5), en: z.string().optional(), fb: feedbackSchema }),

@@ -16,7 +16,9 @@ function openRouterMock() {
     const body = JSON.parse(String(init?.body ?? '{}'))
     const prompt: string = body.messages.at(-1).content
     let content: unknown
-    if (prompt.includes('Full text:')) {
+    if (prompt.includes('follow-up question')) {
+      content = { answer: 'Because mit always takes the dative.' }
+    } else if (prompt.includes('Full text:')) {
       const ns = [...prompt.matchAll(/^(\d+)\. sentence:/gm)].map((m) => Number(m[1]))
       content = {
         items: ns.map((n) => ({
@@ -86,6 +88,12 @@ describe('first launch to explained mistakes', () => {
 
     expect(await screen.findByText('Explanation for gap 1', {}, { timeout: 3000 })).toBeTruthy()
     expect(screen.getAllByRole('button', { name: /Lesson: Prepositions/ }).length).toBeGreaterThan(0)
+    const ask = (await screen.findAllByPlaceholderText(/Ask a follow-up/))[0]
+    fireEvent.change(ask, { target: { value: 'Why dative?' } })
+    fireEvent.keyDown(ask, { key: 'Enter' })
+    expect(await screen.findByText('Because mit always takes the dative.')).toBeTruthy()
+    const asked = (await db.results.toArray()).flatMap((r) => r.gaps.flatMap((g) => g.followUps ?? []))
+    expect(asked).toEqual([{ q: 'Why dative?', a: 'Because mit always takes the dative.' }])
     const card = await db.cards.toArray()
     expect(card.some((c) => c.topic === 'prepositions')).toBe(true)
 
