@@ -4,14 +4,36 @@ import { explainGaps } from '../../ai/tasks'
 import { TOPIC_BY_ID } from '../../content/index'
 import { STRATEGIES } from '../../content/strategies'
 import { gradeGap, makeCTest, segments } from '../../ctest/gapper'
-import { db, type CTestResult } from '../../db'
+import { db, type CTestResult, type GapRecord } from '../../db'
 import { gapItem } from '../../practice/items'
 import { aiReady, useSettings } from '../../settings'
 import { Btn, Card } from '../bits'
 import { openReference } from '../lookup'
 
 export function rebuild(r: CTestResult) {
-  return makeCTest(r.text, { gaps: r.total, properNames: r.properNames })
+  return makeCTest(r.text, { gaps: r.gaps.length, properNames: r.properNames })
+}
+
+function tally(gaps: GapRecord[]) {
+  const scored = gaps.filter((g) => !g.reported)
+  return { correct: scored.filter((g) => g.correct || g.accepted).length, total: scored.length }
+}
+
+function gapKey(r: CTestResult, i: number) {
+  const ct = rebuild(r)
+  const gap = ct.gaps[i]
+  const [a] = ct.sentences[gap.sentence]
+  return gapItem(r.gaps[i].sentence, { ...gap, start: gap.start - a, end: gap.end - a }).key
+}
+
+async function reportGap(r: CTestResult, i: number) {
+  const gaps = r.gaps.map((g, j) => (j === i ? { ...g, reported: true } : g))
+  const key = gapKey(r, i)
+  await db.cards.delete(key)
+  await db.attempts.where('key').equals(key).delete()
+  const updated = { ...r, gaps, ...tally(gaps) }
+  await db.results.put(updated)
+  return updated
 }
 
 async function applyExplanations(r: CTestResult, letterCount: boolean, apiKey: string, model: string) {
@@ -24,6 +46,7 @@ async function applyExplanations(r: CTestResult, letterCount: boolean, apiKey: s
   for (const it of items) {
     const idx = it.n - 1
     const g = gaps[idx]
+    if (g.reported) continue
     const topic = it.topic === 'vocabulary' ? undefined : it.topic
     Object.assign(g, g.correct ? { topic, strategy: it.strategy } : {
       accepted: it.accepted,
@@ -44,8 +67,7 @@ async function applyExplanations(r: CTestResult, letterCount: boolean, apiKey: s
     if (topic && counts)
       await db.attempts.add({ at: now, key: item.key, kind: 'gap', topic, correct: g.correct || it.accepted, assisted: false, source: 'practice' })
   }
-  const correct = gaps.filter((g) => g.correct || g.accepted).length
-  const updated = { ...r, gaps, correct, explained: true }
+  const updated = { ...r, gaps, ...tally(gaps), explained: true }
   await db.results.put(updated)
   return updated
 }
@@ -57,7 +79,9 @@ export function CTestReview({ result, onAgain, autoExplain = true }: { result: C
   const [error, setError] = useState('')
   const [tried, setTried] = useState(false)
   const ct = rebuild(r)
-  const wrongCount = r.gaps.filter((g) => !g.correct && !g.accepted).length
+  const wrongCount = r.gaps.filter((g) => !g.correct && !g.accepted && !g.reported).length
+
+  const report = async (i: number) => setR(await reportGap(r, i))
 
   const explain = async () => {
     if (!aiReady(settings)) return
@@ -84,7 +108,7 @@ export function CTestReview({ result, onAgain, autoExplain = true }: { result: C
       <Card>
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <p className="text-2xl font-semibold">
-            {r.correct} / {r.total} <span className="text-base text-stone-500">({Math.round((100 * r.correct) / r.total)}%)</span>
+            {r.correct} / {r.total} <span className="text-base text-stone-500">({Math.round((100 * r.correct) / Math.max(1, r.total))}%)</span>
           </p>
           <p className="text-sm text-stone-500">
             {r.level} · {Math.floor(r.seconds / 60)}m {r.seconds % 60}s{r.repeat ? ' · repeat (not counted in estimates)' : ''}
@@ -99,7 +123,7 @@ export function CTestReview({ result, onAgain, autoExplain = true }: { result: C
             return (
               <span
                 key={i}
-                className={`rounded px-0.5 font-mono ${ok ? 'bg-emerald-100 text-emerald-900' : 'bg-rose-100 text-rose-900'}`}
+                className={`rounded px-0.5 font-mono ${g.reported ? 'bg-stone-100 text-stone-500' : ok ? 'bg-emerald-100 text-emerald-900' : 'bg-rose-100 text-rose-900'}`}
                 title={ok ? '' : `you wrote: ${g.prefix}${g.given}`}
               >
                 {g.prefix}
@@ -144,6 +168,7 @@ export function CTestReview({ result, onAgain, autoExplain = true }: { result: C
                     </span>{' '}
                     → <span className="font-mono font-semibold">{g.word}</span>
                     {g.accepted && <span className="ml-2 rounded bg-emerald-100 px-1 text-emerald-800">also correct — counted</span>}
+                    {g.reported && <span className="ml-2 rounded bg-stone-100 px-1 text-stone-600">reported — not scored</span>}
                   </p>
                   {hint && <p className="text-rose-700">{hint}</p>}
                   {g.explanation && <p className="mt-1">{g.explanation}</p>}
@@ -175,6 +200,11 @@ export function CTestReview({ result, onAgain, autoExplain = true }: { result: C
                       <Link className="text-stone-600 hover:underline" to={`/strategies#${strategy.id}`}>
                         Strategy: {strategy.title}
                       </Link>
+                    )}
+                    {!g.reported && (
+                      <button className="text-stone-500 hover:underline" disabled={busy} title="The text is wrong here: stop scoring and reviewing this gap" onClick={() => void report(i)}>
+                        Report this gap
+                      </button>
                     )}
                   </div>
                 </li>

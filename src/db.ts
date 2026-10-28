@@ -24,6 +24,7 @@ export type GapRecord = {
   correct: boolean
   sentence: string
   accepted?: boolean
+  reported?: boolean
   explanation?: string
   rule?: string
   trick?: string
