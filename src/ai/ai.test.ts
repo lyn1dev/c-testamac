@@ -35,6 +35,15 @@ describe('openrouter', () => {
   })
 })
 
+describe('chat timeout', () => {
+  it('gives up on a model that does not answer', async () => {
+    const fn = vi.fn().mockRejectedValue(new DOMException('signal timed out', 'TimeoutError'))
+    vi.stubGlobal('fetch', fn)
+    await expect(generateText(cfg, { level: 'B1', gaps: 20 })).rejects.toThrow(/did not answer within 90 s/)
+    expect(fn.mock.calls[0][1].signal).toBeInstanceOf(AbortSignal)
+  })
+})
+
 describe('generateText', () => {
   const good = BUILTIN_TEXTS[0]
 
