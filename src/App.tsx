@@ -18,6 +18,7 @@ import { Kbd } from './ui/bits'
 import { useDueCount } from './ui/hooks'
 import { toggleReference } from './ui/lookup'
 import { ReferencePanel } from './ui/ReferencePanel'
+import { Umlauts } from './ui/Umlauts'
 
 const NAV: [string, string][] = [
   ['/', 'Today'],
@@ -97,6 +98,7 @@ export function App() {
         </Routes>
       </main>
       <ReferencePanel />
+      <Umlauts />
     </div>
   )
 }

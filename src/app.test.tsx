@@ -208,3 +208,37 @@ describe('writing', () => {
     expect(await screen.findByText(/Writing:/)).toBeTruthy()
   })
 })
+
+describe('umlauts', () => {
+  it('types ä ö ü ß with Alt shortcuts and buttons into any answer field without losing focus', async () => {
+    await saveSetting('placementDone', true)
+    app('/tables/def-article')
+    fireEvent.click(await screen.findByRole('button', { name: 'Fill from memory' }))
+    const input = screen.getAllByRole('textbox')[0] as HTMLInputElement
+    input.focus()
+    fireEvent.change(input, { target: { value: 'x' } })
+    input.setSelectionRange(0, 0)
+    fireEvent.keyDown(input, { key: 'a', code: 'KeyA', altKey: true })
+    fireEvent.keyDown(input, { key: 'O', code: 'KeyO', altKey: true, shiftKey: true })
+    fireEvent.keyDown(input, { key: 's', code: 'KeyS', altKey: true })
+    expect(input.value).toBe('äÖßx')
+    fireEvent.keyDown(input, { key: 'u', code: 'KeyU', altKey: true, ctrlKey: true })
+    expect(input.value).toBe('äÖßx')
+    const ue = await screen.findByRole('button', { name: 'ü' })
+    expect(fireEvent.mouseDown(ue)).toBe(false)
+    fireEvent.click(ue)
+    expect(input.value).toBe('äÖßüx')
+    expect(document.activeElement).toBe(input)
+  })
+
+  it('works in the C-test player too', async () => {
+    await saveSetting('placementDone', true)
+    app('/ctest')
+    fireEvent.click((await screen.findAllByRole('button', { name: 'Start' }))[0])
+    await screen.findByRole('button', { name: /Finish/ })
+    const gap = screen.getAllByRole('textbox')[0] as HTMLInputElement
+    gap.focus()
+    fireEvent.keyDown(gap, { key: 'u', code: 'KeyU', altKey: true })
+    expect(gap.value).toBe('ü')
+  })
+})
