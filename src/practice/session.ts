@@ -30,7 +30,7 @@ export function planSession(input: SessionInput): Step[] {
   const steps: Step[] = []
   let left = input.minutes
   if (input.dueCount > 0) {
-    const minutes = Math.min(Math.ceil(input.dueCount * PER_REVIEW), Math.max(3, Math.round(left * 0.3)))
+    const minutes = Math.min(Math.ceil(input.dueCount * PER_REVIEW), Math.max(3, Math.round(left * 0.3)), left)
     steps.push({ kind: 'review', minutes, count: Math.floor(minutes / PER_REVIEW) })
     left -= minutes
   }

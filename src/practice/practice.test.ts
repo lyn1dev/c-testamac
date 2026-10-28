@@ -127,6 +127,18 @@ describe('session planner', () => {
     expect(noKey.reduce((s, x) => s + x.minutes, 0)).toBeLessThanOrEqual(20)
   })
 
+  it('never plans more time than given or empty steps', () => {
+    for (const minutes of [1, 2, 3, 5, 10, 15, 20, 30, 45, 60, 90, 120])
+      for (const dueCount of [0, 1, 5, 30, 200, 1000]) {
+        const steps = planSession({ minutes, dueCount, nextTopic: 'perfekt', weakestTopic: 'cases', level: 'B1', tableId: 'def-article', writeTopic: 'cases' })
+        expect(steps.reduce((s, x) => s + x.minutes, 0), `${minutes}/${dueCount}`).toBeLessThanOrEqual(minutes)
+        for (const s of steps) {
+          expect(s.minutes, `${minutes}/${dueCount}`).toBeGreaterThan(0)
+          if ('count' in s) expect(s.count, `${minutes}/${dueCount}`).toBeGreaterThan(0)
+        }
+      }
+  })
+
   it('keeps short sessions to the essentials', () => {
     const steps = planSession({ minutes: 10, dueCount: 0, nextTopic: 'perfekt', level: 'B2' })
     expect(steps.map((s) => s.kind)).toEqual(['ctest', 'mixed'])
