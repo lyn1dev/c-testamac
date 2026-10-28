@@ -235,6 +235,10 @@ describe('verb-preposition and gender tables', () => {
     expect(cell('verb-prepositions', 'zweifeln', 'Kasus')).toEqual(['Dativ'])
   })
 
+  it('accepts the short label in the connector word-order table', () => {
+    expect(cell('connectors-word-order', 'deshalb', 'Wortstellung')).toEqual(['Position 1 (Inversion)', 'Position 1'])
+  })
+
   it('does not teach -er as a masculine suffix in general', () => {
     expect(table('noun-suffix-gender').rows).not.toContain('-er')
     expect(table('noun-suffix-gender').tricks.join(' ')).toContain('das Fenster')

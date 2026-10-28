@@ -613,7 +613,7 @@ export const TABLES: GrammarTable[] = [
     ],
     cells: [
       ['Position 0'], ['Position 0'], ['Position 0'], ['Position 0'], ['Position 0'],
-      ['Position 1 (Inversion)'], ['Position 1 (Inversion)'], ['Position 1 (Inversion)'], ['Position 1 (Inversion)'], ['Position 1 (Inversion)'], ['Position 1 (Inversion)'], ['Position 1 (Inversion)'], ['Position 1 (Inversion)'], ['Position 1 (Inversion)'],
+      ['Position 1 (Inversion)/Position 1'], ['Position 1 (Inversion)/Position 1'], ['Position 1 (Inversion)/Position 1'], ['Position 1 (Inversion)/Position 1'], ['Position 1 (Inversion)/Position 1'], ['Position 1 (Inversion)/Position 1'], ['Position 1 (Inversion)/Position 1'], ['Position 1 (Inversion)/Position 1'], ['Position 1 (Inversion)/Position 1'],
       ['Verb am Ende'], ['Verb am Ende'], ['Verb am Ende'], ['Verb am Ende'], ['Verb am Ende'], ['Verb am Ende'], ['Verb am Ende'], ['Verb am Ende'], ['Verb am Ende'], ['Verb am Ende'], ['Verb am Ende'], ['Verb am Ende'], ['Verb am Ende'], ['Verb am Ende'],
     ],
     pattern:
