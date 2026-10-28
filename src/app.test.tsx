@@ -300,6 +300,20 @@ describe('placement', () => {
 })
 
 describe('timers', () => {
+  it('does not count a timed C-test in estimates when the learner left the tab', async () => {
+    await saveSetting('placementDone', true)
+    app('/ctest')
+    fireEvent.click(await screen.findByRole('button', { name: 'Timed' }))
+    fireEvent.click((await screen.findAllByRole('button', { name: 'Start' }))[0])
+    await screen.findByText('5:00')
+    Object.defineProperty(document, 'hidden', { configurable: true, get: () => true })
+    fireEvent(document, new Event('visibilitychange'))
+    Object.defineProperty(document, 'hidden', { configurable: true, get: () => false })
+    fireEvent.click(screen.getByRole('button', { name: /Finish/ }))
+    expect(await screen.findByText(/left the tab/)).toBeTruthy()
+    expect((await db.results.toArray())[0].assisted).toBe(true)
+  })
+
   it('measure real time, so a C-test still ends on time after the tab was in the background', async () => {
     await saveSetting('placementDone', true)
     vi.useFakeTimers({ toFake: ['Date', 'setInterval', 'clearInterval'] })

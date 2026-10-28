@@ -28,13 +28,14 @@ export function CTestPlayer({ t, mode, gaps, letterCount, timeLimit, onFinished 
   const started = useRef(Date.now())
   const lookups = useRef(lookupCount())
   const done = useRef(false)
+  const leftTab = useRef(false)
   const inputs = useRef<(HTMLInputElement | null)[]>([])
   useActivity(`ctest:${t.id}`, mode === 'exam')
 
   const submit = async () => {
     if (done.current) return
     done.current = true
-    const assisted = lookupCount() !== lookups.current
+    const assisted = lookupCount() !== lookups.current || leftTab.current
     const repeat = (await db.results.filter((r) => r.textId === t.id).count()) > 0
     const now = Date.now()
     const records = ct.gaps.map((g, i) => {
@@ -52,6 +53,7 @@ export function CTestPlayer({ t, mode, gaps, letterCount, timeLimit, onFinished 
       seconds: Math.round((now - started.current) / 1000),
       assisted,
       repeat,
+      leftTab: leftTab.current,
       text: t.text,
       properNames: t.properNames,
       gaps: records,
@@ -68,6 +70,14 @@ export function CTestPlayer({ t, mode, gaps, letterCount, timeLimit, onFinished 
   useEffect(() => {
     inputs.current[0]?.focus()
   }, [])
+  useEffect(() => {
+    if (!timeLimit) return
+    const onHide = () => {
+      if (document.hidden) leftTab.current = true
+    }
+    document.addEventListener('visibilitychange', onHide)
+    return () => document.removeEventListener('visibilitychange', onHide)
+  }, [timeLimit])
   useEffect(() => {
     if (!timeLimit) return
     const id = setInterval(() => setLeft(timeLimit - Math.floor((Date.now() - started.current) / 1000)), 1000)
