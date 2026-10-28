@@ -216,6 +216,7 @@ export function Drill({ items, source, mode = 'learn', timeLimit, onDone, doneLa
   const [finished, setFinished] = useState(items.length === 0)
   const [left, setLeft] = useState(timeLimit ?? 0)
   const startLookups = useRef(lookupCount())
+  const startedAt = useRef(Date.now())
   const firstRef = useRef<HTMLInputElement>(null)
   const box = useRef<HTMLDivElement>(null)
   const item = items[i]
@@ -268,7 +269,7 @@ export function Drill({ items, source, mode = 'learn', timeLimit, onDone, doneLa
 
   useEffect(() => {
     if (!timeLimit || finished) return
-    const id = setInterval(() => setLeft((l) => l - 1), 1000)
+    const id = setInterval(() => setLeft(timeLimit - Math.floor((Date.now() - startedAt.current) / 1000)), 1000)
     return () => clearInterval(id)
   }, [timeLimit, finished])
   useEffect(() => {

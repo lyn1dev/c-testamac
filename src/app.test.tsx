@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import 'fake-indexeddb/auto'
-import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { StrictMode } from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -271,5 +271,23 @@ describe('placement', () => {
     expect(await screen.findByText(/A1–A2 grammar: 1\/16/)).toBeTruthy()
     expect(screen.queryByText(/tested out/)).toBeNull()
     expect((await db.topics.toArray()).some((t) => t.testedOutAt)).toBe(false)
+  })
+})
+
+describe('timers', () => {
+  it('measure real time, so a C-test still ends on time after the tab was in the background', async () => {
+    await saveSetting('placementDone', true)
+    vi.useFakeTimers({ toFake: ['Date', 'setInterval', 'clearInterval'] })
+    try {
+      app('/ctest')
+      fireEvent.click(await screen.findByRole('button', { name: 'Timed' }))
+      fireEvent.click((await screen.findAllByRole('button', { name: 'Start' }))[0])
+      await screen.findByText('5:00')
+      vi.setSystemTime(Date.now() + 301_000)
+      act(() => vi.advanceTimersByTime(1000))
+      expect(await screen.findByText('Your result')).toBeTruthy()
+    } finally {
+      vi.useRealTimers()
+    }
   })
 })

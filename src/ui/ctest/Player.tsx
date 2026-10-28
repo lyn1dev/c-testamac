@@ -70,7 +70,7 @@ export function CTestPlayer({ t, mode, gaps, letterCount, timeLimit, onFinished 
   }, [])
   useEffect(() => {
     if (!timeLimit) return
-    const id = setInterval(() => setLeft((l) => l - 1), 1000)
+    const id = setInterval(() => setLeft(timeLimit - Math.floor((Date.now() - started.current) / 1000)), 1000)
     return () => clearInterval(id)
   }, [timeLimit])
   useEffect(() => {
