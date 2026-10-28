@@ -137,7 +137,7 @@ export const VERBS: Verb[] = [
   { inf: 'bieten', en: 'to offer', kind: 'strong', group: 'ie-o-o', praet: 'bot', p2: 'geboten', aux: 'haben' },
   { inf: 'verbieten', en: 'to forbid', kind: 'strong', group: 'ie-o-o', praet: 'verbot', p2: 'verboten', aux: 'haben' },
   { inf: 'verlieren', en: 'to lose', kind: 'strong', group: 'ie-o-o', praet: 'verlor', p2: 'verloren', aux: 'haben' },
-  { inf: 'frieren', en: 'to freeze, to be cold', kind: 'strong', group: 'ie-o-o', praet: 'fror', p2: 'gefroren', aux: 'haben' },
+  { inf: 'frieren', en: 'to freeze, to be cold', kind: 'strong', group: 'ie-o-o', praet: 'fror', p2: 'gefroren', aux: 'both' },
   { inf: 'riechen', en: 'to smell', kind: 'strong', group: 'ie-o-o', praet: 'roch', p2: 'gerochen', aux: 'haben' },
   { inf: 'schließen', en: 'to close', kind: 'strong', group: 'ie-o-o', praet: 'schloss', p2: 'geschlossen', aux: 'haben' },
   { inf: 'genießen', en: 'to enjoy', kind: 'strong', group: 'ie-o-o', praet: 'genoss', p2: 'genossen', aux: 'haben' },
