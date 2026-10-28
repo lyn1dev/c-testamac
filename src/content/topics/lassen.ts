@@ -83,7 +83,7 @@ export const topic: Topic = {
       topic: 'lassen',
       kind: 'gap',
       text: 'Als Kind lie{ß} mich meine Mutter nie allein im Garten spielen.',
-      en: 'As a child my mother never let me play alone in the garden.',
+      en: 'When I was a child, my mother never let me play alone in the garden.',
       fb: { rule: 'The Präteritum of lassen is ließ (ie, ß).', cue: '„Als Kind“ (past)', trick: 'ließ, not lies' },
     },
     {
@@ -141,7 +141,7 @@ export const topic: Topic = {
       kind: 'transform',
       instruction: 'Say that you are having the bike repaired (use lassen).',
       source: 'Der Mechaniker repariert mein Fahrrad.',
-      answers: ['Ich lasse mein Fahrrad reparieren', 'Ich lasse mein Fahrrad vom Mechaniker reparieren', 'Ich lasse mein Fahrrad von dem Mechaniker reparieren'],
+      answers: ['Ich lasse mein Fahrrad reparieren', 'Ich lasse mein Fahrrad vom Mechaniker reparieren', 'Ich lasse mein Fahrrad von dem Mechaniker reparieren', 'Ich lasse mein Fahrrad beim Mechaniker reparieren'],
       fb: { rule: 'lassen + object + infinitive: you cause the action, someone else does it.', cue: '„Der Mechaniker repariert“', trick: 'Ich lasse … reparieren' },
     },
     {

@@ -8,7 +8,7 @@ export const topic: Topic = {
   rule: [
     'The **n-Deklination** is a small group of **masculine** nouns that add **-n or -en** in the accusative, dative and genitive singular and in the whole plural. Only the nominative singular stays without ending: **der** Student, **den** Student**en**, **dem** Student**en**, **des** Student**en**, **die** Student**en**. The genitive has no extra -s.',
     'Most of them are **people or animals**, and many can be recognised by their ending: **-e** (der Kollege, der Kunde, der Junge, der Franzose, der Löwe), **-ent** (der Student, der Präsident), **-ant** (der Praktikant), **-ist** (der Tourist, der Polizist), **-oge/-graf** (der Biologe, der Fotograf) and a few short words (**der Mensch, der Herr, der Nachbar, der Bär, der Held**).',
-    'Special cases: **der Herr** takes only -n in the singular (den Herrn) but -en in the plural (die Herren). Some abstract nouns add **-ns** in the genitive: **der Name** (des Namens), **der Gedanke** (des Gedankens), **der Buchstabe**, **der Glaube**, **der Wille**. **das Herz** is a neuter relative: das Herz, dem Herzen, des Herzens.',
+    'Special cases: **der Herr** takes only -n in the singular (den Herrn) but -en in the plural (die Herren). A few nouns add **-ns** in the genitive: **der Name** (des Namens), **der Gedanke** (des Gedankens), **der Buchstabe**, **der Glaube**, **der Wille**. **das Herz** is a neuter relative: das Herz, dem Herzen, des Herzens.',
     'Careful with look-alikes: nouns ending in -er or -el such as der Lehrer, der Computer or der Onkel are normal masculine nouns without -n in the accusative and dative singular (den Lehrer, dem Lehrer). Nachbar is one of the few exceptions with -r.',
   ],
   tables: ['n-declension', 'def-article'],

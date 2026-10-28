@@ -22,7 +22,7 @@ export const topic: Topic = {
     'Wrong: Fähr vorsichtig! Right: Fahr vorsichtig! (no umlaut in the imperative.)',
     'Wrong: Nehm den Bus! Right: Nimm den Bus! (e → i is kept: Nimm! Sprich! Lies!)',
     'Wrong: Sind Sie bitte ruhig! Right: Seien Sie bitte ruhig!',
-    'Wrong: Aufstehen jetzt! (as an imperative) Right: Steh jetzt auf! (the infinitive is only used on signs and in recipes.)',
+    'Wrong: Aufstehen jetzt! (as an imperative) Right: Steh jetzt auf! (the bare infinitive is only for signs, recipes and curt orders, not for normal requests.)',
   ],
   examples: [
     { de: 'Lena, nimm dir bitte noch ein Stück Kuchen.', en: 'Lena, please take another piece of cake.' },
