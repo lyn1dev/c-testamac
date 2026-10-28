@@ -405,3 +405,15 @@ describe('keyboard', () => {
     expect(await screen.findByText(/2 \/ 20/)).toBeTruthy()
   })
 })
+
+describe('verbs', () => {
+  it('hides the verb lists and conjugation lookup during a drill', async () => {
+    await saveSetting('placementDone', true)
+    app('/verbs')
+    expect(await screen.findByPlaceholderText(/Show a verb's full conjugation/)).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Start' }))
+    await screen.findByPlaceholderText('e.g. ist gegangen')
+    expect(screen.queryByPlaceholderText(/Show a verb's full conjugation/)).toBeNull()
+    expect(screen.queryByText('Strong verbs by vowel pattern')).toBeNull()
+  })
+})
