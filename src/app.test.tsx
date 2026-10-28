@@ -174,6 +174,28 @@ describe('c-tests', () => {
     expect((await db.results.toArray())[0].gaps.every((g) => g.topic === 'prepositions' && !g.explanation)).toBe(true)
   })
 
+  it('shows a failed Next text on the result page and does not start it twice', async () => {
+    await saveSetting('placementDone', true)
+    app('/ctest')
+    fireEvent.click((await screen.findAllByRole('button', { name: 'Start' }))[0])
+    fireEvent.click(await screen.findByRole('button', { name: /Finish/ }))
+    await screen.findByText('Your result')
+    await saveSetting('apiKey', 'sk-or-test')
+    await saveSetting('model', 'test/model')
+    const pending: (() => void)[] = []
+    const release = () => pending.forEach((p) => p())
+    const fetchMock = vi.fn((_url: string, _init?: RequestInit) => new Promise<Response>((r) => pending.push(() => r(new Response('bad gateway', { status: 502 })))))
+    vi.stubGlobal('fetch', fetchMock)
+    const generations = () => fetchMock.mock.calls.filter(([, init]) => String(init?.body).includes('Write an original German text')).length
+    const next = await screen.findByRole('button', { name: 'Next text' })
+    fireEvent.click(next)
+    fireEvent.click(await screen.findByRole('button', { name: /Next text|Generating/ }))
+    await waitFor(() => expect(generations()).toBe(1))
+    release()
+    expect(await screen.findByText(/OpenRouter 502.*try again/)).toBeTruthy()
+    expect(generations()).toBe(1)
+  })
+
   it('removes a reported gap from scoring and from reviews', async () => {
     await saveSetting('placementDone', true)
     app('/ctest')
