@@ -5,6 +5,7 @@ import { MemoryRouter } from 'react-router-dom'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { App } from './App'
 import { TABLE_BY_ID } from './content/index'
+import { makeCTest } from './ctest/gapper'
 import { BUILTIN_TEXTS } from './ctest/texts'
 import { db } from './db'
 import { DAY } from './practice/srs'
@@ -15,7 +16,7 @@ function openRouterMock() {
     const body = JSON.parse(String(init?.body ?? '{}'))
     const prompt: string = body.messages.at(-1).content
     let content: unknown
-    if (prompt.includes('graded wrong')) {
+    if (prompt.includes('Full text:')) {
       const ns = [...prompt.matchAll(/^(\d+)\. sentence:/gm)].map((m) => Number(m[1]))
       content = {
         items: ns.map((n) => ({
@@ -129,5 +130,22 @@ describe('c-tests', () => {
     expect(screen.getByText(/repeat \(not counted in estimates\)/)).toBeTruthy()
     const results = await db.results.toArray()
     expect(results.map((r) => !!r.repeat)).toEqual([false, true])
+  })
+
+  it('tags correct gaps with a topic and counts them as correct grammar attempts', async () => {
+    await saveSetting('placementDone', true)
+    await saveSetting('apiKey', 'sk-or-test')
+    await saveSetting('model', 'test/model')
+    app('/ctest')
+    fireEvent.click((await screen.findAllByRole('button', { name: 'Start' }))[0])
+    await screen.findByRole('button', { name: /Finish/ })
+    const t = BUILTIN_TEXTS[0]
+    const ct = makeCTest(t.text, { gaps: 20, properNames: t.properNames })
+    screen.getAllByRole('textbox').slice(0, ct.gaps.length).forEach((el, i) => fireEvent.change(el, { target: { value: ct.gaps[i].answer } }))
+    fireEvent.click(screen.getByRole('button', { name: /Finish/ }))
+    await waitFor(async () => expect(await db.attempts.where('topic').equals('prepositions').count()).toBe(20), { timeout: 3000 })
+    const attempts = await db.attempts.toArray()
+    expect(attempts.every((a) => a.correct)).toBe(true)
+    expect((await db.results.toArray())[0].gaps.every((g) => g.topic === 'prepositions' && !g.explanation)).toBe(true)
   })
 })

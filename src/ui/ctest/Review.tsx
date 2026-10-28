@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { explainMistakes } from '../../ai/tasks'
+import { explainGaps } from '../../ai/tasks'
 import { TOPIC_BY_ID } from '../../content/index'
 import { STRATEGIES } from '../../content/strategies'
 import { gradeGap, makeCTest, segments } from '../../ctest/gapper'
@@ -16,36 +16,33 @@ export function rebuild(r: CTestResult) {
 
 async function applyExplanations(r: CTestResult, letterCount: boolean, apiKey: string, model: string) {
   const ct = rebuild(r)
-  const wrong = ct.gaps
-    .map((g, i) => ({ g, i, rec: r.gaps[i] }))
-    .filter((x) => !x.rec.correct)
-    .map((x) => ({ n: x.i + 1, gap: x.g, given: x.rec.given, sentence: x.rec.sentence }))
-  if (wrong.length === 0) return r
-  const items = await explainMistakes({ apiKey, model }, { text: r.text, wrong, letterCount })
+  const all = ct.gaps.map((g, i) => ({ n: i + 1, gap: g, given: r.gaps[i].given, sentence: r.gaps[i].sentence, correct: r.gaps[i].correct }))
+  const items = await explainGaps({ apiKey, model }, { text: r.text, gaps: all, letterCount })
   const gaps = r.gaps.map((g) => ({ ...g }))
   const now = Date.now()
+  const counts = !r.assisted && !r.repeat && r.mode !== 'exam'
   for (const it of items) {
     const idx = it.n - 1
     const g = gaps[idx]
-    Object.assign(g, {
+    const topic = it.topic === 'vocabulary' ? undefined : it.topic
+    Object.assign(g, g.correct ? { topic, strategy: it.strategy } : {
       accepted: it.accepted,
       explanation: it.explanation,
       rule: it.rule,
       trick: it.trick,
-      topic: it.topic === 'vocabulary' ? undefined : it.topic,
+      topic,
       strategy: it.strategy,
     })
     const gap = ct.gaps[idx]
     const [a] = ct.sentences[gap.sentence]
-    const item = gapItem(g.sentence, { ...gap, start: gap.start - a, end: gap.end - a }, g.topic, r.textId)
-    if (it.accepted) {
-      await db.cards.delete(item.key)
-      continue
+    const item = gapItem(g.sentence, { ...gap, start: gap.start - a, end: gap.end - a }, topic, r.textId)
+    if (it.accepted) await db.cards.delete(item.key)
+    else if (!g.correct) {
+      const card = await db.cards.get(item.key)
+      if (card && card.item.kind === 'gap') await db.cards.put({ ...card, topic, item: { ...card.item, topic } })
     }
-    const card = await db.cards.get(item.key)
-    if (card && card.item.kind === 'gap') await db.cards.put({ ...card, topic: g.topic, item: { ...card.item, topic: g.topic } })
-    if (g.topic && !r.assisted && r.mode !== 'exam')
-      await db.attempts.add({ at: now, key: item.key, kind: 'gap', topic: g.topic, correct: false, assisted: false, source: 'practice' })
+    if (topic && counts)
+      await db.attempts.add({ at: now, key: item.key, kind: 'gap', topic, correct: g.correct || it.accepted, assisted: false, source: 'practice' })
   }
   const correct = gaps.filter((g) => g.correct || g.accepted).length
   const updated = { ...r, gaps, correct, explained: true }
@@ -76,7 +73,7 @@ export function CTestReview({ result, onAgain, autoExplain = true }: { result: C
   }
 
   useEffect(() => {
-    if (autoExplain && !tried && !r.explained && aiReady(settings) && r.gaps.some((g) => !g.correct)) {
+    if (autoExplain && !tried && !r.explained && aiReady(settings)) {
       setTried(true)
       void explain()
     }
@@ -125,6 +122,7 @@ export function CTestReview({ result, onAgain, autoExplain = true }: { result: C
             </span>
           )}
         </div>
+        {busy && wrongCount === 0 && <p className="mt-2 text-sm text-stone-500">Tagging grammar topics…</p>}
         {error && <p className="mt-2 text-sm text-rose-700">{error}</p>}
       </Card>
       {r.gaps.some((g) => !g.correct) && (
