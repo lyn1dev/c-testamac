@@ -47,6 +47,18 @@ describe('generateText', () => {
     expect(makeCTest(t.text, { gaps: 20 }).gaps).toHaveLength(20)
   })
 
+  it('asks to avoid the most recent titles, which come newest first', async () => {
+    const fn = replies(
+      JSON.stringify({ title: good.title, text: good.text, properNames: [] }),
+      JSON.stringify({ text: good.text, corrections: [] }),
+    )
+    const titles = Array.from({ length: 15 }, (_, i) => `Titel ${i}`)
+    await generateText(cfg, { level: 'B1', gaps: 20, avoidTitles: titles })
+    const prompt = String(fn.mock.calls[0][1].body)
+    expect(prompt).toContain('Titel 0;')
+    expect(prompt).not.toContain('Titel 14')
+  })
+
   it('proofreads the text before gapping and re-checks the corrected version', async () => {
     const draft = good.text.replace('eine günstige Wohnung', 'einen günstige Wohnung')
     const fn = replies(

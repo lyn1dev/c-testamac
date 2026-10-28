@@ -38,7 +38,7 @@ export async function generateText(
       ? `Make the text dense in this grammar topic (use it in at least 6 places, naturally): ${focus}.`
       : 'Use a natural mix of grammar typical for the level.',
     'No headings, no lists, no numbers written as digits, no quotation marks, no abbreviations.',
-    opts.avoidTitles?.length ? `Choose a topic different from: ${opts.avoidTitles.slice(-12).join('; ')}.` : '',
+    opts.avoidTitles?.length ? `Choose a topic different from: ${opts.avoidTitles.slice(0, 12).join('; ')}.` : '',
     'Return {"title": string, "text": string, "properNames": string[]} where properNames lists every proper name (people, places, organisations) that occurs in the text, spelled exactly as in the text.',
   ].join('\n')
   const draft = await chatJson(cfg, [{ role: 'system', content: SYSTEM }, { role: 'user', content: prompt }], textSchema, {
