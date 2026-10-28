@@ -225,6 +225,15 @@ describe('writing', () => {
     await waitFor(async () => expect(await db.cards.count()).toBe(1), { timeout: 3000 })
     const [card] = await db.cards.toArray()
     expect(card.item.kind === 'gap' && [card.item.before, card.item.gap.answer, card.topic]).toEqual(['Gestern ', 'bin', 'perfekt'])
+    expect((await db.attempts.toArray()).map((a) => a.assisted)).toEqual([false])
+
+    fireEvent.keyDown(window, { key: 'k', ctrlKey: true })
+    const search = await screen.findByPlaceholderText(/Search topics, tables/)
+    fireEvent.change(search, { target: { value: 'Perfekt' } })
+    fireEvent.click(within(search.closest('aside')!).getAllByRole('button', { name: /Perfekt/ })[0])
+    fireEvent.click(screen.getByRole('button', { name: 'Correct my German' }))
+    await waitFor(async () => expect(await db.attempts.count()).toBe(2))
+    expect((await db.attempts.toArray()).map((a) => a.assisted)).toEqual([false, true])
   })
 
   it("puts a table speed round and, with a key, a writing task in today's session", async () => {
