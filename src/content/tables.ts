@@ -20,7 +20,7 @@ export const TABLES: GrammarTable[] = [
       ['des', 'der', 'des', 'der'],
     ],
     pattern:
-      'Only the masculine changes between Nominativ and Akkusativ (der → den); feminine, neuter and plural stay the same. Dativ plural always gets an extra -n on the noun (den Kindern), and masculine/neuter Genitiv adds -(e)s to the noun (des Mannes).',
+      'Only the masculine changes between Nominativ and Akkusativ (der → den); feminine, neuter and plural stay the same. Dativ plural adds -n to the noun unless the plural already ends in -n or -s (den Kindern, but den Frauen, den Autos), and most masculine/neuter nouns add -(e)s in the Genitiv (des Mannes).',
     tricks: [
       'Nominativ = Akkusativ except masculine: der → den.',
       'Neuter and masculine share Dativ (dem) and Genitiv (des).',
@@ -64,17 +64,17 @@ export const TABLES: GrammarTable[] = [
       ['sein', 'seinen', 'seiner', 'seine'],
       ['ihr', 'ihren', 'ihrer', 'ihre'],
       ['sein', 'seinen', 'seiner', 'seine'],
-      ['unser', 'unseren', 'unserer', 'unsere'],
-      ['euer', 'euren', 'eurer', 'eure'],
+      ['unser', 'unseren/unsren', 'unserer/unsrer', 'unsere/unsre'],
+      ['euer', 'euren/eueren', 'eurer/euerer', 'eure/euere'],
       ['ihr', 'ihren', 'ihrer', 'ihre'],
       ['Ihr', 'Ihren', 'Ihrer', 'Ihre'],
     ],
     pattern:
-      'The stem shows the owner (mein = ich, sein = er/es, ihr = sie), the ending shows the case, gender and number of the thing owned and is the same as for kein-. euer drops its e before an ending: euren, eure.',
+      'The stem shows the owner (mein = ich, sein = er/es, ihr = sie), the ending shows the case, gender and number of the thing owned and is the same as for kein-. euer usually drops its e before an ending: euren, eure.',
     tricks: [
       'Choose the stem by the owner, then add the kein-ending for the noun.',
       'er and es both give sein-; sie (sg.), sie (pl.) give ihr-; polite Sie gives Ihr- with a capital letter.',
-      'euer loses its e: euer Auto, but eure Eltern.',
+      'euer usually loses its e: euer Auto, but eure Eltern.',
     ],
     highlight: [[6, 1], [6, 2], [6, 3]],
   },
@@ -97,7 +97,7 @@ export const TABLES: GrammarTable[] = [
       ['Sie', 'Sie', 'Ihnen'],
     ],
     pattern:
-      'First and second person singular follow the mich/mir, dich/dir pattern; wir and ihr use the same form for Akkusativ and Dativ (uns, euch). Only er changes in the Akkusativ (ihn); es and sie stay the same.',
+      'First and second person singular follow the mich/mir, dich/dir pattern; wir and ihr use the same form for Akkusativ and Dativ (uns, euch). In the third person only er changes in the Akkusativ (ihn); es and sie stay the same.',
     tricks: [
       'Akkusativ and Dativ are identical for wir (uns) and ihr (euch).',
       'Dativ plural ends in -nen: ihnen, Ihnen.',
@@ -271,7 +271,7 @@ export const TABLES: GrammarTable[] = [
     cols: ['machen', 'arbeiten', 'heißen', 'fahren', 'sammeln'],
     rows: PERSONS,
     cells: [
-      ['mache', 'arbeite', 'heiße', 'fahre', 'sammle'],
+      ['mache', 'arbeite', 'heiße', 'fahre', 'sammle/sammele'],
       ['machst', 'arbeitest', 'heißt', 'fährst', 'sammelst'],
       ['macht', 'arbeitet', 'heißt', 'fährt', 'sammelt'],
       ['machen', 'arbeiten', 'heißen', 'fahren', 'sammeln'],
@@ -283,8 +283,8 @@ export const TABLES: GrammarTable[] = [
     tricks: [
       'wir and sie/Sie equal the infinitive (only sein differs: sind).',
       'er and ihr share the same form unless the vowel changes: er macht, ihr macht, but er fährt, ihr fahrt.',
-      'Stems in -t/-d need an extra e so the ending can be pronounced: arbeitest, findet.',
-      'Verbs in -eln drop the e in ich: ich sammle.',
+      'Stems in -t/-d need an extra e so the ending can be pronounced: arbeitest, findet (not after a vowel change: du hältst, er hält).',
+      'Verbs in -eln usually drop the e in ich: ich sammle (rarer: sammele).',
     ],
     highlight: [[1, 3], [2, 3], [1, 1], [2, 1], [4, 1]],
   },
@@ -390,6 +390,7 @@ export const TABLES: GrammarTable[] = [
       'No ge- on -ieren verbs and on be-, ent-, er-, ge-, ver-, zer- verbs.',
       'Separable verbs: prefix + ge + stem, written as one word: aufgestanden.',
       'The stressed syllable decides: a stressed prefix means separable, so ge- goes inside.',
+      'A separable prefix before an inseparable one gives no ge- at all: vorbereiten → vorbereitet.',
     ],
     highlight: [[14, 0], [15, 0], [16, 0], [17, 0], [18, 0], [19, 0], [20, 0], [21, 0], [22, 0], [23, 0]],
   },
@@ -437,7 +438,7 @@ export const TABLES: GrammarTable[] = [
     tricks: [
       'The er/sie/es form (er habe, sie komme, es sei) is the one you need most in indirect speech.',
       'If the Konjunktiv I is the same as the Indikativ, switch to Konjunktiv II: sie hätten statt sie haben.',
-      'sein has no -e in the singular endings: er sei, not er seie.',
+      'sein has no -e in ich and er/sie/es: er sei, not er seie.',
     ],
     highlight: [[2, 0], [2, 1], [2, 2], [2, 3], [2, 4]],
   },
@@ -546,15 +547,15 @@ export const TABLES: GrammarTable[] = [
     ],
     cells: [
       ['Akkusativ', 'stellte', 'hat gestellt'],
-      ['Dativ', 'stand', 'hat gestanden'],
+      ['Dativ', 'stand', 'hat gestanden/ist gestanden'],
       ['Akkusativ', 'legte', 'hat gelegt'],
-      ['Dativ', 'lag', 'hat gelegen'],
+      ['Dativ', 'lag', 'hat gelegen/ist gelegen'],
       ['Akkusativ', 'setzte', 'hat gesetzt'],
-      ['Dativ', 'saß', 'hat gesessen'],
+      ['Dativ', 'saß', 'hat gesessen/ist gesessen'],
       ['Akkusativ', 'hängte', 'hat gehängt'],
-      ['Dativ', 'hing', 'hat gehangen'],
+      ['Dativ', 'hing', 'hat gehangen/ist gehangen'],
       ['Akkusativ', 'steckte', 'hat gesteckt'],
-      ['Dativ', 'steckte', 'hat gesteckt'],
+      ['Dativ', 'steckte/stak', 'hat gesteckt'],
     ],
     pattern:
       'Verbs of placing (stellen, legen, setzen, hängen, stecken) are weak and transitive: they take an Akkusativ object and a direction (wohin?). Verbs of position (stehen, liegen, sitzen, hängen, stecken) are intransitive and take Dativ for the place (wo?); stehen, liegen and sitzen are strong.',
@@ -562,6 +563,7 @@ export const TABLES: GrammarTable[] = [
       'Transitive and weak = put something somewhere (Akkusativ); intransitive and mostly strong = be somewhere (Dativ).',
       'stellen–stehen, legen–liegen, setzen–sitzen: the strong partner changes its stem.',
       'hängen has two meanings: hängte/gehängt (put) versus hing/gehangen (be hanging).',
+      'In southern Germany, Austria and Switzerland the position verbs take sein: ist gestanden, ist gelegen, ist gesessen.',
     ],
     highlight: [[0, 0], [2, 0], [4, 0], [6, 0], [8, 0]],
   },
@@ -590,11 +592,11 @@ export const TABLES: GrammarTable[] = [
       ['kälter', 'am kältesten'],
     ],
     pattern:
-      'Regular comparison is -er and am -sten, but gut, viel, gern, hoch, nah and bald have their own stems. Many one-syllable adjectives with a, o or u take an umlaut, and adjectives ending in -d, -t, -s, -z or -sch add an extra -e in the Superlativ (am ältesten, am kürzesten).',
+      'Regular comparison is -er and am -sten, but gut, viel, gern, hoch, nah and bald have their own stems. Many one-syllable adjectives with a, o or u take an umlaut, and adjectives whose stressed last syllable ends in -d, -t, -s, -ß, -x, -z or -sch add an extra -e in the Superlativ (am ältesten, am kürzesten, but am spannendsten, am typischsten).',
     tricks: [
       'Learn the six special ones: gut – besser – am besten, viel – mehr – am meisten, gern – lieber – am liebsten, hoch – höher – am höchsten, nah – näher – am nächsten, bald – eher – am ehesten.',
       'Short adjectives with a/o/u often add an umlaut: alt → älter, groß → größer.',
-      'After -d/-t/-s/-z/-sch the Superlativ is am -esten: am ältesten, am kürzesten.',
+      'After a stressed -d/-t/-s/-ß/-z/-sch the Superlativ is am -esten: am ältesten, am kürzesten; unstressed endings take -sten: am spannendsten.',
       'groß is an exception: am größten, with no extra e.',
     ],
   },
@@ -618,7 +620,7 @@ export const TABLES: GrammarTable[] = [
       'Coordinating conjunctions (und, aber, oder, denn, sondern) stand outside the clause in Position 0 and do not change the word order. Connecting adverbs (deshalb, trotzdem, dann …) occupy Position 1, so the verb follows immediately (inversion), while subordinating conjunctions (weil, dass, wenn …) send the finite verb to the end of the clause.',
     tricks: [
       'ADUSO (aber, denn, und, sondern, oder) = Position 0.',
-      'Adverb connectors count as the first element, so the verb comes second: Deshalb bleibe ich zu Hause.',
+      'Adverb connectors count as the first element, so the verb comes second: Deshalb bleibe ich zu Hause. They can also stand after the verb: Ich bleibe deshalb zu Hause.',
       'Subordinating conjunction → comma → verb at the end; the main clause then continues with the verb.',
       'If the subordinate clause comes first, the next main clause starts with its verb: Wenn es regnet, bleibe ich zu Hause.',
     ],
@@ -635,9 +637,9 @@ export const TABLES: GrammarTable[] = [
       ['als auch/wie auch'],
       ['noch'],
       ['sondern auch'],
-      ['aber'],
+      ['aber/doch/trotzdem'],
       ['desto/umso'],
-      ['andererseits'],
+      ['andererseits/andrerseits/anderseits'],
       ['teils'],
     ],
     pattern:
@@ -645,7 +647,7 @@ export const TABLES: GrammarTable[] = [
     tricks: [
       'weder … noch is already negative: no extra nicht or kein.',
       'je + comparative + (verb at end), desto/umso + comparative + verb in second position.',
-      'zwar … aber: aber can be replaced by trotzdem or doch.',
+      'zwar … aber: doch works too, and so does trotzdem as a new main clause (Das ist zwar teuer, trotzdem kaufe ich es).',
     ],
   },
   {
@@ -796,14 +798,14 @@ export const TABLES: GrammarTable[] = [
       ['die Tische'], ['die Stühle'], ['die Kinder'], ['die Bücher'], ['die Frauen'], ['die Blumen'], ['die Studenten'],
       ['die Lehrer'], ['die Väter'], ['die Äpfel'], ['die Mütter'], ['die Zimmer'], ['die Brüder'], ['die Städte'],
       ['die Hände'], ['die Nächte'], ['die Häuser'], ['die Männer'], ['die Namen'], ['die Autos'], ['die Fotos'], ['die Hotels'],
-      ['die Cafés'], ['die Uhren'], ['die Augen'], ['die Parks'], ['die Computer'], ['die Probleme'], ['die Museen'],
-      ['die Daten'], ['die Themen'], ['die Menschen'], ['die Wörter/die Worte'], ['die Kenntnisse'],
+      ['die Cafés'], ['die Uhren'], ['die Augen'], ['die Parks/die Parke'], ['die Computer'], ['die Probleme'], ['die Museen'],
+      ['die Daten'], ['die Themen/die Themata'], ['die Menschen'], ['die Wörter/die Worte'], ['die Kenntnisse'],
     ],
     pattern:
       'German has five main plural types: -e (Tisch → Tische, often with umlaut), -(e)n (Frau → Frauen), -er (Kind → Kinder, always with umlaut if possible), no ending (Lehrer → Lehrer, sometimes with umlaut) and -s (Auto → Autos). Feminine nouns mostly take -(e)n, and there are no fixed rules for masculine and neuter, so learn the plural with the noun.',
     tricks: [
       'Feminine nouns: -(e)n in about 90% of cases; common exceptions with umlaut are Mutter, Tochter, Hand, Nacht, Stadt, Wand.',
-      'Neuter nouns in -er and -en usually do not change: das Zimmer, das Fenster; masculine nouns in -el, -er, -en take an umlaut or nothing.',
+      'Neuter nouns in -er and -en usually do not change: das Zimmer, das Fenster; masculine nouns in -el, -er, -en usually take an umlaut or nothing.',
       '-s is for foreign words and abbreviations: Auto, Hotel, Café, Foto.',
       '-er always comes with an umlaut if the vowel can take one: Haus → Häuser.',
     ],
