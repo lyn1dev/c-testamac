@@ -4,7 +4,7 @@ import { TABLE_BY_ID, TABLES, TOPIC_BY_ID } from '../content/index'
 import { db, setTopic, type CTestResult } from '../db'
 import type { Item } from '../practice/items'
 import { weakestTopics } from '../practice/mastery'
-import { dueItems, interleaved, levelTopics, mixedItems, shuffle, tableItems, topicItems } from '../practice/pools'
+import { dueItems, interleaved, levelTopics, mixedItems, shuffle, tableItems } from '../practice/pools'
 import { planSession, type Step } from '../practice/session'
 import { aiReady, loadSettings, useSettings } from '../settings'
 import { Btn, Card, Page, useActivity } from '../ui/bits'
@@ -64,7 +64,7 @@ function StepRunner({ step, onNext }: { step: Step; onNext: () => void }) {
     const load = async () => {
       if (step.kind === 'review') setItems(await dueItems(step.count))
       if (step.kind === 'table') setItems(shuffle(tableItems(step.tableId)).slice(0, step.count))
-      if (step.kind === 'weak') setItems(shuffle(topicItems(step.topic)).slice(0, step.count))
+      if (step.kind === 'weak') setItems(interleaved(step.topic, await introducedTopics(), step.count))
       if (step.kind === 'mixed') {
         const intro = await introducedTopics()
         setItems(mixedItems(intro.length >= 3 ? intro : levelTopics('A2'), step.count))
