@@ -63,4 +63,13 @@ describe('review queue', () => {
     ])
     expect((await dueItems(10)).map((i) => i.key)).toEqual([items[2].key, items[1].key, items[0].key])
   })
+
+  it('serves the current version of an exercise, not the stored copy', async () => {
+    const it = items[0]
+    if (it.kind !== 'exercise') throw new Error('expected an exercise')
+    const stale = { ...it, exercise: { ...it.exercise, fb: { rule: 'old rule', cue: 'old' } } }
+    await db.cards.put({ ...newCard(stale, Date.now()), due: Date.now() - MINUTE })
+    const [served] = await dueItems(1)
+    expect(served.kind === 'exercise' && served.exercise.fb.rule).toBe(it.exercise.fb.rule)
+  })
 })

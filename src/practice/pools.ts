@@ -1,5 +1,5 @@
 import { TENSES, type Tense } from '../content/conjugate'
-import { TABLE_BY_ID, TOPICS, VERBS } from '../content/index'
+import { EXERCISE_BY_ID, TABLE_BY_ID, TOPICS, VERBS } from '../content/index'
 import type { Level } from '../content/types'
 import { db } from '../db'
 import { cellItem, exerciseItem, verbItem, type Item } from './items'
@@ -69,5 +69,5 @@ export async function dueItems(limit: number, now = Date.now()): Promise<Item[]>
   return cards
     .sort((a, b) => lapsed(a) - lapsed(b) || a.due - b.due)
     .slice(0, limit)
-    .map((c) => c.item)
+    .map((c) => (c.item.kind === 'exercise' ? exerciseItem(EXERCISE_BY_ID.get(c.item.exercise.id) ?? c.item.exercise) : c.item))
 }
