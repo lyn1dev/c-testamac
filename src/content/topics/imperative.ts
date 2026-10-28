@@ -75,7 +75,7 @@ export const topic: Topic = {
       id: 'imperative:5',
       topic: 'imperative',
       kind: 'gap',
-      text: 'Das Wetter ist schlecht. Fa{hr} bitte vorsichtig!',
+      text: 'Das Wetter ist schlecht. Fa{hr|hre} bitte vorsichtig!',
       en: 'The weather is bad. Please drive carefully.',
       fb: { rule: 'a → ä verbs do not change vowel in the imperative: Fahr!', cue: "du-imperative of fahren → Fahr", trick: 'E-verbs change, A-verbs do not.' },
     },
@@ -137,7 +137,7 @@ export const topic: Topic = {
       kind: 'transform',
       instruction: 'Turn the sentence into an imperative addressed to "Sie".',
       source: 'Du rufst mich bitte an.',
-      answers: ['Rufen Sie mich bitte an.'],
+      answers: ['Rufen Sie mich bitte an.', 'Bitte rufen Sie mich an.'],
       fb: { rule: 'Sie-imperative: infinitive form + Sie, separable prefix at the end.', cue: "'Sie' → Rufen Sie … an" },
     },
     {

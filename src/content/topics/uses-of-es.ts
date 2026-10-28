@@ -151,7 +151,7 @@ export const topic: Topic = {
       kind: 'transform',
       instruction: 'Move the dass-clause to the front. Es is no longer needed.',
       source: 'Es ist klar, dass er recht hat.',
-      answers: ['Dass er recht hat, ist klar.'],
+      answers: ['Dass er recht hat, ist klar.', 'Dass er Recht hat, ist klar.'],
       fb: { rule: 'The correlate es is dropped when the clause it announces moves to position 1.', cue: '"Es ist klar, dass …"', trick: 'clause first, then verb, no es' },
     },
     {

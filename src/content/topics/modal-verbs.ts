@@ -7,7 +7,7 @@ export const topic: Topic = {
   summary: 'Modals sit in position 2, the full verb goes to the end as an infinitive; ich and er/sie/es have no ending.',
   rule: [
     'The six modals are **können** (can), **müssen** (must), **dürfen** (may), **wollen** (want), **sollen** (should) and **mögen** (like); **möchten** (would like) is the polite form of mögen. The modal is conjugated and stands in position 2; the full verb is an **infinitive at the end**: "Ich **kann** heute nicht **kommen**."',
-    'In the singular the stem vowel changes and **ich and er/sie/es have no ending**: ich kann, du kannst, er kann; ich muss, du musst; ich darf, du darfst; ich will, du willst; ich soll, du sollst; ich mag, du magst; ich möchte, du möchtest. In the plural there is no change: wir können, ihr könnt, sie können.',
+    'In the singular the stem vowel changes (except sollen) and **ich and er/sie/es are identical, with no personal ending**: ich kann, du kannst, er kann; ich muss, du musst; ich darf, du darfst; ich will, du willst; ich soll, du sollst; ich mag, du magst; ich möchte, du möchtest. In the plural there is no change: wir können, ihr könnt, sie können.',
     'Meaning needs care: **müssen** = necessary; **nicht müssen** = not necessary ("Du musst nicht kommen" = you do not have to). **nicht dürfen** = forbidden ("Du darfst hier nicht parken"). **sollen** = someone else wants it (advice, instruction). **wollen** = my own wish, **möchten** = polite wish.',
     'For the past, speakers mostly use the **Präteritum** of modals, without umlaut: ich **konnte**, **musste**, **durfte**, **wollte**, **sollte**, **mochte**. Subordinate clauses put the modal last: "…, weil ich arbeiten **muss**."',
   ],

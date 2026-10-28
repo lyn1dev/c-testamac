@@ -8,12 +8,12 @@ export const topic: Topic = {
   rule: [
     'Konjunktiv I is built from the **infinitive stem + Konjunktiv endings**: -e, -est, -e, -en, -et, -en. So: er komme, sie gehe, es gebe, man habe. The only irregular verb is **sein**: ich sei, du seiest, er sei, wir seien, ihr seiet, sie seien. You almost only need the **er/sie/es** form (and sometimes the plural).',
     'It shows that you report someone else’s words without saying whether they are true: Der Minister sagte, er **sei** zufrieden. The tense is only about the original statement: **present** = er komme / er sei müde; **past** = er sei gekommen / er habe geschlafen (Konjunktiv I of haben/sein + Partizip II); **future** = er werde kommen.',
-    '**Replacement rule:** if the Konjunktiv I form is identical to the indicative, it does not mark indirect speech, so you use **Konjunktiv II** instead. This happens in the ich-form and in the plural: sie haben → sie **hätten**, wir kommen → sie **kämen** (or würden kommen), ich habe → ich **hätte**. The er-form is almost always different from the indicative (er habe ≠ er hat), so it stays Konjunktiv I.',
+    '**Replacement rule:** if the Konjunktiv I form is identical to the indicative, it does not mark indirect speech, so you use **Konjunktiv II** instead. This happens in the ich-form and in the plural: sie haben → sie **hätten**, wir kommen → wir **kämen** (or würden kommen), ich habe → ich **hätte**. The er-form is almost always different from the indicative (er habe ≠ er hat), so it stays Konjunktiv I.',
     'Indirect questions use **ob** or the question word, with the verb at the end: Sie fragte, ob er Zeit **habe**. Indirect speech can have **dass** (verb at the end) or no conjunction (normal verb-second order): Er sagte, dass er müde sei / Er sagte, er sei müde. Pronouns and time words shift: „Ich komme morgen“ → Sie sagte, sie komme am nächsten Tag.',
   ],
   tables: ['konjunktiv-1', 'konjunktiv-2', 'sein-haben-werden'],
   tricks: [
-    'Konjunktiv I = stem + e: er komm**e**, sie geh**e**, es geb**e**. Think of it as “the er-form with an -e instead of -t”.',
+    'Konjunktiv I = stem + e: er komm**e**, sie geh**e**, es geb**e**. Think of it as “infinitive stem + e”, without the vowel change of the present: er fährt → er fahre.',
     'Check the form against the indicative: if they look the same (sie haben, wir gehen), switch to Konjunktiv II (sie hätten, wir gingen).',
     'sei is the star: er sei, sie sei, es sei, man sei. In a newspaper text, every sei after “sagte/erklärte/behauptete” is reported speech.',
     'The introductory verb (sagen, berichten, behaupten, erklären, meinen, fragen) is your signal: a clause after it is probably Konjunktiv I.',
@@ -33,7 +33,7 @@ export const topic: Topic = {
     { de: 'Sie fragte ihn, ob er Zeit habe.', en: 'She asked him whether he had time.', note: 'Indirect question with ob.' },
     { de: 'Die Zeitung berichtet, der Präsident sei zurückgetreten.', en: 'The newspaper reports that the president has resigned.', note: 'Without dass: verb-second order.' },
   ],
-  inCTests: 'In news-style C-test texts, a clause after “sagte, erklärte, berichtete, behauptete” often needs Konjunktiv I: look for a missing -e (komm_, ha_, s_). If the subject is plural or ich, expect Konjunktiv II (hätten, wären, könnten) instead.',
+  inCTests: 'In news-style C-test texts, a clause after “sagte, erklärte, berichtete, behauptete” often needs Konjunktiv I: look for a missing -e (komm_, ha_, s_). If the subject is plural or ich, expect Konjunktiv II (hätten, kämen, könnten) instead; only sein keeps Konjunktiv I (seien).',
   writing: [
     'Write three sentences in which a friend tells you about their weekend; report them in indirect speech with Konjunktiv I (e.g. Er sagte, er sei … gefahren).',
     'Report in German what your teacher said at the beginning of the last lesson, using one Konjunktiv I form and one replacement by Konjunktiv II.',
@@ -67,7 +67,7 @@ export const topic: Topic = {
       id: 'konjunktiv-1:3',
       topic: 'konjunktiv-1',
       kind: 'gap',
-      text: 'Die Nachbarn sagten, sie h{ätten|aben} in der Nacht nichts gehört.',
+      text: 'Die Nachbarn sagten, sie h{ätten} in der Nacht nichts gehört.',
       en: 'The neighbours said they had heard nothing during the night.',
       fb: {
         rule: 'Plural Konjunktiv I of haben looks like the indicative (haben), so Konjunktiv II hätten is used to mark indirect speech.',

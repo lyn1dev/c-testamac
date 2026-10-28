@@ -14,7 +14,7 @@ export const topic: Topic = {
   tables: ['n-declension', 'def-article'],
   tricks: [
     'Think "everywhere except nominative singular": if the noun is the subject (der Student fragt), no ending; for every other role add -(e)n.',
-    'The ending test: masculine people and animals with **-e, -ent, -ant, -ist, -oge** are n-nouns. If you can put "the guy who …" in front, it is probably one.',
+    'The ending test: masculine people and animals with **-e, -ent, -ant, -ist, -oge** are n-nouns.',
     'Nouns ending in -e take just **-n** (den Kollegen), nouns ending in a consonant take **-en** (den Studenten).',
     'Never double-mark the genitive: **des Studenten**, not des Studentens (the -ns genitive belongs only to Name, Gedanke, Buchstabe, Glaube, Wille, Funke).',
   ],

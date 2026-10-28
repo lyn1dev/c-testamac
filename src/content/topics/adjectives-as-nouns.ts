@@ -7,7 +7,7 @@ export const topic: Topic = {
   summary: 'Adjectives and participles can be capitalised and used as nouns; they keep their normal adjective endings.',
   rule: [
     'Many adjectives and participles can become nouns (**Nominalisierung**): they are written with a capital letter and keep the **adjective ending** that the article or case requires. For people the gender is natural: **der Deutsche** (man) / **die Deutsche** (woman), plural **die Deutschen**. After **ein** the masculine nominative has -er: „Er ist **ein Deutscher**.“ and „Sie ist **eine Deutsche**.“',
-    'This works for nationalities (der Deutsche, der Jugendliche) and for participles used as person nouns: **der Angestellte, der Bekannte, der Verwandte, der Arbeitslose, der Kranke, der Reisende, der Studierende**. Without an article in the plural they take the strong ending: „**Deutsche** wohnen hier.“ „**Viele Jugendliche** ...“',
+    'This works for der Deutsche (the only nationality formed like this) and for many adjectives and participles used as person nouns: **der Jugendliche, der Angestellte, der Bekannte, der Verwandte, der Arbeitslose, der Kranke, der Reisende, der Studierende**. Without an article in the plural they take the strong ending: „**Deutsche** wohnen hier.“ „**Viele Jugendliche** ...“',
     'The neuter form refers to an idea or thing: **das Gute, das Neue**. After **etwas, nichts, viel, wenig, alles** the neuter noun keeps a regular ending: **etwas Neues, nichts Besonderes, viel Interessantes** (strong -es) but **alles Gute, alles Neue** (after alles the weak -e). The ending of the noun is the same as the ending of the adjective in that position, so use the adjective-ending tables.',
   ],
   tables: ['adj-weak', 'adj-mixed', 'adj-strong'],
@@ -15,7 +15,7 @@ export const topic: Topic = {
     'Take the adjective, capitalise it, and pretend an invisible noun follows: der Deutsche = der deutsche (Mann).',
     'Check the article: **der** / **die** / **ein** … so the noun ending follows the usual adjective table: der Angestellte, **ein** Angestellter, die Angestellten.',
     'Neuter after etwas, nichts, viel, wenig: **-es** (etwas Neues, nichts Besonderes). After alles: **-e** (alles Gute).',
-    'Participles used as nouns are typical for people in a state: arbeitslos → der Arbeitslose, reisen → der Reisende, angestellt → der Angestellte.',
+    'Adjectives and participles used as nouns are typical for people in a state: arbeitslos → der Arbeitslose, reisen → der Reisende, angestellt → der Angestellte.',
   ],
   traps: [
     'Wrong: „Er ist ein **Deutsche**.“ Right: „Er ist ein **Deutscher**.“ (a male German; with der: der Deutsche).',
@@ -154,7 +154,7 @@ export const topic: Topic = {
       instruction: 'Change it to a female acquaintance.',
       source: 'Ich spreche mit einem Bekannten.',
       answers: ['Ich spreche mit einer Bekannten'],
-      fb: { rule: 'Dative feminine singular after einer: -n.', cue: '„mit einem“ (dative)', trick: 'einer … -en' },
+      fb: { rule: 'Dative feminine singular after einer: -en.', cue: '„mit einem“ (dative)', trick: 'einer … -en' },
     },
   ],
 }

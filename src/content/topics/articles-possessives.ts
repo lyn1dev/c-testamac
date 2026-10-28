@@ -13,7 +13,7 @@ export const topic: Topic = {
   ],
   tables: ['def-article', 'indef-article', 'possessives'],
   tricks: [
-    '**Der-die-das** is guessed from the noun suffix when possible (-ung, -heit, -keit, -ion → die; -er, -ling, -ismus → der; -chen, -lein → das).',
+    '**Der-die-das** is guessed from the noun suffix when possible (-ung, -heit, -keit, -ion → die; -ling, -ismus → der; -chen, -lein → das).',
     'Sein/ihr: look at **who owns**, not at what is owned. A man’s sister is **seine** Schwester; a woman’s brother is **ihr** Bruder.',
     'ein-words have **no ending in three places**: masculine nominative (ein Mann), neuter nominative and neuter accusative (ein Kind). Everywhere else they carry the signal endings: -e, -en, -em, -er, -es.',
     'Plural = no ein, but kein/mein: "Ich habe Bücher" / "Ich habe keine Bücher."',

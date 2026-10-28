@@ -13,7 +13,7 @@ export const topic: Topic = {
   ],
   tables: ['reflexive-pronouns', 'personal-pronouns'],
   tricks: [
-    'Dative verbs are verbs of "giving a person something": helfen, danken, gefallen, gehören, schmecken, passen, fehlen — memorise them as pairs with a person: "jemandem helfen".',
+    'Dative verbs have a person as their only object: helfen, danken, gefallen, gehören, schmecken, passen, fehlen — memorise them as pairs with a person: "jemandem helfen".',
     'Reflexive: ask "is the object the same person as the subject?". Yes → mich/dich/sich/uns/euch.',
     'mich or mir? Look for another accusative object in the sentence (die Hände, die Zähne, ein Handy). If it is there, the reflexive is dative: mir/dir.',
     'Third person = sich, always — no matter if singular or plural, he, she or they.',

@@ -16,7 +16,7 @@ export const topic: Topic = {
     'Dative: "aus-bei-mit-nach-seit-von-zu" — chant it like a rhyme.',
     'Accusative: DOGFU = durch, ohne, gegen, für, um.',
     'Wechsel prepositions: ask wo? (dative) or wohin? (accusative). The case follows the question, not the preposition.',
-    'Place pairs: stehen/stellen, liegen/legen, sitzen/setzen, hängen/hängen. The "-en" transitive one with an object means wohin?.',
+    'Place pairs: stehen/stellen, liegen/legen, sitzen/setzen, hängen/hängen. The transitive one (with an object: stellen, legen, setzen, etwas hängen) means wohin?.',
   ],
   traps: [
     '*Ich fahre mit den Bus → **Ich fahre mit dem Bus**. mit is always dative.',

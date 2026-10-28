@@ -9,7 +9,7 @@ export const topic: Topic = {
     'German marks the **role** of a noun phrase with case, mostly on the article. **Nominative** = subject (wer? was?): "**Der** Hund beißt …". **Accusative** = direct object (wen? was?): "… **den** Briefträger." **Dative** = indirect object, recipient (wem?): "Ich gebe **dem** Kind einen Apfel." **Genitive** = possession (wessen?): "das Auto **meines** Vaters."',
     'Only the **masculine** changes between nominative and accusative: **der → den**, **ein → einen**, **mein → meinen**. Feminine, neuter and plural look the same in both: die/die, das/das, die/die. Dative: **dem** (m/n), **der** (f), **den + -n** on the noun (plural: den Kindern). Genitive: **des + -(e)s** (m/n), **der** (f and plural).',
     'The case comes from three sources: the **role** in the sentence (subject = nominative), the **verb** (helfen, danken, gefallen + dative; most others + accusative), and the **preposition**: für, durch, gegen, ohne, um + **accusative**; aus, bei, mit, nach, seit, von, zu + **dative**. Two-way prepositions (in, an, auf …) take dative for "wo?" and accusative for "wohin?".',
-    'Use the signal letters **r – e – s – n – m**: **-r** (der, ein**er**), **-e** (die/eine), **-s** (das/ein**es**), **-n** (den/einen), **-m** (dem/einem). Find the case trigger, look up the article for the noun’s gender, and add the ending.',
+    'Use the signal letters **r – e – s – n – m**: **-r** (der, ein**er**), **-e** (die/eine), **-s** (das/ein**es**), **-n** (den/einen), **-m** (dem/einem). Find the case trigger, look up the article for the noun’s gender, and add the ending. ein-words have no ending in the masculine nominative and neuter nominative/accusative (ein Mann, ein Kind).',
   ],
   tables: ['def-article', 'indef-article', 'interrogatives'],
   tricks: [
@@ -17,7 +17,7 @@ export const topic: Topic = {
     'Only the masculine is special in the accusative: **der → den**. If the noun is feminine, neuter or plural, nominative and accusative look identical.',
     '**Dative plural = -n**: den Kindern, mit den Freunden (except nouns that already end in -n or -s).',
     'Learn the "always accusative" set **FUDGO** (für, um, durch, gegen, ohne) and the "always dative" set **aus-bei-mit-nach-seit-von-zu**.',
-    'The signal letters **r-e-s-n-m** are the same on der-words and ein-words: der/ein**er**, die/ein**e**, das/ein**es**, den/ein**en**, dem/ein**em**.',
+    'The signal letters **r-e-s-n-m** are the same on der-words and ein-words: der/ein**er** Frau (dat.), die/ein**e**, den/ein**en**, dem/ein**em**. Exception: masculine nominative and neuter nominative/accusative, where ein has no ending (der Mann → ein Mann, das Kind → ein Kind).',
   ],
   traps: [
     'Wrong: Ich sehe der Mann. Right: Ich sehe den Mann. (masculine accusative: den.)',

@@ -15,7 +15,7 @@ export const topic: Topic = {
   tricks: [
     'Learn every noun with its plural: der Tag, -e / die Frau, -en / das Kind, -er.',
     'Feminine → try -(e)n first (about nine in ten); -in → -innen.',
-    'Neuter with an a/o/u vowel in a short noun → -er with umlaut (Haus → Häuser, Buch → Bücher, Wort → Wörter).',
+    'Short neuter nouns with a/o/u often take -er with umlaut (Haus → Häuser, Buch → Bücher, Wort → Wörter), but not always (Jahr → Jahre).',
     'Dative plural: look at the noun after "den/mit den/von den" and add -n if there is none.',
   ],
   traps: [
@@ -120,7 +120,7 @@ export const topic: Topic = {
       prompt: 'In meiner Wohnung gibt es drei ___.',
       options: ['Zimmer', 'Zimmern', 'Zimmere', 'Zimmers'],
       answer: 0,
-      fb: { rule: 'Nouns ending in -er have the same form in the plural; -n would only be added in the dative.', cue: "'drei' (nominative object of 'es gibt') → Zimmer" },
+      fb: { rule: 'Nouns ending in -er have the same form in the plural; -n would only be added in the dative.', cue: "'drei' (accusative object of 'es gibt') → Zimmer" },
     },
     {
       id: 'plurals:11',

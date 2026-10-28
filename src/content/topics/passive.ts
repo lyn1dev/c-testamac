@@ -9,7 +9,7 @@ export const topic: Topic = {
     'The Vorgangspassiv is built with **werden + Partizip II**: Das Auto wird gewaschen. It puts the **action or the object** in focus; the active object becomes the subject, and the doer (agent) is often left out. If you do name it, use **von + Dativ** for persons and institutions and **durch + Akkusativ** for means and causes: Das Haus wurde von einem Architekten geplant. Die Stadt wurde durch ein Erdbeben zerstört.',
     'Tenses: **Präsens** wird gemacht, **Präteritum** wurde gemacht, **Perfekt** ist gemacht worden, **Plusquamperfekt** war gemacht worden, **Futur** wird gemacht werden. Note that the Partizip II of werden in the passive is **worden** (not geworden): Das Haus ist gebaut worden.',
     'With modal verbs the modal is conjugated and **werden** stands at the end as an infinitive: Der Rasen muss gemäht werden. Hier darf nicht geraucht werden.',
-    'Verbs with a **dative object** keep it in the passive; there is no nominative subject, so the sentence either begins with the dative or with a placeholder es: Mir wurde mein Fahrrad gestohlen. Impersonal passives without any subject are possible too: Bei uns wird am Sonntag nicht gearbeitet.',
+    'Verbs with a **dative object** keep it in the passive; there is no nominative subject, so the sentence either begins with the dative or with a placeholder es: Mir wurde geholfen. / Es wurde mir geholfen. Impersonal passives without any subject are possible too: Bei uns wird am Sonntag nicht gearbeitet.',
   ],
   tables: ['passive-tenses', 'partizip-2', 'sein-haben-werden'],
   tricks: [

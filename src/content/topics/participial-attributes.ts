@@ -13,7 +13,7 @@ export const topic: Topic = {
   ],
   tables: ['adj-weak', 'adj-mixed', 'adj-strong', 'partizip-2', 'relative-pronouns'],
   tricks: [
-    'Partizip I = -d means “doing right now” (lachend = laughing); Partizip II means “done to / finished” (gelacht, repariert).',
+    'Partizip I = -d means “doing right now” (lachend = laughing); Partizip II means “done to / finished” (repariert, geschrieben).',
     'Always test by unpacking: the noun is the head of the relative clause, the article stays with it (die Katze, die schläft).',
     'Attributes read like a sandwich: article – (everything about the verb) – participle with ending – noun.',
     'zu + Partizip I = muss/kann werden: die zu zahlende Rechnung = the bill that has to be paid.',

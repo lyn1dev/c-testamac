@@ -6,14 +6,14 @@ export const topic: Topic = {
   title: 'Comparative and superlative',
   summary: 'Add -er for the comparative (+ als) and am …-sten or -ste for the superlative; a few common adjectives are irregular.',
   rule: [
-    '**Comparative:** adjective + **-er**, and one-syllable adjectives with a/o/u usually add an umlaut: schnell → schneller, groß → größer, alt → älter, warm → wärmer. Compare with **als** (higher/lower) and **(genau)so … wie** (equal): Er ist größer **als** ich. Sie ist so alt **wie** er. Negated equality: nicht so … wie.',
-    '**Superlative:** **am + adjective + -sten** when predicative or adverbial (Er läuft **am schnellsten**), and **der/die/das + adjective + -ste** before a noun, with the normal adjective endings (der **höchste** Berg, die **beste** Lösung). Adjectives ending in -d, -t, -s, -ß, -z, -sch, -x add **-esten**: am ältesten, am heißesten, am kürzesten. Most others add just -sten: am schnellsten, am freundlichsten.',
+    '**Comparative:** adjective + **-er**, and many one-syllable adjectives with a/o/u add an umlaut: schnell → schneller, groß → größer, alt → älter, warm → wärmer. Compare with **als** (higher/lower) and **(genau)so … wie** (equal): Er ist größer **als** ich. Sie ist so alt **wie** er. Negated equality: nicht so … wie.',
+    '**Superlative:** **am + adjective + -sten** when predicative or adverbial (Er läuft **am schnellsten**), and **der/die/das + adjective + -ste** before a noun, with the normal adjective endings (der **höchste** Berg, die **beste** Lösung). Adjectives ending in -d, -t, -s, -ß, -z, -sch, -x add **-esten**: am ältesten, am heißesten, am kürzesten (exception: am größten). Most others add just -sten: am schnellsten, am freundlichsten.',
     '**Irregular:** gut – besser – am besten; viel – mehr – am meisten; gern – lieber – am liebsten; hoch – höher – am höchsten; nah – näher – am nächsten. gern/lieber/am liebsten express preference: Ich trinke gern Tee, lieber Kaffee, am liebsten Kakao.',
     'Useful structures: **immer + comparative** ("more and more": Es wird immer kälter) and **je … desto/umso + comparative** ("the more … the more": Je mehr ich lerne, desto besser verstehe ich). A comparative before a noun takes adjective endings: ein größeres Haus, mit einem besseren Handy.',
   ],
   tables: ['comparison-irregular'],
   tricks: [
-    'Comparative: -er; superlative: am -sten. Short a/o/u adjectives add an umlaut (alt → älter → am ältesten).',
+    'Comparative: -er; superlative: am -sten. Many short a/o/u adjectives add an umlaut (alt → älter → am ältesten).',
     'als = unequal (größer als), wie = equal (so groß wie). Never "größer wie".',
     'gern → lieber → am liebsten; gut → besser → am besten; viel → mehr → am meisten. Learn these three as a block.',
     'je … desto: in the je-clause the verb goes last; the desto clause has verb second after the comparative: Je länger ich warte, desto nervöser werde ich.',
@@ -45,7 +45,7 @@ export const topic: Topic = {
       kind: 'gap',
       text: 'Mein Bruder ist 1,90 m groß, ich bin nur 1,75 m. Er ist gr{ößer} als ich.',
       en: 'My brother is 1.90 m tall, I am only 1.75 m. He is taller than I am.',
-      fb: { rule: 'The comparative is adjective + -er; groß adds an umlaut: größer.', cue: "'als ich' → comparative größer", trick: 'a/o/u adjectives add an umlaut.' },
+      fb: { rule: 'The comparative is adjective + -er; groß adds an umlaut: größer.', cue: "'als ich' → comparative größer", trick: 'Many short a/o/u adjectives add an umlaut.' },
     },
     {
       id: 'comparison:2',
@@ -61,7 +61,7 @@ export const topic: Topic = {
       kind: 'gap',
       text: 'Im Sommer ist es hier wär{mer} als im Frühling.',
       en: 'It is warmer here in summer than in spring.',
-      fb: { rule: 'The comparative of warm is wärmer (umlaut + -er).', cue: "'als im Frühling' → wärmer", trick: 'a/o/u adjectives add an umlaut.' },
+      fb: { rule: 'The comparative of warm is wärmer (umlaut + -er).', cue: "'als im Frühling' → wärmer", trick: 'Many short a/o/u adjectives add an umlaut.' },
     },
     {
       id: 'comparison:4',

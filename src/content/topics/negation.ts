@@ -7,8 +7,8 @@ export const topic: Topic = {
   summary: 'kein negates a noun with ein-/no article; nicht negates everything else.',
   rule: [
     '**kein** negates a noun that has an indefinite article or no article: ein Auto → **kein** Auto, Zeit → **keine** Zeit. It is declined exactly like ein (keinen, keiner, keinem, plural keine/keinen).',
-    '**nicht** negates everything else: verbs, adjectives, adverbs, and nouns with a definite article, possessive or name (Ich kenne **nicht** den Mann / **nicht** Peter).',
-    'Position of nicht: to negate the whole sentence it goes **as far back as possible**, before the second part of the verb bracket (participle, infinitive, prefix), and before adjectives, adverbs of manner and prepositional phrases of place: Ich habe das Buch **nicht** gelesen. Er geht **nicht** ins Kino. To negate one element only, put nicht directly in front of it: **nicht** heute, sondern morgen.',
+    '**nicht** negates everything else: verbs, adjectives, adverbs, and nouns with a definite article, possessive or name (Ich kenne den Mann **nicht** / Ich kenne Peter **nicht**).',
+    'Position of nicht: to negate the whole sentence it goes **as far back as possible**, before the second part of the verb bracket (participle, infinitive, prefix), and before adjectives, adverbs of manner and prepositional phrases of place or direction: Ich habe das Buch **nicht** gelesen. Er geht **nicht** ins Kino. To negate one element only, put nicht directly in front of it: **nicht** heute, sondern morgen.',
     'Useful combinations: **noch nicht** (not yet), **nicht mehr / kein … mehr** (no longer), **nie** (never), **niemand** (nobody), **nichts** (nothing). sondern corrects after a negation: Ich trinke **keinen** Kaffee, **sondern** Tee.',
   ],
   tables: ['indef-article'],

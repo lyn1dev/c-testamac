@@ -7,7 +7,7 @@ export const topic: Topic = {
   summary: 'The genitive shows possession and follows prepositions like wegen, trotz, während and statt: des/eines + noun-(e)s for masculine and neuter, der/einer for feminine and plural.',
   rule: [
     'The genitive answers "whose?" and is placed **after the noun it belongs to**: das Auto meines Vaters, die Hauptstadt Deutschlands. Articles: **des / eines / meines** (masculine and neuter), **der / einer / meiner** (feminine and plural).',
-    'Masculine and neuter nouns also take the ending **-(e)s**: des Tages, des Autos, des Kindes. Use **-es** for one-syllable words and words ending in a sibilant (-s, -ß, -x, -z, -sch): des Hauses, des Tisches. Feminine and plural nouns do not change: der Frau, der Kinder. Names take -s: Annas Buch, Deutschlands Hauptstadt.',
+    'Masculine and neuter nouns also take the ending **-(e)s**: des Tages, des Autos, des Kindes. Use **-es** usually for one-syllable words and always for words ending in a sibilant (-s, -ß, -x, -z, -sch): des Hauses, des Tisches. Feminine and plural nouns do not change: der Frau, der Kinder. Names take -s: Annas Buch, Deutschlands Hauptstadt.',
     'Common prepositions with the genitive: **wegen** (because of), **trotz** (despite), **während** (during), **statt / anstatt** (instead of), **innerhalb / außerhalb** (inside / outside of). In speech many people use the dative (wegen dem Wetter), but in writing and in tests the genitive is correct: wegen des Wetters.',
     'Adjectives after des / eines / der take **-en** in the genitive of masculine and neuter nouns (wegen des schlechten Wetters) and in the plural; after der (feminine) too: trotz der großen Hitze. In everyday German von + Dativ often replaces the genitive (das Auto von meinem Vater), but the genitive is expected at B1/B2.',
   ],
@@ -16,14 +16,14 @@ export const topic: Topic = {
     '**des / eines + -(e)s**: if the article ends in -s, the noun almost always does too (des Mannes, eines Kindes).',
     'Feminine and plural: **der / einer** and no change to the noun. Memorise "der" as the genitive of Frau and of Kinder.',
     'Wegen, trotz, während, statt → genitive. A mnemonic: **"WeTWaSt"** (wegen, trotz, während, statt).',
-    'Proper names: add -s without an apostrophe (Annas Auto); if the name ends in -s, -ß, -x, -z, use von: das Auto von Max.',
+    'Proper names: add -s without an apostrophe (Annas Auto); if the name ends in -s, -ß, -x, -z, use von or just an apostrophe: das Auto von Max / Max’ Auto.',
     'Genitive follows the noun it describes: the book of my teacher = das Buch **meiner Lehrerin**.',
   ],
   traps: [
     'Wrong: Das ist das Auto meinem Vater. Right: Das ist das Auto meines Vaters. (genitive, noun gets -s.)',
     'Wrong: Wegen dem Regen bleiben wir hier. Right: Wegen des Regens bleiben wir hier. (written standard.)',
     'Wrong: Trotz des Regen gehen wir spazieren. Right: Trotz des Regens gehen wir spazieren. (masculine nouns take -(e)s.)',
-    "Wrong: Annas' Buch. Right: Annas Buch. (no apostrophe in German.)",
+    "Wrong: Annas' Buch. Right: Annas Buch. (no apostrophe before or after the genitive -s.)",
   ],
   examples: [
     { de: 'Das ist das Auto meines Vaters.', en: "That is my father's car.", note: 'Masculine genitive: meines + noun with -s.' },

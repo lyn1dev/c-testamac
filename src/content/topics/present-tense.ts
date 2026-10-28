@@ -14,9 +14,9 @@ export const topic: Topic = {
   tables: ['present-endings', 'sein-haben-werden'],
   tricks: [
     'Endings in order: **e – st – t – en – t – en**. Say them like a chant and you can conjugate any regular verb.',
-    'Er and ihr always share the same ending (-t): er macht, ihr macht. Wir and sie/Sie always equal the infinitive.',
+    'Er and ihr always share the same ending (-t): er macht, ihr macht. Wir and sie/Sie equal the infinitive (only exception: sein → wir sind).',
     'The vowel change happens only in the "shoe" forms du and er/sie/es; the other four forms (ich, wir, ihr, sie) keep the original stem.',
-    'ä-verbs (fahren, schlafen, laufen) change a → ä; e-verbs (sprechen, geben, nehmen) change e → i; lesen and sehen change e → ie.',
+    'ä-verbs change a → ä (fahren, schlafen) or au → äu (laufen); e-verbs (sprechen, geben, nehmen) change e → i; lesen and sehen change e → ie.',
     'ihr seid has a d; the preposition and conjunction seit (since) does not. Seit meaning "since" never conjugates.',
   ],
   traps: [
@@ -70,7 +70,7 @@ export const topic: Topic = {
       kind: 'gap',
       text: 'Wir {sind} müde, denn wir {haben} heute viel Arbeit.',
       en: 'We are tired because we have a lot of work today.',
-      fb: { rule: 'sein and haben are irregular; wir uses the infinitive form sind/haben.', cue: "'müde' → sein; 'viel Arbeit' → haben" },
+      fb: { rule: 'sein and haben are irregular: wir sind, wir haben.', cue: "'müde' → sein; 'viel Arbeit' → haben" },
     },
     {
       id: 'present-tense:5',
@@ -130,7 +130,7 @@ export const topic: Topic = {
       prompt: 'How do you say "you (plural, informal) are" in German?',
       options: ['ihr seid', 'ihr sind', 'ihr seit', 'ihr bist'],
       answer: 0,
-      fb: { rule: 'ihr seid (with d) is the verb; seit is the preposition "since".', cue: "'ihr' → seid", trick: 'seid has a d like "be".' },
+      fb: { rule: 'ihr seid (with d) is the verb; seit is the preposition "since".', cue: "'ihr' → seid", trick: 'seit with t = time (since); seid with d = the verb.' },
     },
     {
       id: 'present-tense:12',

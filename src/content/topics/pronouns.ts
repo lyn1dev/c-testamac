@@ -15,7 +15,7 @@ export const topic: Topic = {
   tricks: [
     'Only masculine is special in the accusative: **er → ihn**. All other third-person forms stay the same (sie → sie, es → es).',
     'Dative forms with an -m/-r: ihm (m/n), ihr (f), ihnen (pl), mir, dir — the endings echo the articles dem / der / den.',
-    'ihr/Ihr/ihnen/Ihnen: capitalised Sie, Ihnen = formal "you"; lowercase sie, ihnen = "they/them" or "she/her".',
+    'ihr/Ihr/ihnen/Ihnen: capitalised Sie, Ihnen = formal "you"; lowercase sie = "she/her" or "they/them", ihnen = "(to) them".',
     'Order: pronoun before noun (Ich gebe ihm das Buch), but accusative before dative when both are pronouns (Ich gebe es ihm).',
   ],
   traps: [
@@ -135,7 +135,7 @@ export const topic: Topic = {
       id: 'pronouns:12',
       topic: 'pronouns',
       kind: 'transform',
-      instruction: 'Replace the underlined noun phrase (the object) with a pronoun.',
+      instruction: 'Replace the object with a pronoun.',
       source: 'Ich kaufe das Buch.',
       answers: ['Ich kaufe es.'],
       fb: { rule: 'A neuter accusative object is replaced by es.', cue: "'das Buch' → es", trick: 'The pronoun takes the same gender as the noun.' },
@@ -156,7 +156,7 @@ export const topic: Topic = {
       instruction: 'Replace the dative object with a pronoun.',
       source: 'Wir helfen den Nachbarn.',
       answers: ['Wir helfen ihnen.'],
-      fb: { rule: 'The dative plural of er/sie/es is ihnen.', cue: "'den Nachbarn' (dative plural) → ihnen", trick: 'Dative plural: ihnen.' },
+      fb: { rule: 'The dative of sie (they) is ihnen.', cue: "'den Nachbarn' (dative plural) → ihnen", trick: 'Dative plural: ihnen.' },
     },
   ],
 }

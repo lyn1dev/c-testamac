@@ -8,7 +8,7 @@ export const topic: Topic = {
   rule: [
     '**lassen** has three main uses. **Allow:** „Mein Chef lässt mich früher gehen.“ **Have something done by someone else (Veranlassung):** „Ich lasse mein Auto reparieren.“ **Leave behind:** „Ich habe meinen Schlüssel zu Hause gelassen.“ In the first two uses it works like a modal verb: **lassen + infinitive** at the end of the clause.',
     'Forms: ich **lasse**, du **lässt**, er/sie/es **lässt**, wir lassen, ihr lasst, sie lassen; Präteritum **ließ**; Partizip II **gelassen**. The Perfekt depends on the use: with another infinitive the Partizip equals the infinitive (**double infinitive**): „Ich habe mein Auto reparieren **lassen**.“ As a full verb it uses **gelassen**: „Ich habe den Schirm im Bus **gelassen**.“',
-    'The person who is having something done is usually expressed with **von + dative** or left out: „Ich lasse mir die Haare (vom Friseur) schneiden.“ When the thing belongs to you, the dative reflexive **mir/dir/sich** is common. The imperative **lass uns / lasst uns** means "let us": „Lasst uns anfangen!“',
+    'The person who does the job is usually expressed with **von + dative** or left out: „Ich lasse mir die Haare (vom Friseur) schneiden.“ When the thing belongs to you, the dative reflexive **mir/dir/sich** is common. The imperative **lass uns / lasst uns** means "let us": „Lasst uns anfangen!“',
     '**sich lassen + infinitive** replaces a passive with können: „Das Problem **lässt sich** leicht lösen“ = Das Problem kann leicht gelöst werden. With the double infinitive, liegen lassen, stehen lassen and bleiben lassen are fixed pairs: „Ich habe das Buch liegen lassen.“',
   ],
   tables: [],
@@ -44,7 +44,7 @@ export const topic: Topic = {
       kind: 'gap',
       text: 'Ich la{sse} mir morgen die Haare schneiden. Ich habe um zehn Uhr einen Termin.',
       en: 'I am having my hair cut tomorrow. I have an appointment at ten.',
-      fb: { rule: 'ich lasse: the stem la- plus -sse without an umlaut.', cue: '„Ich“', trick: 'only du/er have the umlaut' },
+      fb: { rule: 'ich lasse: the stem lass- plus -e, without an umlaut.', cue: '„Ich“', trick: 'only du/er have the umlaut' },
     },
     {
       id: 'lassen:2',
@@ -141,7 +141,7 @@ export const topic: Topic = {
       kind: 'transform',
       instruction: 'Say that you are having the bike repaired (use lassen).',
       source: 'Der Mechaniker repariert mein Fahrrad.',
-      answers: ['Ich lasse mein Fahrrad reparieren', 'Ich lasse mein Fahrrad vom Mechaniker reparieren'],
+      answers: ['Ich lasse mein Fahrrad reparieren', 'Ich lasse mein Fahrrad vom Mechaniker reparieren', 'Ich lasse mein Fahrrad von dem Mechaniker reparieren'],
       fb: { rule: 'lassen + object + infinitive: you cause the action, someone else does it.', cue: '„Der Mechaniker repariert“', trick: 'Ich lasse … reparieren' },
     },
     {

@@ -281,8 +281,8 @@ export const TABLES: GrammarTable[] = [
     pattern:
       'Regular endings are -e, -st, -t, -en, -t, -en. Stems ending in -t or -d insert an e (arbeitest), stems ending in an s-sound drop the s of -st (heißt), and some strong verbs change the vowel in du and er/sie/es (fahren → fährst, fährt).',
     tricks: [
-      'wir and sie/Sie always equal the infinitive.',
-      'er and ihr always have the same form in the present.',
+      'wir and sie/Sie equal the infinitive (only sein differs: sind).',
+      'er and ihr share the same form unless the vowel changes: er macht, ihr macht, but er fährt, ihr fahrt.',
       'Stems in -t/-d need an extra e so the ending can be pronounced: arbeitest, findet.',
       'Verbs in -eln drop the e in ich: ich sammle.',
     ],
@@ -328,7 +328,7 @@ export const TABLES: GrammarTable[] = [
       ['können', 'müssen', 'dürfen', 'sollen', 'wollen', 'mögen', 'möchten'],
     ],
     pattern:
-      'Modal verbs have no ending in ich and er/sie/es (ich kann, er kann) and a different stem vowel in the singular (kann/können, muss/müssen). In wir, ihr and sie/Sie the umlaut stem returns (except sollen and wollen, which never change).',
+      'Modal verbs have no ending in ich and er/sie/es (ich kann, er kann) and a different stem vowel in the singular (kann/können, muss/müssen). In wir, ihr and sie/Sie the vowel of the infinitive returns (sollen never changes its vowel).',
     tricks: [
       'ich = er/sie/es, with no ending: kann, muss, darf, soll, will, mag.',
       'sollen has no vowel change at all; wollen only changes o → i in the singular.',
@@ -492,13 +492,13 @@ export const TABLES: GrammarTable[] = [
       ['wird gebaut worden sein', 'werden gebaut worden sein'],
       ['muss gebaut werden', 'müssen gebaut werden'],
       ['musste gebaut werden', 'mussten gebaut werden'],
-      ['würde gebaut werden', 'würden gebaut werden'],
+      ['würde gebaut/würde gebaut werden', 'würden gebaut/würden gebaut werden'],
     ],
     pattern:
       'The passive is always a form of werden + Partizip II, and the verb agrees with the grammatical subject (das Haus wird, die Häuser werden). In the compound tenses werden turns into worden (ist gebaut worden); with a modal verb the passive infinitive is gebaut werden.',
     tricks: [
       'werden changes with the tense, Partizip II stays the same.',
-      'worden (not geworden) appears only in the passive Perfekt and Plusquamperfekt.',
+      'worden (not geworden) appears only in the passive Perfekt, Plusquamperfekt and Futur II.',
       'Modal passive: modal verb + Partizip II + werden.',
       'The agent becomes von + Dativ (von den Arbeitern).',
     ],
@@ -525,7 +525,7 @@ export const TABLES: GrammarTable[] = [
     pattern:
       'Some prepositions always take one case: Akkusativ (durch, für, gegen, ohne, um, bis), Dativ (aus, bei, mit, nach, seit, von, zu …) or Genitiv (wegen, trotz, während …). Nine two-way prepositions (Wechselpräpositionen) take Akkusativ for movement to a place (wohin?) and Dativ for a position (wo?).',
     tricks: [
-      'Akkusativ: durch, für, gegen, ohne, um, bis (FUDGEBO without entlang and wider).',
+      'Akkusativ: durch, für, gegen, ohne, um, bis (FUDGEBO: für, um, durch, gegen, entlang, bis, ohne).',
       'Dativ: aus, bei, mit, nach, seit, von, zu — learn it as a chant.',
       'Wechsel: wohin? → Akkusativ, wo? → Dativ.',
       'wegen, trotz, während, statt take Genitiv; in speech you often hear Dativ, but write Genitiv.',
@@ -559,7 +559,7 @@ export const TABLES: GrammarTable[] = [
     pattern:
       'Verbs of placing (stellen, legen, setzen, hängen, stecken) are weak and transitive: they take an Akkusativ object and a direction (wohin?). Verbs of position (stehen, liegen, sitzen, hängen, stecken) are intransitive and take Dativ for the place (wo?); stehen, liegen and sitzen are strong.',
     tricks: [
-      'Transitive and weak = put something somewhere (Akkusativ); intransitive and strong = be somewhere (Dativ).',
+      'Transitive and weak = put something somewhere (Akkusativ); intransitive and mostly strong = be somewhere (Dativ).',
       'stellen–stehen, legen–liegen, setzen–sitzen: the strong partner changes its stem.',
       'hängen has two meanings: hängte/gehängt (put) versus hing/gehangen (be hanging).',
     ],
@@ -632,7 +632,7 @@ export const TABLES: GrammarTable[] = [
     rows: ['entweder', 'sowohl', 'weder', 'nicht nur', 'zwar', 'je', 'einerseits', 'teils'],
     cells: [
       ['oder'],
-      ['als auch'],
+      ['als auch/wie auch'],
       ['noch'],
       ['sondern auch'],
       ['aber'],
@@ -729,15 +729,15 @@ export const TABLES: GrammarTable[] = [
     rows: [
       '-ung', '-heit', '-keit', '-schaft', '-tion', '-tät', '-ik', '-ur', '-ei', '-in', '-ie', '-enz', '-anz', '-age',
       '-ling', '-ismus', '-or', '-ant', '-ist', '-ent', '-ig', '-er',
-      '-chen', '-lein', '-ment', '-um', '-ma', '-nis', '-ett', '-al', '-en (Verb als Nomen)',
+      '-chen', '-lein', '-ment', '-um', '-ma', '-nis', '-ett', '-en (Verb als Nomen)',
     ],
     cells: [
       ['die'], ['die'], ['die'], ['die'], ['die'], ['die'], ['die'], ['die'], ['die'], ['die'], ['die'], ['die'], ['die'], ['die'],
       ['der'], ['der'], ['der'], ['der'], ['der'], ['der'], ['der'], ['der'],
-      ['das'], ['das'], ['das'], ['das'], ['das'], ['das'], ['das'], ['das'], ['das'],
+      ['das'], ['das'], ['das'], ['das'], ['das'], ['das'], ['das'], ['das'],
     ],
     pattern:
-      'The ending of a noun often tells you its gender. Almost all nouns in -ung, -heit, -keit, -schaft, -tion, -tät, -ik, -ur, -ei, -in and -ie are feminine; nouns for male people and most in -ling, -ismus, -or, -ant, -ist, -ent, -ig, -er are masculine; -chen, -lein, -ment, -um, -ma, -nis, -ett, -al and nominalized verbs are neuter.',
+      'The ending of a noun often tells you its gender. Almost all nouns in -ung, -heit, -keit, -schaft, -tion, -tät, -ik, -ur, -ei, -in and -ie are feminine; nouns for male people and most in -ling, -ismus, -or, -ant, -ist, -ent, -ig, -er are masculine; -chen, -lein, -ment, -um, -ma, -nis, -ett and nominalized verbs are neuter.',
     tricks: [
       'Feminine: -ung, -heit, -keit, -schaft, -tion, -tät, -ik, -ur, -ei, -in, -ie.',
       'Diminutives -chen and -lein are always neuter, whatever the noun is: das Mädchen.',
@@ -768,7 +768,7 @@ export const TABLES: GrammarTable[] = [
     pattern:
       'German has five main plural types: -e (Tisch → Tische, often with umlaut), -(e)n (Frau → Frauen), -er (Kind → Kinder, always with umlaut if possible), no ending (Lehrer → Lehrer, sometimes with umlaut) and -s (Auto → Autos). Feminine nouns mostly take -(e)n, and there are no fixed rules for masculine and neuter, so learn the plural with the noun.',
     tricks: [
-      'Feminine nouns: -(e)n in about 90% of cases; the exceptions with umlaut are Mutter, Tochter, Hand, Nacht, Stadt, Wand.',
+      'Feminine nouns: -(e)n in about 90% of cases; common exceptions with umlaut are Mutter, Tochter, Hand, Nacht, Stadt, Wand.',
       'Neuter nouns in -er and -en usually do not change: das Zimmer, das Fenster; masculine nouns in -el, -er, -en take an umlaut or nothing.',
       '-s is for foreign words and abbreviations: Auto, Hotel, Café, Foto.',
       '-er always comes with an umlaut if the vowel can take one: Haus → Häuser.',

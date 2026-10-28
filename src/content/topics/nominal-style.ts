@@ -181,7 +181,7 @@ export const topic: Topic = {
       kind: 'transform',
       instruction: 'Rewrite in nominal style with „wegen“.',
       source: 'Weil es stark regnete, wurde das Fest abgesagt.',
-      answers: ['Wegen des starken Regens wurde das Fest abgesagt', 'Aufgrund des starken Regens wurde das Fest abgesagt'],
+      answers: ['Wegen des starken Regens wurde das Fest abgesagt', 'Wegen starken Regens wurde das Fest abgesagt', 'Aufgrund des starken Regens wurde das Fest abgesagt'],
       fb: {
         rule: 'weil + clause → wegen + genitive noun phrase.',
         cue: '„weil es stark regnete“',

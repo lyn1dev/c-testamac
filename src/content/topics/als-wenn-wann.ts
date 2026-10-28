@@ -108,7 +108,7 @@ export const topic: Topic = {
       topic: 'als-wenn-wann',
       kind: 'choice',
       prompt: 'Ich möchte wissen, ___ du Geburtstag hast.',
-      options: ['wann', 'wenn', 'als', 'ob'],
+      options: ['wann', 'wenn', 'als', 'wie'],
       answer: 0,
       fb: { rule: 'An indirect question about a date or time takes wann.', cue: '„Ich möchte wissen“', trick: 'question about time = wann' },
     },

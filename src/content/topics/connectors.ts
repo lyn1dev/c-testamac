@@ -20,7 +20,7 @@ export const topic: Topic = {
   ],
   traps: [
     '*Ich bleibe zu Hause, weil ich bin krank → **weil ich krank bin**. weil sends the verb to the end.',
-    '*Es regnet. Deshalb wir bleiben zu Hause → **Deshalb bleiben wir zu Hause**. After deshalb the verb comes first.',
+    '*Es regnet. Deshalb wir bleiben zu Hause → **Deshalb bleiben wir zu Hause**. After deshalb the verb comes directly next.',
     '*Er sagt, dass er kommt morgen → **dass er morgen kommt**. dass requires verb last.',
     '*Ich trinke nicht Kaffee, aber Tee → **sondern Tee**. After a negation, use sondern when replacing.',
   ],
@@ -145,7 +145,7 @@ export const topic: Topic = {
       topic: 'connectors',
       kind: 'transform',
       instruction: "Report the statement with 'dass'.",
-      source: 'Er sagt: „Ich komme später."',
+      source: 'Er sagt: „Ich komme später.“',
       answers: ['Er sagt, dass er später kommt.'],
       fb: { rule: 'dass starts a subordinate clause with the verb at the end; ich becomes er.', cue: "'Er sagt, dass …' → dass er später kommt" },
     },

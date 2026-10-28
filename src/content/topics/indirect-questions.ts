@@ -15,7 +15,7 @@ export const topic: Topic = {
   tricks: [
     'Question word kept, verb sent to the end: **W-word + subject + … + verb**.',
     'No question word? Put **ob** in its place. Never combine ob with a question word.',
-    'A question mark closes only direct questions: if the frame is a statement, end with a full stop.',
+    'The frame decides the end punctuation: a statement frame ends with a full stop, a question frame with a question mark.',
     'Polite requests use this pattern: „Können Sie mir sagen, wo …?“ sounds softer than „Wo ist …?“.',
   ],
   traps: [
@@ -99,7 +99,7 @@ export const topic: Topic = {
       topic: 'indirect-questions',
       kind: 'choice',
       prompt: 'Weißt du, ___ das Konzert um acht Uhr beginnt?',
-      options: ['ob', 'wann', 'wie', 'wo'],
+      options: ['ob', 'wann', 'wenn', 'als'],
       answer: 0,
       fb: { rule: 'When the time is already given, the question can only be a yes/no question: ob.', cue: '„um acht Uhr“', trick: 'yes/no → ob' },
     },
@@ -124,7 +124,7 @@ export const topic: Topic = {
       prompt: 'Sie fragt, ___ ich Kaffee oder Tee möchte.',
       options: ['ob', 'wenn', 'als', 'dass'],
       answer: 0,
-      fb: { rule: 'A yes/no choice question becomes an ob-clause.', cue: '„Kaffee oder Tee“', trick: 'no question word → ob' },
+      fb: { rule: 'An either-or question (Kaffee oder Tee?) has no question word, so it becomes an ob-clause.', cue: '„Kaffee oder Tee“', trick: 'no question word → ob' },
     },
     {
       id: 'indirect-questions:11',
