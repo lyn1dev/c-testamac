@@ -16,7 +16,15 @@ function openRouterMock() {
     const body = JSON.parse(String(init?.body ?? '{}'))
     const prompt: string = body.messages.at(-1).content
     let content: unknown
-    if (prompt.includes('follow-up question')) {
+    if (prompt.includes('Correct it.')) {
+      content = {
+        correct: false,
+        corrected: 'Gestern bin ich ins Kino gegangen.',
+        errors: [{ wrong: 'habe', right: 'bin', rule: 'gehen takes sein' }],
+        comment: '',
+        usedTopic: true,
+      }
+    } else if (prompt.includes('follow-up question')) {
       content = { answer: 'Because mit always takes the dative.' }
     } else if (prompt.includes('Full text:')) {
       const ns = [...prompt.matchAll(/^(\d+)\. sentence:/gm)].map((m) => Number(m[1]))
@@ -170,5 +178,33 @@ describe('c-tests', () => {
     const [r] = await db.results.toArray()
     expect([r.correct, r.total, r.gaps.length]).toEqual([0, 19, 20])
     expect(screen.getByText(/0 \/ 19/)).toBeTruthy()
+  })
+})
+
+describe('writing', () => {
+  it('turns each corrected writing error into a review card', async () => {
+    await saveSetting('placementDone', true)
+    await saveSetting('apiKey', 'sk-or-test')
+    await saveSetting('model', 'test/model')
+    app('/grammar/perfekt')
+    fireEvent.click(await screen.findByRole('button', { name: /Write/ }))
+    fireEvent.change(await screen.findByPlaceholderText('Schreib hier…'), { target: { value: 'Gestern habe ich ins Kino gegangen.' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Correct my German' }))
+    await screen.findByText(/gehen takes sein/)
+    await waitFor(async () => expect(await db.cards.count()).toBe(1))
+    const [card] = await db.cards.toArray()
+    expect(card.item.kind === 'gap' && [card.item.before, card.item.gap.answer, card.topic]).toEqual(['Gestern ', 'bin', 'perfekt'])
+  })
+
+  it("puts a table speed round and, with a key, a writing task in today's session", async () => {
+    await saveSetting('placementDone', true)
+    app('/session')
+    expect(await screen.findByText(/Table speed round/)).toBeTruthy()
+    expect(screen.queryByText(/Writing:/)).toBeNull()
+    cleanup()
+    await saveSetting('apiKey', 'sk-or-test')
+    await saveSetting('model', 'test/model')
+    app('/session')
+    expect(await screen.findByText(/Writing:/)).toBeTruthy()
   })
 })

@@ -3,9 +3,21 @@ import { estimateScores, recommendedLevel, type ResultLike } from './estimate'
 import { topicMastery, weakestTopics } from './mastery'
 import { planSession } from './session'
 import { DAY, MINUTE, newCard, schedule } from './srs'
-import type { Item } from './items'
+import { checkItem, fixItem, type Item } from './items'
 
 const item: Item = { kind: 'verb', key: 'verb:gehen:perfekt:2', inf: 'gehen', tense: 'perfekt', person: 2 }
+
+describe('writing corrections', () => {
+  it('turn into a gap on the fixed part of the corrected sentence', () => {
+    const it = fixItem('Wir waren müde. Gestern bin ich ins Kino gegangen, aber es war voll.', 'bin', 'perfekt')!
+    expect(it.kind === 'gap' && [it.before, it.after]).toEqual(['Gestern ', ' ich ins Kino gegangen, aber es war voll.'])
+    expect(it.topic).toBe('perfekt')
+    expect(checkItem(it, 'bin').correct).toBe(true)
+    expect(checkItem(it, 'habe').correct).toBe(false)
+    expect(fixItem('Ich gehe.', '', 'perfekt')).toBeNull()
+    expect(fixItem('Ich gehe.', 'nicht da', 'perfekt')).toBeNull()
+  })
+})
 
 describe('srs', () => {
   it('brings wrong answers back in minutes and grows intervals when right', () => {
@@ -96,6 +108,23 @@ describe('session planner', () => {
     const steps = planSession({ minutes: 45, dueCount: 30, nextTopic: 'perfekt', weakestTopic: 'cases', level: 'B1' })
     expect(steps.map((s) => s.kind)).toEqual(['review', 'lesson', 'ctest', 'ctest', 'weak'])
     expect(steps.reduce((s, x) => s + x.minutes, 0)).toBeLessThanOrEqual(45)
+  })
+
+  it('adds a table speed round and, with AI, a writing task without losing C-tests', () => {
+    const steps = planSession({
+      minutes: 45,
+      dueCount: 30,
+      nextTopic: 'perfekt',
+      weakestTopic: 'cases',
+      level: 'B1',
+      tableId: 'def-article',
+      writeTopic: 'cases',
+    })
+    expect(steps.map((s) => s.kind)).toEqual(['review', 'lesson', 'ctest', 'ctest', 'table', 'write', 'weak'])
+    expect(steps.reduce((s, x) => s + x.minutes, 0)).toBeLessThanOrEqual(45)
+    const noKey = planSession({ minutes: 20, dueCount: 5, level: 'B1', tableId: 'def-article' })
+    expect(noKey.map((s) => s.kind)).toEqual(['review', 'ctest', 'table', 'mixed'])
+    expect(noKey.reduce((s, x) => s + x.minutes, 0)).toBeLessThanOrEqual(20)
   })
 
   it('keeps short sessions to the essentials', () => {

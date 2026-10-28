@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import { correctWriting, generateExercises, type WritingFeedback } from '../ai/tasks'
 import { TOPIC_BY_ID } from '../content/index'
-import { db, setTopic } from '../db'
-import { exerciseItem, type Item } from '../practice/items'
+import { db, grade, setTopic } from '../db'
+import { exerciseItem, fixItem, type Item } from '../practice/items'
 import { interleaved, shuffle, topicItems } from '../practice/pools'
 import { aiReady, useSettings } from '../settings'
 import { Btn, Card, Page, STATUS_STYLE, useActivity } from '../ui/bits'
@@ -13,7 +13,7 @@ import { introducedTopics, useMastery, useTopicStates } from '../ui/hooks'
 
 type Tab = 'lesson' | 'practice' | 'testout' | 'ai' | 'write'
 
-function WriteTab({ topicId, prompts }: { topicId: string; prompts: string[] }) {
+export function WriteTab({ topicId, prompts }: { topicId: string; prompts: string[] }) {
   const settings = useSettings()
   const [task, setTask] = useState(prompts[0])
   const [text, setText] = useState('')
@@ -37,6 +37,10 @@ function WriteTab({ topicId, prompts }: { topicId: string; prompts: string[] }) 
         assisted: false,
         source: 'practice',
       })
+      for (const err of out.errors) {
+        const item = fixItem(out.corrected, err.right, topicId)
+        if (item) await grade(item, 'wrong')
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e))
     } finally {

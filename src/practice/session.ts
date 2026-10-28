@@ -6,6 +6,8 @@ export type Step =
   | { kind: 'ctest'; minutes: number; level: CTestLevel }
   | { kind: 'weak'; minutes: number; topic: string; count: number }
   | { kind: 'mixed'; minutes: number; count: number }
+  | { kind: 'table'; minutes: number; tableId: string; count: number }
+  | { kind: 'write'; minutes: number; topic: string }
 
 export type SessionInput = {
   minutes: number
@@ -13,12 +15,16 @@ export type SessionInput = {
   nextTopic?: string
   weakestTopic?: string
   level: CTestLevel
+  tableId?: string
+  writeTopic?: string
 }
 
 const PER_REVIEW = 1 / 3
 const PER_DRILL = 0.5
 const LESSON = 10
 const CTEST = 7
+const TABLE_ROUND = 3
+const WRITE = 5
 
 export function planSession(input: SessionInput): Step[] {
   const steps: Step[] = []
@@ -35,6 +41,14 @@ export function planSession(input: SessionInput): Step[] {
   const texts = Math.max(left >= CTEST ? 1 : 0, Math.floor((left * 0.6) / CTEST))
   for (let i = 0; i < texts; i++) steps.push({ kind: 'ctest', minutes: CTEST, level: input.level })
   left -= texts * CTEST
+  if (input.tableId && left >= TABLE_ROUND) {
+    steps.push({ kind: 'table', minutes: TABLE_ROUND, tableId: input.tableId, count: 15 })
+    left -= TABLE_ROUND
+  }
+  if (input.writeTopic && left >= WRITE) {
+    steps.push({ kind: 'write', minutes: WRITE, topic: input.writeTopic })
+    left -= WRITE
+  }
   if (left >= 3) {
     const count = Math.floor(left / PER_DRILL)
     steps.push(
