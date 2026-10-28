@@ -323,6 +323,27 @@ describe('settings', () => {
 })
 
 describe('keyboard', () => {
+  it('does not wipe the next answer when Enter is pressed again during rapid auto-advance', async () => {
+    await saveSetting('placementDone', true)
+    app('/tables/def-article')
+    fireEvent.click(await screen.findByRole('button', { name: /Speed round/ }))
+    const t = TABLE_BY_ID.get('def-article')!
+    const input = (await screen.findByPlaceholderText('type the answer')) as HTMLInputElement
+    const box = input.closest('[tabindex="-1"]')!
+    const [row, col] = [...box.querySelectorAll('p')]
+      .map((p) => p.textContent!.split(' · ').map((s) => s.trim()))
+      .find(([r, c]) => t.rows.includes(r) && t.cols.includes(c))!
+    fireEvent.change(input, { target: { value: t.cells[t.rows.indexOf(row)][t.cols.indexOf(col)].split('/')[0] } })
+    fireEvent.keyDown(input, { key: 'Enter' })
+    await screen.findByText('✓ Correct')
+    fireEvent.keyDown(box, { key: 'Enter' })
+    const next = (await screen.findByPlaceholderText('type the answer')) as HTMLInputElement
+    fireEvent.change(next, { target: { value: 'zw' } })
+    await new Promise((r) => setTimeout(r, 600))
+    expect((screen.getByPlaceholderText('type the answer') as HTMLInputElement).value).toBe('zw')
+    expect(screen.getByText(/2 \/ \d+/)).toBeTruthy()
+  })
+
   it('keeps focus in the drill after checking, so Enter moves on', async () => {
     await saveSetting('placementDone', true)
     app('/verbs')
