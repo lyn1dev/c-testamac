@@ -293,7 +293,7 @@ export function Drill({ items, source, mode = 'learn', timeLimit, onDone, doneLa
     } else if (e.key === 'Escape') {
       e.preventDefault()
       skip()
-    } else if (e.altKey && e.key.toLowerCase() === 'k') {
+    } else if (e.altKey && e.key.toLowerCase() === 'k' && mode !== 'test') {
       e.preventDefault()
       known()
     } else if (!result && item.kind === 'exercise' && item.exercise.kind === 'choice' && /^[1-9]$/.test(e.key)) {

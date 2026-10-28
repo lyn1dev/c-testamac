@@ -275,6 +275,16 @@ describe('placement', () => {
     expect((await db.topics.toArray()).some((t) => t.testedOutAt)).toBe(false)
   })
 
+  it('ignores Alt+K (I know this) during placement', async () => {
+    app()
+    fireEvent.click(await screen.findByRole('button', { name: 'Start' }))
+    const box = (await screen.findByText(/1 \/ \d+/)).closest('[tabindex="-1"]')!
+    fireEvent.keyDown(box, { key: 'k', altKey: true })
+    await new Promise((r) => setTimeout(r, 200))
+    expect(screen.getByText(/1 \/ \d+/)).toBeTruthy()
+    expect(await db.cards.count()).toBe(0)
+  })
+
   it('marks answers given after a lookup as assisted', async () => {
     app()
     fireEvent.click(await screen.findByRole('button', { name: 'Start' }))
