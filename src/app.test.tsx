@@ -4,8 +4,10 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-li
 import { MemoryRouter } from 'react-router-dom'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { App } from './App'
+import { TABLE_BY_ID } from './content/index'
 import { BUILTIN_TEXTS } from './ctest/texts'
 import { db } from './db'
+import { DAY } from './practice/srs'
 import { saveSetting } from './settings'
 
 function openRouterMock() {
@@ -45,9 +47,9 @@ afterEach(() => {
   vi.unstubAllGlobals()
 })
 
-const app = () =>
+const app = (path = '/') =>
   render(
-    <MemoryRouter initialEntries={['/']}>
+    <MemoryRouter initialEntries={[path]}>
       <App />
     </MemoryRouter>,
   )
@@ -93,4 +95,23 @@ describe('first launch to explained mistakes', () => {
     fireEvent.click(within(panel).getAllByRole('button', { name: /Definite article/ })[0])
     await waitFor(() => expect(within(panel).getAllByText('dem').length).toBeGreaterThan(0))
   }, 20000)
+})
+
+describe('tables', () => {
+  it('counts a perfect fill as a normal correct answer, not as known', async () => {
+    await saveSetting('placementDone', true)
+    app('/tables/def-article')
+    fireEvent.click(await screen.findByRole('button', { name: 'Fill from memory' }))
+    const answers = TABLE_BY_ID.get('def-article')!
+      .cells.flat()
+      .filter((c) => !['', '–'].includes(c.trim()))
+      .map((c) => c.split('/')[0].trim())
+    screen.getAllByRole('textbox').forEach((el, i) => fireEvent.change(el, { target: { value: answers[i] } }))
+    fireEvent.click(screen.getByRole('button', { name: 'Check all' }))
+    await waitFor(async () => expect(await db.attempts.count()).toBe(answers.length))
+    await new Promise((r) => setTimeout(r, 300))
+    const cards = await db.cards.toArray()
+    expect(cards.length).toBeGreaterThan(0)
+    for (const c of cards) expect(c.due - Date.now()).toBeLessThan(5 * DAY)
+  })
 })

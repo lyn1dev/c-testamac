@@ -3,7 +3,7 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { matchesAny } from '../content/exercise'
 import { TABLE_BY_ID, TABLES } from '../content/index'
 import type { GrammarTable, Level } from '../content/types'
-import { grade, record } from '../db'
+import { record } from '../db'
 import { cellAnswers, cellItem } from '../practice/items'
 import { shuffle, tableItems } from '../practice/pools'
 import { Btn, Card, Page, Rich, useActivity } from '../ui/bits'
@@ -49,7 +49,6 @@ function FillTable({ table, onDone }: { table: GrammarTable; onDone: () => void 
     setChecked(true)
     const assisted = lookupCount() !== startLookups
     for (const [r, c] of cells) await record(cellItem(table.id, r, c), ok(r, c), { assisted, source: 'practice' })
-    if (!assisted && score === cells.length) for (const [r, c] of cells) await grade(cellItem(table.id, r, c), 'known')
   }
 
   return (
@@ -104,7 +103,7 @@ function FillTable({ table, onDone }: { table: GrammarTable; onDone: () => void 
           <>
             <span className="font-medium">
               {score}/{cells.length}
-              {score === cells.length ? ' — perfect. Cells pushed far out in reviews.' : ' — wrong cells were added to reviews.'}
+              {score === cells.length ? ' — perfect. Fill it again in a few days to make it stick.' : ' — wrong cells were added to reviews.'}
             </span>
             <Btn onClick={onDone}>Again</Btn>
           </>
