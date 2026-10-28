@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { TABLE_BY_ID, TABLES, TOPIC_BY_ID } from '../content/index'
 import { db, setTopic, type CTestResult } from '../db'
@@ -55,9 +55,12 @@ function StepRunner({ step, onNext }: { step: Step; onNext: () => void }) {
   const [text, setText] = useState<PlayerText | null>(null)
   const [result, setResult] = useState<CTestResult | null>(null)
   const [error, setError] = useState('')
+  const loaded = useRef<Step | null>(null)
   useActivity(step.kind === 'lesson' && !lessonRead ? null : `session:${step.kind}`)
 
   useEffect(() => {
+    if (loaded.current === step) return
+    loaded.current = step
     const load = async () => {
       if (step.kind === 'review') setItems(await dueItems(step.count))
       if (step.kind === 'table') setItems(shuffle(tableItems(step.tableId)).slice(0, step.count))

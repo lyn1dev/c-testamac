@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import 'fake-indexeddb/auto'
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
+import { StrictMode } from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { App } from './App'
@@ -61,9 +62,11 @@ afterEach(() => {
 
 const app = (path = '/') =>
   render(
-    <MemoryRouter initialEntries={[path]}>
-      <App />
-    </MemoryRouter>,
+    <StrictMode>
+      <MemoryRouter initialEntries={[path]}>
+        <App />
+      </MemoryRouter>
+    </StrictMode>,
   )
 
 describe('first launch to explained mistakes', () => {
@@ -96,6 +99,9 @@ describe('first launch to explained mistakes', () => {
     fireEvent.click(screen.getByRole('button', { name: /Finish/ }))
 
     expect(await screen.findByText('Explanation for gap 1', {}, { timeout: 3000 })).toBeTruthy()
+    const prompts = vi.mocked(fetch).mock.calls.map(([, init]) => String(init?.body))
+    expect(prompts.filter((p) => p.includes('Write an original German text'))).toHaveLength(1)
+    expect(prompts.filter((p) => p.includes('Full text:'))).toHaveLength(1)
     expect(screen.getAllByRole('button', { name: /Lesson: Prepositions/ }).length).toBeGreaterThan(0)
     const ask = (await screen.findAllByPlaceholderText(/Ask a follow-up/))[0]
     fireEvent.change(ask, { target: { value: 'Why dative?' } })

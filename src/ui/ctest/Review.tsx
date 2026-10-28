@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { askFollowUp, explainGaps } from '../../ai/tasks'
 import { TOPIC_BY_ID } from '../../content/index'
@@ -130,7 +130,7 @@ export function CTestReview({ result, onAgain, autoExplain = true }: { result: C
   const [r, setR] = useState(result)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
-  const [tried, setTried] = useState(false)
+  const tried = useRef(false)
   const ct = rebuild(r)
   const wrongCount = r.gaps.filter((g) => !g.correct && !g.accepted && !g.reported).length
 
@@ -156,8 +156,8 @@ export function CTestReview({ result, onAgain, autoExplain = true }: { result: C
   }
 
   useEffect(() => {
-    if (autoExplain && !tried && !r.explained && aiReady(settings)) {
-      setTried(true)
+    if (autoExplain && !tried.current && !r.explained && aiReady(settings)) {
+      tried.current = true
       void explain()
     }
   })
