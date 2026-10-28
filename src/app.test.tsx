@@ -291,3 +291,18 @@ describe('timers', () => {
     }
   })
 })
+
+describe('settings', () => {
+  it('lets a number be typed digit by digit and saves it once valid', async () => {
+    await saveSetting('placementDone', true)
+    app('/settings')
+    const seconds = (await screen.findByLabelText(/Seconds per text/)) as HTMLInputElement
+    fireEvent.change(seconds, { target: { value: '6' } })
+    expect(seconds.value).toBe('6')
+    fireEvent.change(seconds, { target: { value: '600' } })
+    await waitFor(async () => expect((await db.settings.get('secondsPerText'))?.value).toBe(600))
+    fireEvent.change(seconds, { target: { value: '6' } })
+    fireEvent.blur(seconds)
+    await waitFor(() => expect(seconds.value).toBe('600'))
+  })
+})

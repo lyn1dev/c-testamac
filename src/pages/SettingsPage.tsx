@@ -5,6 +5,7 @@ import { saveSetting, useSettings, type Settings } from '../settings'
 import { Btn, Card, Page } from '../ui/bits'
 
 function NumberField({ label, k, value, min, max, step = 1 }: { label: string; k: keyof Settings; value: number; min: number; max: number; step?: number }) {
+  const [draft, setDraft] = useState<string | null>(null)
   return (
     <label className="block text-sm">
       {label}
@@ -13,11 +14,13 @@ function NumberField({ label, k, value, min, max, step = 1 }: { label: string; k
         min={min}
         max={max}
         step={step}
-        value={value}
+        value={draft ?? value}
         onChange={(e) => {
+          setDraft(e.target.value)
           const n = Number(e.target.value)
-          if (n >= min && n <= max) void saveSetting(k, n as never)
+          if (e.target.value !== '' && n >= min && n <= max) void saveSetting(k, n as never)
         }}
+        onBlur={() => setDraft(null)}
         className="mt-1 block w-28 rounded border border-stone-300 px-2 py-1"
       />
     </label>
