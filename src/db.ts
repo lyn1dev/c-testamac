@@ -113,6 +113,7 @@ export async function record(item: Item, correct: boolean, opts: { assisted: boo
       return
     }
     const existing = await db.cards.get(item.key)
+    if (correct && (opts.assisted || (existing && existing.due > now))) return
     if (!existing && correct && (await newCardsFromCorrectToday(now)) >= NEW_CARDS_FROM_CORRECT_PER_DAY) return
     await db.cards.put(schedule(existing ?? newCard(item, now), correct ? 'right' : 'wrong', now))
   })

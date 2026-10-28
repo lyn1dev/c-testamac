@@ -44,12 +44,30 @@ describe('review queue', () => {
     await record(items[30], false, practice)
     expect(await db.cards.get(items[30].key)).toBeDefined()
 
+    vi.setSystemTime(Date.now() + 5 * DAY)
     await record(items[0], true, practice)
     expect((await db.cards.get(items[0].key))?.reps).toBe(2)
 
     vi.setSystemTime(new Date(2026, 9, 2, 9))
     await record(items[40], true, practice)
     expect(await db.cards.get(items[40].key)).toBeDefined()
+  })
+
+  it('only reschedules a correct, unassisted answer when the card is due', async () => {
+    const it = items[0]
+    await record(it, true, practice)
+    const first = (await db.cards.get(it.key))!
+    await record(it, true, practice)
+    await record(it, true, { assisted: true, source: 'review' })
+    expect(await db.cards.get(it.key)).toEqual(first)
+    vi.setSystemTime(first.due + MINUTE)
+    await record(it, true, { assisted: true, source: 'review' })
+    expect((await db.cards.get(it.key))?.due).toBe(first.due)
+    await record(it, true, practice)
+    expect((await db.cards.get(it.key))?.reps).toBe(2)
+    await record(it, false, practice)
+    expect((await db.cards.get(it.key))?.lapses).toBe(1)
+    expect(await db.attempts.count()).toBe(6)
   })
 
   it('serves lapsed cards first, then the most overdue', async () => {

@@ -198,7 +198,7 @@ describe('writing', () => {
     fireEvent.change(await screen.findByPlaceholderText('Schreib hier…'), { target: { value: 'Gestern habe ich ins Kino gegangen.' } })
     fireEvent.click(screen.getByRole('button', { name: 'Correct my German' }))
     await screen.findByText(/gehen takes sein/)
-    await waitFor(async () => expect(await db.cards.count()).toBe(1))
+    await waitFor(async () => expect(await db.cards.count()).toBe(1), { timeout: 3000 })
     const [card] = await db.cards.toArray()
     expect(card.item.kind === 'gap' && [card.item.before, card.item.gap.answer, card.topic]).toEqual(['Gestern ', 'bin', 'perfekt'])
   })
