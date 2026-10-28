@@ -3,6 +3,7 @@ import { TABLE_BY_ID, TOPICS, VERBS } from '../content/index'
 import type { Level } from '../content/types'
 import { db } from '../db'
 import { cellItem, exerciseItem, verbItem, type Item } from './items'
+import type { Card } from './srs'
 
 export function shuffle<T>(xs: T[]): T[] {
   const a = [...xs]
@@ -63,8 +64,10 @@ export function verbItems(opts: { group?: string; kind?: string; tenses?: Tense[
 }
 
 export async function dueItems(limit: number, now = Date.now()): Promise<Item[]> {
-  const cards = await db.cards.where('due').belowOrEqual(now).limit(limit * 2).toArray()
-  return shuffle(cards)
+  const cards = await db.cards.where('due').belowOrEqual(now).toArray()
+  const lapsed = (c: Card) => (c.reps === 0 && c.lapses > 0 ? 0 : 1)
+  return cards
+    .sort((a, b) => lapsed(a) - lapsed(b) || a.due - b.due)
     .slice(0, limit)
     .map((c) => c.item)
 }

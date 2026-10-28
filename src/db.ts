@@ -84,6 +84,15 @@ db.version(1).stores({
   settings: 'key',
 })
 
+db.version(2).stores({ cards: 'key, due, topic, createdAt' })
+
+const NEW_CARDS_FROM_CORRECT_PER_DAY = 20
+
+async function newCardsFromCorrectToday(now: number) {
+  const start = new Date(now).setHours(0, 0, 0, 0)
+  return db.cards.where('createdAt').aboveOrEqual(start).filter((c) => c.lapses === 0).count()
+}
+
 export async function record(item: Item, correct: boolean, opts: { assisted: boolean; source: Source }) {
   const now = Date.now()
   await db.transaction('rw', db.attempts, db.cards, async () => {
@@ -100,7 +109,9 @@ export async function record(item: Item, correct: boolean, opts: { assisted: boo
       if (!correct) await db.cards.put(schedule(newCard(item, now), 'wrong', now))
       return
     }
-    await grade(item, correct ? 'right' : 'wrong', now)
+    const existing = await db.cards.get(item.key)
+    if (!existing && correct && (await newCardsFromCorrectToday(now)) >= NEW_CARDS_FROM_CORRECT_PER_DAY) return
+    await db.cards.put(schedule(existing ?? newCard(item, now), correct ? 'right' : 'wrong', now))
   })
 }
 

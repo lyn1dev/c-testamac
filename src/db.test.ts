@@ -1,0 +1,66 @@
+import 'fake-indexeddb/auto'
+import Dexie from 'dexie'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { TOPICS } from './content/index'
+import { db, record } from './db'
+import { exerciseItem } from './practice/items'
+import { dueItems } from './practice/pools'
+import { DAY, MINUTE, newCard } from './practice/srs'
+
+const items = TOPICS.flatMap((t) => t.exercises).map(exerciseItem)
+
+beforeEach(async () => {
+  await db.delete()
+  await db.open()
+  vi.useFakeTimers({ toFake: ['Date'] })
+  vi.setSystemTime(new Date(2026, 9, 1, 12))
+})
+
+afterEach(() => vi.useRealTimers())
+
+const practice = { assisted: false, source: 'practice' as const }
+
+describe('upgrade', () => {
+  it('keeps version 1 progress', async () => {
+    db.close()
+    await Dexie.delete('ctest-coach')
+    const v1 = new Dexie('ctest-coach')
+    v1.version(1).stores({ attempts: '++id, at, key, topic, source', cards: 'key, due, topic', results: '++id, at, level, mode', topics: 'id', lookups: '++id, at', aiTexts: 'id, at, level', settings: 'key' })
+    await v1.table('cards').put(newCard(items[0], Date.now()))
+    await v1.table('settings').put({ key: 'placementDone', value: true })
+    v1.close()
+    await db.open()
+    expect(await db.cards.get(items[0].key)).toBeDefined()
+    expect(await db.cards.where('createdAt').aboveOrEqual(0).count()).toBe(1)
+    expect((await db.settings.get('placementDone'))?.value).toBe(true)
+  })
+})
+
+describe('review queue', () => {
+  it('always adds mistakes but caps new cards from correct answers at 20 a day', async () => {
+    for (const it of items.slice(0, 25)) await record(it, true, practice)
+    expect(await db.cards.count()).toBe(20)
+
+    await record(items[30], false, practice)
+    expect(await db.cards.get(items[30].key)).toBeDefined()
+
+    await record(items[0], true, practice)
+    expect((await db.cards.get(items[0].key))?.reps).toBe(2)
+
+    vi.setSystemTime(new Date(2026, 9, 2, 9))
+    await record(items[40], true, practice)
+    expect(await db.cards.get(items[40].key)).toBeDefined()
+  })
+
+  it('serves lapsed cards first, then the most overdue', async () => {
+    const now = Date.now()
+    const card = (i: number, due: number, reps: number, lapses: number) => ({ ...newCard(items[i], now - 9 * DAY), due, reps, lapses })
+    await db.cards.bulkPut([
+      card(0, now - 60 * MINUTE, 2, 0),
+      card(1, now - 3 * DAY, 2, 0),
+      card(2, now - 5 * MINUTE, 0, 1),
+      card(3, now + DAY, 2, 0),
+    ])
+    expect((await dueItems(10)).map((i) => i.key)).toEqual([items[2].key, items[1].key, items[0].key])
+  })
+})
