@@ -1,14 +1,14 @@
 import type { CTestLevel } from '../ctest/texts'
 import type { Mastery } from './mastery'
 
-export type ResultLike = { at: number; level: CTestLevel; correct: number; total: number; assisted: boolean }
+export type ResultLike = { at: number; level: CTestLevel; correct: number; total: number; assisted: boolean; repeat?: boolean }
 export type Estimate = { value: number | null; basis: 'texts' | 'grammar' | 'none'; n: number }
 
 const RECENT = 5
 
 function recentPct(results: ResultLike[], levels: CTestLevel[]): { pct: number; n: number } | null {
   const r = results
-    .filter((x) => !x.assisted && x.total > 0 && levels.includes(x.level))
+    .filter((x) => !x.assisted && !x.repeat && x.total > 0 && levels.includes(x.level))
     .sort((a, b) => b.at - a.at)
     .slice(0, RECENT)
   if (r.length === 0) return null
@@ -55,7 +55,7 @@ const LADDER: CTestLevel[] = ['B1', 'B2', 'B2+']
 
 export function recommendedLevel(results: ResultLike[], current: CTestLevel = 'B1'): CTestLevel {
   const recent = results
-    .filter((x) => !x.assisted && x.total > 0)
+    .filter((x) => !x.assisted && !x.repeat && x.total > 0)
     .sort((a, b) => b.at - a.at)
     .slice(0, 3)
   if (recent.length === 0) return current

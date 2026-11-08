@@ -35,7 +35,7 @@ export function PlacementPage() {
     for (const level of ['A2', 'B1', 'B2'] as Level[]) {
       const o = g[level]
       if (!o?.length) continue
-      const pct = o.filter((x) => x.correct && !x.assisted).length / o.length
+      const pct = o.filter((x) => x.correct && !x.assisted).length / items[level].length
       if (pct >= 0.9) for (const t of TOPICS.filter((x) => x.level === level)) await setTopic(t.id, { testedOutAt: Date.now() })
     }
     await saveSetting('placementDone', true)
@@ -45,7 +45,7 @@ export function PlacementPage() {
   const grammarDone = (level: Level, o: DrillOutcome[]) => {
     const g = { ...grammar, [level]: o }
     setGrammar(g)
-    const pct = o.filter((x) => x.correct).length / Math.max(1, o.length)
+    const pct = o.filter((x) => x.correct).length / items[level].length
     if (level === 'A2') setStep(pct >= PASS.A2 ? 'B1' : 'ctB1')
     else if (level === 'B1') setStep(pct >= PASS.B1 ? 'B2' : 'ctB1')
     else setStep('ctB1')
@@ -126,8 +126,8 @@ export function PlacementPage() {
               const right = o.filter((x) => x.correct).length
               return (
                 <li key={l}>
-                  {l === 'A2' ? 'A1–A2' : l} grammar: {right}/{o.length}
-                  {right / o.length >= 0.9 && ' — tested out'}
+                  {l === 'A2' ? 'A1–A2' : l} grammar: {right}/{items[l].length}
+                  {o.filter((x) => x.correct && !x.assisted).length / items[l].length >= 0.9 && ' — tested out'}
                 </li>
               )
             })}

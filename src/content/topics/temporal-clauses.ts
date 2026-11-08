@@ -57,7 +57,7 @@ export const topic: Topic = {
       id: 'temporal-clauses:3',
       topic: 'temporal-clauses',
       kind: 'gap',
-      text: '{Bevor|Ehe} ich ins Bett gehe, putze ich mir immer die Zähne.',
+      text: 'Be{vor} ich ins Bett gehe, putze ich mir immer die Zähne.',
       en: 'Before I go to bed, I always brush my teeth.',
       fb: { rule: 'bevor (or ehe) introduces the action that happens later.', cue: '„ins Bett gehe“ comes after „Zähne putzen“', trick: 'bevor = the later action' },
     },

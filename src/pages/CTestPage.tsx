@@ -36,6 +36,7 @@ export function CTestPage() {
   const timeLimit = tab === 'timed' ? settings.secondsPerText : undefined
 
   const start = async (useAi: boolean) => {
+    if (busy) return
     setBusy(true)
     setError('')
     try {
@@ -71,6 +72,8 @@ export function CTestPage() {
     return (
       <Page title="Your result">
         <CTestReview result={phase.r} onAgain={() => (tab === 'paste' ? setPhase({ kind: 'choose' }) : void start(true))} />
+        {busy && <p className="mt-2 text-sm text-stone-500">Preparing the next text…</p>}
+        {error && <p className="mt-2 text-sm text-rose-700">{error}</p>}
       </Page>
     )
 

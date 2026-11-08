@@ -146,7 +146,7 @@ export const topic: Topic = {
       kind: 'transform',
       instruction: "Report the statement with 'dass'.",
       source: 'Er sagt: „Ich komme später.“',
-      answers: ['Er sagt, dass er später kommt.'],
+      answers: ['Er sagt, dass er später kommt.', 'Er sagt, dass er später komme.'],
       fb: { rule: 'dass starts a subordinate clause with the verb at the end; ich becomes er.', cue: "'Er sagt, dass …' → dass er später kommt" },
     },
     {

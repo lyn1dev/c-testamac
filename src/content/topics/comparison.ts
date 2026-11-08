@@ -137,7 +137,7 @@ export const topic: Topic = {
       kind: 'transform',
       instruction: 'Combine the two sentences into one with a comparative and als.',
       source: 'Anna ist 25 Jahre alt. Tom ist 28 Jahre alt.',
-      answers: ['Tom ist älter als Anna.', 'Anna ist jünger als Tom.'],
+      answers: ['Tom ist älter als Anna.', 'Anna ist jünger als Tom.', 'Tom ist drei Jahre älter als Anna.', 'Anna ist drei Jahre jünger als Tom.'],
       fb: { rule: 'The older person is älter als the younger one; the younger is jünger als the older one.', cue: "'25' vs '28' → älter / jünger … als", trick: 'alt → älter, jung → jünger.' },
     },
     {

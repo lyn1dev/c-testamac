@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { conjugate, PERSONS } from './conjugate'
+import { allForms, conjugate, PERSONS } from './conjugate'
 import type { Verb } from './types'
 
 const v = (x: Partial<Verb> & Pick<Verb, 'inf' | 'praet' | 'p2'>): Verb => ({
@@ -85,10 +85,21 @@ describe('conjugate', () => {
     expect(conjugate(ankommen, 'konjunktiv1')[2]).toBe('komme an')
     const tun = v({ inf: 'tun', kind: 'irregular', present: ['tue', 'tust', 'tut', 'tun', 'tut', 'tun'], praet: 'tat', p2: 'getan', k2: 'täte' })
     expect(conjugate(tun, 'konjunktiv1')[3]).toBe('tuen')
-    expect(conjugate(sammeln, 'konjunktiv1')).toEqual(['sammle', 'sammlest', 'sammle', 'sammeln', 'sammlet', 'sammeln'])
+    expect(conjugate(sammeln, 'konjunktiv1')).toEqual(['sammle', 'sammelst', 'sammle', 'sammeln', 'sammelt', 'sammeln'])
+    const aendern = v({ inf: 'ändern', praet: 'änderte', p2: 'geändert' })
+    expect(conjugate(aendern, 'konjunktiv1')).toEqual(['ändere', 'änderst', 'ändere', 'ändern', 'ändert', 'ändern'])
     expect(conjugate(heissen, 'konjunktiv1')[2]).toBe('heiße')
     const werden = v({ inf: 'werden', kind: 'irregular', present: ['werde', 'wirst', 'wird', 'werden', 'werdet', 'werden'], praet: 'wurde', p2: 'geworden', aux: 'sein', k2: 'würde' })
     expect(conjugate(werden, 'konjunktiv2')[1]).toBe('würdest')
     expect(conjugate({ ...heissen, k2: 'hieße' }, 'konjunktiv2')[1]).toBe('hießest/würdest heißen')
+  })
+
+  it('accepts every listed variant of Präteritum, Partizip II and Konjunktiv II', () => {
+    const senden = v({ inf: 'senden', kind: 'mixed', praet: 'sandte/sendete', p2: 'gesandt/gesendet' })
+    expect(conjugate(senden, 'praeteritum')[1]).toBe('sandtest/sendetest')
+    expect(conjugate(senden, 'perfekt')[2]).toBe('hat gesandt/hat gesendet')
+    const aufstehen = v({ inf: 'aufstehen', kind: 'strong', sep: 'auf', praet: 'stand', p2: 'aufgestanden', aux: 'sein', k2: 'stünde/stände' })
+    expect(conjugate(aufstehen, 'konjunktiv2')[0]).toBe('stünde auf/stände auf/würde aufstehen')
+    expect(allForms(senden)).toEqual(expect.arrayContaining(['sendete', 'gesendet', 'sandte', 'gesandt']))
   })
 })

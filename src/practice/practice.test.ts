@@ -3,9 +3,21 @@ import { estimateScores, recommendedLevel, type ResultLike } from './estimate'
 import { topicMastery, weakestTopics } from './mastery'
 import { planSession } from './session'
 import { DAY, MINUTE, newCard, schedule } from './srs'
-import type { Item } from './items'
+import { checkItem, fixItem, type Item } from './items'
 
 const item: Item = { kind: 'verb', key: 'verb:gehen:perfekt:2', inf: 'gehen', tense: 'perfekt', person: 2 }
+
+describe('writing corrections', () => {
+  it('turn into a gap on the fixed part of the corrected sentence', () => {
+    const it = fixItem('Wir waren müde. Gestern bin ich ins Kino gegangen, aber es war voll.', 'bin', 'perfekt')!
+    expect(it.kind === 'gap' && [it.before, it.after]).toEqual(['Gestern ', ' ich ins Kino gegangen, aber es war voll.'])
+    expect(it.topic).toBe('perfekt')
+    expect(checkItem(it, 'bin').correct).toBe(true)
+    expect(checkItem(it, 'habe').correct).toBe(false)
+    expect(fixItem('Ich gehe.', '', 'perfekt')).toBeNull()
+    expect(fixItem('Ich gehe.', 'nicht da', 'perfekt')).toBeNull()
+  })
+})
 
 describe('srs', () => {
   it('brings wrong answers back in minutes and grows intervals when right', () => {
@@ -73,6 +85,12 @@ describe('estimates', () => {
     expect(e.B2.value).toBe(73)
   })
 
+  it('ignores repeated texts in estimates and level changes', () => {
+    const repeat = { ...r('B1', 20, 3), repeat: true }
+    expect(estimateScores([r('B1', 12, 1), repeat], {}, {}).B1).toEqual({ value: 60, basis: 'texts', n: 1 })
+    expect(recommendedLevel([r('B1', 18, 1), { ...r('B1', 20, 2), repeat: true }])).toBe('B1')
+  })
+
   it('has no estimate without data', () => {
     expect(estimateScores([], {}, {}).B2.basis).toBe('none')
   })
@@ -90,6 +108,35 @@ describe('session planner', () => {
     const steps = planSession({ minutes: 45, dueCount: 30, nextTopic: 'perfekt', weakestTopic: 'cases', level: 'B1' })
     expect(steps.map((s) => s.kind)).toEqual(['review', 'lesson', 'ctest', 'ctest', 'weak'])
     expect(steps.reduce((s, x) => s + x.minutes, 0)).toBeLessThanOrEqual(45)
+  })
+
+  it('adds a table speed round and, with AI, a writing task without losing C-tests', () => {
+    const steps = planSession({
+      minutes: 45,
+      dueCount: 30,
+      nextTopic: 'perfekt',
+      weakestTopic: 'cases',
+      level: 'B1',
+      tableId: 'def-article',
+      writeTopic: 'cases',
+    })
+    expect(steps.map((s) => s.kind)).toEqual(['review', 'lesson', 'ctest', 'ctest', 'table', 'write', 'weak'])
+    expect(steps.reduce((s, x) => s + x.minutes, 0)).toBeLessThanOrEqual(45)
+    const noKey = planSession({ minutes: 20, dueCount: 5, level: 'B1', tableId: 'def-article' })
+    expect(noKey.map((s) => s.kind)).toEqual(['review', 'ctest', 'table', 'mixed'])
+    expect(noKey.reduce((s, x) => s + x.minutes, 0)).toBeLessThanOrEqual(20)
+  })
+
+  it('never plans more time than given or empty steps', () => {
+    for (const minutes of [1, 2, 3, 5, 10, 15, 20, 30, 45, 60, 90, 120])
+      for (const dueCount of [0, 1, 5, 30, 200, 1000]) {
+        const steps = planSession({ minutes, dueCount, nextTopic: 'perfekt', weakestTopic: 'cases', level: 'B1', tableId: 'def-article', writeTopic: 'cases' })
+        expect(steps.reduce((s, x) => s + x.minutes, 0), `${minutes}/${dueCount}`).toBeLessThanOrEqual(minutes)
+        for (const s of steps) {
+          expect(s.minutes, `${minutes}/${dueCount}`).toBeGreaterThan(0)
+          if ('count' in s) expect(s.count, `${minutes}/${dueCount}`).toBeGreaterThan(0)
+        }
+      }
   })
 
   it('keeps short sessions to the essentials', () => {

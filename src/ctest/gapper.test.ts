@@ -67,6 +67,27 @@ describe('makeCTest', () => {
     )
   })
 
+  it('skips all-caps acronyms without counting them', () => {
+    const ct = makeCTest('Erster Satz. Die KI und die EU regeln heute vieles. Ende.', { gaps: 10 })
+    expect(ct.gaps.map((g) => g.word)).toEqual(['und', 'regeln', 'vieles'])
+  })
+
+  it('skips hyphenated words as one unit without counting them', () => {
+    const ct = makeCTest('Erster Satz. Ich schreibe eine E-Mail an meine Lehrerin. Ende.', { gaps: 10 })
+    expect(ct.gaps.map((g) => g.word)).toEqual(['schreibe', 'an', 'Lehrerin'])
+    expect(renderCTest(ct)).toContain('eine E-Mail a_ meine')
+  })
+
+  it('ignores soft hyphens and zero-width characters from pasted text', () => {
+    const ct = makeCTest('Erster Satz. Die Ent\u00ADwicklung geht wei\u200Bter. Ende.', { gaps: 10 })
+    expect(ct.gaps.map((g) => g.word)).toEqual(['Entwicklung', 'weiter'])
+  })
+
+  it('gaps ordinary nouns that are also surnames', () => {
+    const ct = makeCTest('Erster Satz. Der alte Fischer sitzt am Bach. Ende.', { gaps: 10 })
+    expect(ct.gaps.map((g) => g.word)).toEqual(['alte', 'sitzt', 'Bach'])
+  })
+
   it('can hide the letter count', () => {
     const ct = makeCTest(EXAMPLE, { gaps: 1 })
     expect(renderCTest(ct, { letterCount: false })).toContain('Vorher müs____ sie')
@@ -78,6 +99,14 @@ describe('splitSentences', () => {
     expect(
       splitSentences('Man braucht z. B. Geld usw. für das Studium. Am 3. Mai beginnt es. Dr. Weber kommt!'),
     ).toEqual(['Man braucht z. B. Geld usw. für das Studium.', 'Am 3. Mai beginnt es.', 'Dr. Weber kommt!'])
+  })
+
+  it('ends a sentence after a year', () => {
+    expect(splitSentences('Er kam im Jahr 2019. Danach blieb er. Am 3. Mai ging er.')).toEqual([
+      'Er kam im Jahr 2019.',
+      'Danach blieb er.',
+      'Am 3. Mai ging er.',
+    ])
   })
 
   it('splits on question and exclamation marks and keeps closing quotes', () => {

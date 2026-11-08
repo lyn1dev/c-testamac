@@ -104,7 +104,7 @@ export const topic: Topic = {
       topic: 'nominal-style',
       kind: 'gap',
       text: 'Er entschuldigte sich wegen seiner Verspät{ung}.',
-      en: 'He apologised because of his lateness.',
+      en: 'He apologised for his lateness.',
       fb: {
         rule: 'sich verspäten → die Verspätung; the feminine genitive is seiner.',
         cue: '„wegen seiner“',

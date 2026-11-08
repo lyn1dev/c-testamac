@@ -30,7 +30,7 @@ export const topic: Topic = {
     { de: 'Ich interessiere mich für Geschichte.', en: 'I am interested in history.', note: 'sich interessieren für + accusative.' },
     { de: 'Vor dem Essen wasche ich mir die Hände.', en: 'Before eating I wash my hands.', note: 'die Hände is the accusative object, so mir.' },
     { de: 'Beim Sport habe ich mir das Bein gebrochen.', en: 'I broke my leg while playing sport.', note: 'dative reflexive in the perfect.' },
-    { de: 'Mein Bruder hat bald Geburtstag. Ich gratuliere ihm schon jetzt.', en: 'My brother has a birthday soon. I am congratulating him already now.', note: 'gratulieren + dative.' },
+    { de: 'Mein Bruder hat bald Geburtstag. Ich gratuliere ihm schon jetzt.', en: 'My brother has a birthday soon. I am already congratulating him now.', note: 'gratulieren + dative.' },
     { de: 'Gefällt dir die neue Wohnung?', en: 'Do you like the new flat?', note: 'gefallen + dative: the thing is the subject.' },
   ],
   inCTests: 'Gaps like "Ich freue m__ auf die Ferien" (mich) or "Das gefällt m__" (mir) need you to spot the verb: dative verb, reflexive verb, or reflexive verb with another object. Compare the subject and object: same person → reflexive; look for an accusative object after the pronoun → dative reflexive.',

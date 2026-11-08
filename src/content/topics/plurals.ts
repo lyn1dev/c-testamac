@@ -8,7 +8,7 @@ export const topic: Topic = {
   rule: [
     'The plural article is always **die** (nominative/accusative), **den** (dative, plus -n on the noun), **der** (genitive). The noun itself uses one of five patterns: **-e** (Tag → Tage), **-er** (Kind → Kinder), **-(e)n** (Frau → Frauen), **-s** (Auto → Autos) or **no ending** (Lehrer → Lehrer). Umlaut can be added to -e, -er and zero: Hand → Hände, Buch → Bücher, Bruder → Brüder.',
     'Gender helps: most **feminine** nouns take **-(e)n** (die Zeitung → Zeitungen, die Bibliothek → Bibliotheken) and nouns in -in take **-nen** (die Lehrerin → Lehrerinnen). **Masculine** one-syllable nouns usually take -e/¨e (der Tag → Tage, der Stuhl → Stühle). **Neuter** nouns often take -e or ¨er (das Jahr → Jahre, das Haus → Häuser).',
-    'Nouns ending in **-er, -el, -en** (masculine/neuter) stay the same or add only an umlaut: der Lehrer → die Lehrer, der Apfel → die Äpfel. Foreign words and abbreviations take **-s**: das Foto → Fotos, das Hotel → Hotels, das Handy → Handys.',
+    'Nouns ending in **-er, -el, -en** (masculine/neuter) stay the same or add only an umlaut: der Lehrer → die Lehrer, der Apfel → die Äpfel. Many foreign words (especially those ending in a vowel) and abbreviations take **-s**: das Foto → Fotos, das Hotel → Hotels, das Handy → Handys.',
     'In the **dative plural**, add -n unless the plural already ends in -n or -s: mit den Kind**ern**, mit den Freund**en**, but mit den Auto**s**. Always learn a noun as "der Tag, -e".',
   ],
   tables: ['plural-patterns'],
@@ -21,7 +21,7 @@ export const topic: Topic = {
   traps: [
     '*die Lehrerinen → **die Lehrerinnen**. Female -in doubles the n before -en.',
     '*mit den Kinder → **mit den Kindern**. The dative plural needs an extra -n.',
-    '*die Fotoen / *die Autoen → **die Fotos / die Autos**. Foreign nouns take -s.',
+    '*die Fotoen / *die Autoen → **die Fotos / die Autos**. Foreign nouns ending in a vowel take -s.',
     '*die Apfel → **die Äpfel**. Many masculine nouns add an umlaut in the plural.',
   ],
   examples: [

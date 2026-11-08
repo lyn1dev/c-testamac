@@ -1,4 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks'
+import { useEffect, useState } from 'react'
 import { TOPIC_CATALOG } from '../content/catalog'
 import { db, type TopicState } from '../db'
 import { masteryByTopic, type Mastery } from '../practice/mastery'
@@ -19,7 +20,12 @@ export function useTopicStates(): Record<string, TopicState> | undefined {
 }
 
 export function useDueCount(): number | undefined {
-  return useLiveQuery(() => db.cards.where('due').belowOrEqual(Date.now()).count())
+  const [minute, setMinute] = useState(0)
+  useEffect(() => {
+    const id = setInterval(() => setMinute((m) => m + 1), 60_000)
+    return () => clearInterval(id)
+  }, [])
+  return useLiveQuery(() => db.cards.where('due').belowOrEqual(Date.now()).count(), [minute])
 }
 
 export async function introducedTopics(): Promise<string[]> {

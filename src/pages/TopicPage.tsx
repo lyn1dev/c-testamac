@@ -1,25 +1,27 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import { correctWriting, generateExercises, type WritingFeedback } from '../ai/tasks'
 import { TOPIC_BY_ID } from '../content/index'
-import { db, setTopic } from '../db'
-import { exerciseItem, type Item } from '../practice/items'
+import { db, grade, setTopic } from '../db'
+import { exerciseItem, fixItem, type Item } from '../practice/items'
 import { interleaved, shuffle, topicItems } from '../practice/pools'
 import { aiReady, useSettings } from '../settings'
 import { Btn, Card, Page, STATUS_STYLE, useActivity } from '../ui/bits'
 import { LessonView } from '../ui/ContentViews'
 import { Drill, type DrillOutcome } from '../ui/Drill'
 import { introducedTopics, useMastery, useTopicStates } from '../ui/hooks'
+import { lookupCount } from '../ui/lookup'
 
 type Tab = 'lesson' | 'practice' | 'testout' | 'ai' | 'write'
 
-function WriteTab({ topicId, prompts }: { topicId: string; prompts: string[] }) {
+export function WriteTab({ topicId, prompts }: { topicId: string; prompts: string[] }) {
   const settings = useSettings()
   const [task, setTask] = useState(prompts[0])
   const [text, setText] = useState('')
   const [fb, setFb] = useState<WritingFeedback | null>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const lookups = useRef(lookupCount())
   useActivity(`write:${topicId}`)
   if (!aiReady(settings)) return <p className="text-sm text-stone-500">Sentence writing is corrected by AI — add an OpenRouter key in Settings.</p>
   const check = async () => {
@@ -34,9 +36,14 @@ function WriteTab({ topicId, prompts }: { topicId: string; prompts: string[] }) 
         kind: 'exercise',
         topic: topicId,
         correct: out.correct && out.usedTopic,
-        assisted: false,
+        assisted: lookupCount() !== lookups.current,
         source: 'practice',
       })
+      lookups.current = lookupCount()
+      for (const err of out.errors) {
+        const item = fixItem(out.corrected, err.right, topicId)
+        if (item) await grade(item, 'wrong')
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e))
     } finally {

@@ -12,8 +12,7 @@ import { aiReady, loadSettings } from '../../settings'
 import type { PlayerText } from './Player'
 
 export async function currentLevel(): Promise<CTestLevel> {
-  const results = await db.results.orderBy('at').reverse().limit(10).toArray()
-  return recommendedLevel(results)
+  return recommendedLevel(await db.results.toArray())
 }
 
 function builtinFor(level: CTestLevel, lastDone: Map<string, number>, exclude: string[] = []) {

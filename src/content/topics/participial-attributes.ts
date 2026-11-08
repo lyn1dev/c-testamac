@@ -20,7 +20,7 @@ export const topic: Topic = {
   ],
   traps: [
     'Wrong: das reparierende Auto (meaning the repaired car). Right: das **reparierte** Auto.',
-    'Wrong: die schlafende (no ending) Kinder. Right: die schlafen**den** Kinder (plural nominative after the article: -en).',
+    'Wrong: die schlafende Kinder. Right: die schlafen**den** Kinder (plural nominative after the article: -en).',
     'Wrong: der angekommende Zug. Right: der angekommen**e** Zug (Partizip II of a motion verb, ending -e).',
     'Wrong: das gestern gekauftes Buch. Right: das gestern gekauft**e** Buch (nominative neuter after das: -e).',
   ],

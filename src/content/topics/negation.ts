@@ -117,10 +117,10 @@ export const topic: Topic = {
       id: 'negation:10',
       topic: 'negation',
       kind: 'choice',
-      prompt: 'Ich möchte ___ Kaffee, sondern Tee.',
+      prompt: 'Danke, ich möchte ___ Kaffee. Ich trinke lieber Tee.',
       options: ['nicht', 'kein', 'keine', 'keinen'],
       answer: 3,
-      fb: { rule: 'Kaffee has no article and is masculine accusative; sondern then names the replacement.', cue: "'Kaffee, sondern Tee' → keinen" },
+      fb: { rule: 'Kaffee has no article and is masculine accusative, so keinen.', cue: "'der Kaffee' without article → keinen" },
     },
     {
       id: 'negation:11',
